@@ -8,8 +8,8 @@ const Header = () => {
                Blog
            </span>
             <div className='header__auth-block auth'>
-                <button className='btn btn__large btn__light auth__item'>Sign in</button>
-                <button className='btn btn__large btn__success auth__item'>Sign up</button>
+                <button className='btn btn__large btn__light auth__item'>Sign In</button>
+                <button className='btn btn__large btn__success auth__item'>Sign Up</button>
             </div>
         </header>
     );
