@@ -1,4 +1,4 @@
-.sign-in {
+.create-acc {
   width: 385px;
   margin: 0 auto;
   padding: 48px 32px;
@@ -49,8 +49,19 @@
     text-align: center;
     color: #8C8C8C;
   }
-  &__link{
-    color: #1890FF;
 
+  &__link {
+    color: #1890FF;
+  }
+
+  &__line {
+    background: #E8E8E8;
+    height: 1px;
+    margin: 0 0 10px;
+  }
+
+  &__agree {
+    line-height: 22px;
+    margin: 0 0 15px;
   }
 }

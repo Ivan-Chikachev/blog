@@ -12,15 +12,15 @@ const SignIn = () => {
             </p>
             <input
                 placeholder='Email address'
-                type="text" className="sign-in__input"/>
+                type="email" className="sign-in__input"/>
             <p className="sign-in__label">
                 Password
             </p>
             <input
                 placeholder='Password'
-                type="text" className="sign-in__input sign-in__input-password"/>
+                type="password" className="sign-in__input sign-in__input-password"/>
             <button className="sign-in__btn btn btn__medium btn__primary-bg">Login</button>
-            <p className='sign-in__sign-up'>
+            <p className='sign-in__text'>
                 Don’t have an account? <
                 a href="#" className='sign-in__link'>Sign Up.</a>
             </p>
