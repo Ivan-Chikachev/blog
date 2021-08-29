@@ -1,0 +1,22 @@
+.header {
+  height: 80px;
+  background: #fff;
+  padding: 0 22px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__title {
+    font-size: 18px;
+  }
+
+  &__btn-block{
+    gap: 5px;
+  }
+}
+
+.auth{
+  &__item{
+    margin: 0 0 0 17px;
+  }
+}
