@@ -11,6 +11,10 @@ const Header = () => {
                 <button className='btn btn__large btn__light auth__item'>Sign In</button>
                 <button className='btn btn__large btn__success auth__item'>Sign Up</button>
             </div>
+
+
+
+
         </header>
     );
 }
