@@ -19,10 +19,10 @@ const SignIn = () => {
             <input
                 placeholder='Password'
                 type="password" className="sign-in__input sign-in__input-password"/>
-            <button className="sign-in__btn btn btn__medium btn__primary-bg">Login</button>
+            <button className="sign-in__btn btn btn__for-modal btn__primary-bg">Login</button>
             <p className='sign-in__text'>
                 Don’t have an account? <
-                a href="#" className='sign-in__link'>Sign Up.</a>
+                a href="#" className='link'>Sign Up.</a>
             </p>
         </div>
     );

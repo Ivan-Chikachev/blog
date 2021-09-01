@@ -1,4 +1,4 @@
-.sign-in {
+.edit-profile {
   width: 385px;
   margin: 0 auto;
   padding: 48px 32px;
@@ -37,16 +37,7 @@
     }
   }
 
-  &__input-password {
+  &__input-avatar {
     margin: 0 0 21px;
-  }
-
-  &__btn {
-    margin: 0 0 10px;
-  }
-
-  &__text {
-    text-align: center;
-    color: #8C8C8C;
   }
 }

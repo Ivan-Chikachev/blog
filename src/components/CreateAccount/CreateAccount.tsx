@@ -38,12 +38,12 @@ const CreateAccount = () => {
                     I agree to the processing of my personal information
                 </label>
             </div>
-            <button className="create-acc__btn btn btn__medium btn__primary-bg">
+            <button className="create-acc__btn btn btn__for-modal btn__primary-bg">
                 Create
             </button>
             <p className='create-acc__text'>
                 Already have an account? <
-                a href="#" className='create-acc__link'>Sign In.</a>
+                a href="#" className='link'>Sign In.</a>
             </p>
         </div>
     );
