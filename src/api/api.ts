@@ -52,9 +52,9 @@ const blogAPI = {
         return instance
             .delete<ProfileType>(`profiles/${username}/follow`);
     },
-    getListArticles() {
+    getListArticles(count: number = 0) {
         return instance
-            .get<GetListArticlesType>(`articles`);
+            .get<GetListArticlesType>(`articles?offset=${count}`);
     },
     getFeedArticles () {
         return instance

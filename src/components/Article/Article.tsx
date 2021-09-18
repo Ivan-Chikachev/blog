@@ -1,20 +1,34 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import './Article.scss'
+import blogAPI from "../../api/api";
+import {ArticleType} from "../../types/types";
 
-const Article = () => {
+type Props = {
+    article: ArticleType
+    i: number
+}
 
+const Article = ({article, i}: Props) => {
     return (
-        <div className="container">
-            <article className='article'>
-
-                <header className="article__header">
-
-                </header>
-                <div className="article__content">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate dolores inventore sapiente?
+        <article className='article'>
+            <header className="article__header">
+                <h3 className="article__title">{article.title}</h3>
+                <div className="article__like-block">
+                    {article.favoritesCount}
                 </div>
-            </article>
-        </div>
+            </header>
+            <div className="article__tag-list">
+                {article.tagList?.map((tag, iTag) =>
+                    <div key={iTag} className="article__tag-item">
+                        {tag}
+                    </div>
+                )}
+            </div>
+            <div className="article__text">
+                {article.body}
+            </div>
+        </article>
+        
     );
 }
 

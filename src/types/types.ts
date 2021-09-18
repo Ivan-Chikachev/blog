@@ -28,18 +28,16 @@ export type ProfileType = {
 }
 
 export type ArticleType = {
-    "article": {
-        "slug": string,
-        "title": string,
-        "description": string,
-        "body": string,
-        "tagList": Array<string>,
-        "createdAt": string,
-        "updatedAt": string,
-        "favorited": boolean,
-        "favoritesCount": number,
-        "author": _ProfileType
-    }
+    "slug": string,
+    "title": string,
+    "description": string,
+    "body": string,
+    "tagList": Array<string>,
+    "createdAt": string,
+    "updatedAt": string,
+    "favorited": boolean,
+    "favoritesCount": number,
+    "author": _ProfileType
 }
 
 export type CommentType = {
