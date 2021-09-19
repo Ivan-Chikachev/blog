@@ -1,15 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './Header.scss';
+import {Link} from "react-router-dom";
+import Account from "./Account";
+import Auth from "./Auth";
 
 const Header = () => {
+    const [auth, s] = useState(false)
     return (
         <header className='header'>
-           <span className={'header__title'}>
-               Blog
-           </span>
+            <Link to='/'>
+                <span className={'header__title'}>
+                    Blog
+                </span>
+            </Link>
             <div className='header__auth-block auth'>
-                <button className='btn btn__large btn__light auth__item'>Sign In</button>
-                <button className='btn btn__large btn__success auth__item'>Sign Up</button>
+                {
+                    auth ?
+                        <Account/>
+                        :
+                        <Auth/>
+                }
             </div>
         </header>
     );

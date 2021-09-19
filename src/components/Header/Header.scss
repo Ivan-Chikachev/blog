@@ -9,15 +9,41 @@
 
   &__title {
     font-size: 18px;
+    color: #262626;
   }
 
-  &__btn-block{
+  &__btn-block {
     gap: 5px;
+  }
+
+  &__auth-block {
+    display: flex;
+    align-items: center;
   }
 }
 
-.auth{
-  &__item{
-    margin: 0 0 0 17px;
+.auth {
+  &__item {
+    margin: 0 0 0 27px;
+    display: flex;
+    align-items: center;
+  }
+
+  &__name {
+    font-size: 18px;
+    line-height: 28px;
+    color: rgba(0, 0, 0, 0.85);
+    margin: 0 13px 0 0;
+  }
+
+  &__avatar {
+    display: flex;
+    align-items: center;
+  }
+
+  &__img {
+    border-radius: 50%;
+    width: 46px;
+    height: 46px;
   }
 }

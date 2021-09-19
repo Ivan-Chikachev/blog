@@ -1,3 +1,7 @@
+import {ThunkAction} from "redux-thunk";
+import {articlesActions} from "../redux/Articles/articlesActions";
+import { AppStateType } from "../redux/rootReducer";
+
 export type AuthUserType = {
     "user": {
         "email": string,
@@ -49,3 +53,15 @@ export type CommentType = {
         "author": _ProfileType
     }
 }
+
+// General
+
+type PropType<T> = T extends { [key: string]: infer U } ? U : never
+
+type InferActionsType<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropType<T>>
+
+// Articles
+
+export type ActionsArticlesType = InferActionsType<typeof articlesActions>
+
+export type ThunkArticlesType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlesType>

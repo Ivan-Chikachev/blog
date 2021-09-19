@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import './Article.scss'
-import blogAPI from "../../api/api";
 import {ArticleType} from "../../types/types";
 
 type Props = {

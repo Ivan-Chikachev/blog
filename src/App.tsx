@@ -6,18 +6,21 @@ import EditProfile from './components/EditProfile/EditProfile';
 import Header from "./components/Header/Header";
 import SignIn from "./components/SignIn/SignIn";
 import CreateArticle from "./components/CreateArticle/CreateArticle";
+import {BrowserRouter, Route} from "react-router-dom";
 
 const App = () => {
 
     return (
-        <div className='wrapper'>
-            <Header/>
-            <SignIn/>
-            <EditProfile/>
-            <CreateAccount/>
-            <CreateArticle/>
-            <Articles/>
-        </div>
+        <BrowserRouter>
+            <div className='wrapper'>
+                <Header/>
+                <Route path='/' exact component={Articles}/>
+                <Route path='/signin' component={SignIn}/>
+                <Route path='/signup' component={CreateAccount}/>
+                <Route path='/s' component={EditProfile}/>
+                <Route path='/create-article' component={CreateArticle}/>
+            </div>
+        </BrowserRouter>
     );
 }
 
