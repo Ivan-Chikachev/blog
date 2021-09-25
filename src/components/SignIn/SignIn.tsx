@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import './SignIn.scss';
 
 const SignIn = () => {
@@ -21,8 +22,10 @@ const SignIn = () => {
                 type="password" className="sign-in__input sign-in__input-password"/>
             <button className="sign-in__btn btn btn__for-modal btn__primary-bg">Login</button>
             <p className='sign-in__text'>
-                Don’t have an account? <
-                a href="#" className='link'>Sign Up.</a>
+                Don’t have an account?
+                <Link to={'/sign-up'} className='link'>
+                    Sign Up.
+                </Link>
             </p>
         </div>
     );

@@ -8,7 +8,7 @@ const Header = () => {
     const [auth, s] = useState(false)
     return (
         <header className='header'>
-            <Link to='/'>
+            <Link to='/articles/page/1'>
                 <span className={'header__title'}>
                     Blog
                 </span>

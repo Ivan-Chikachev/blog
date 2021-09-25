@@ -1,5 +1,6 @@
 import React from 'react';
-import './CreateAccount.scss';
+import './SignUp.scss';
+import {Link} from "react-router-dom";
 
 const CreateAccount = () => {
     return (
@@ -42,8 +43,10 @@ const CreateAccount = () => {
                 Create
             </button>
             <p className='create-acc__text'>
-                Already have an account? <
-                a href="#" className='link'>Sign In.</a>
+                Already have an account?
+                <Link to={'/sign-in'} className='link'>
+                    Sign In.
+                </Link>
             </p>
         </div>
     );

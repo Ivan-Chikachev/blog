@@ -23,7 +23,11 @@ const blogAPI = {
     reg(username: string, email: string, password: string) {
         return instance
             .post<AuthUserType>('users', {
-                user: username, email, password
+                user: {
+                    username,
+                    email,
+                    password
+                }
             })
     },
     getCurrentUser() {
@@ -56,19 +60,17 @@ const blogAPI = {
         return instance
             .get<GetListArticlesType>(`articles?offset=${count}`);
     },
-    getFeedArticles () {
+    getFeedArticles() {
         return instance
             .get(`articles/feed`);
     },
-    getArticle (slug: string) {
+    getArticle(slug: string) {
         return instance
             .get(`articles/${slug}`);
     },
-    createArticle () {
+    createArticle() {
         return instance
-            .post(`articles`, {
-
-            });
+            .post(`articles`, {});
     }
 
 };
