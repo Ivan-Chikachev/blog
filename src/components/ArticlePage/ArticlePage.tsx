@@ -5,6 +5,9 @@ import {connect} from "react-redux";
 import {AppStateType} from "../../redux/rootReducer";
 import {getCurrentArticle} from "../../redux/Articles/articlesActions";
 import Loading from "../Loading/Loading";
+import {format} from "date-fns";
+import defaultAvatar from '../../img/default-ava.png'
+import {formatDate} from "../../helper/publishedDate";
 
 type StateTypes = {
     currentArticle: ArticleType,
@@ -31,7 +34,13 @@ const ArticlePage = ({
         getCurrentArticle(slug)
     }, [])
 
+    const publishedDate = formatDate(currentArticle?.createdAt)
+
     const isCurrentArticle = !!Object.keys(currentArticle).length
+
+    const avatarSrc = currentArticle?.author?.image ?
+        currentArticle.author.image : defaultAvatar
+
     return (
         <div className='container'>
 
@@ -45,7 +54,12 @@ const ArticlePage = ({
                         {currentArticle.title}
                     </h3>
                     <div className="header-article__like-block">
-                        {currentArticle.favoritesCount}
+                      <button
+                        type="button"
+                        className='like'
+                      >
+                          {currentArticle.favoritesCount}
+                      </button>
                     </div>
                   </div>
                   <div className="header-article__tag-list">
@@ -60,7 +74,13 @@ const ArticlePage = ({
                   </div>
                 </div>
                 <div className="header-article__right-header">
-                  a
+                  <div className="header-article__info">
+                    <h5 className='header-article__name'>{currentArticle.author.username}</h5>
+                    <span className='header-article__date'>{publishedDate}</span>
+                  </div>
+                  <div>
+                    <img className='header-article__avatar' src={avatarSrc} alt=""/>
+                  </div>
                 </div>
               </header>
               <div className="article-page__text">

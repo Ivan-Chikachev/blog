@@ -38,7 +38,7 @@ const Articles = ({
             {articles.length ?
                 <>
                     {articles.map((article, i) =>
-                        <Article key={i} article={article} i={i}/>
+                        <Article key={i} article={article}/>
                     )}
                     <AppPagination
                         totalArticles={totalArticles}

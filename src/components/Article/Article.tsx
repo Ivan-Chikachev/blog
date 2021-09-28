@@ -2,29 +2,41 @@ import React from "react";
 import './Article.scss'
 import {ArticleType} from "../../types/types";
 import {Link, RouteComponentProps, withRouter} from "react-router-dom";
+import { formatDate } from "../../helper/publishedDate";
 
 type Props = {
     article: ArticleType
-    i: number
-    history: {
-        push: (page: string) => void
-    }
 }
 
-const Article = ({
-                     article,
-                     i,
-                     history
-                 }: Props) => {
+const Article = ({article}: Props) => {
+
+    const publishedDate = formatDate(article.createdAt)
+
     return (
         <article className='article'>
             <header className="article__header">
-                <Link to={`/articles/${article.slug}`}>
-                    <h3
-                        className="article__title">{article.title}</h3>
-                </Link>
-                <div className="article__like-block">
-                    {article.favoritesCount}
+                <div className="article__header-left">
+                    <Link to={`/articles/${article.slug}`}>
+                        <h3
+                            className="article__title">{article.title}</h3>
+                    </Link>
+                    <div className="article__like-block">
+                        <button
+                            type="button"
+                            className='like active'
+                        >
+                            {article.favoritesCount}
+                        </button>
+                    </div>
+                </div>
+                <div className="article__header-right">
+                    <div className="article__info">
+                        <h5 className='article__name'>{article.author.username}</h5>
+                        <span className='article__date'>{publishedDate}</span>
+                    </div>
+                    <div>
+                        <img className='article__avatar' src={article.author.image} alt=""/>
+                    </div>
                 </div>
             </header>
             <div className="article__tag-list">

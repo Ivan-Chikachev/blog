@@ -35,7 +35,7 @@ const App = ({getArticles}: Props) => {
                 <Route path='/create-article' component={CreateArticle}/>
                 <Route path='/articles/page/:page'
                        render={({match}) => {
-                           const page = +match.params.page
+                           const page = +match.params.page - 1
                            getArticles(page)
                            return <Articles page={page}/>
                        }}/>
