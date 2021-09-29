@@ -1,45 +1,23 @@
-import React, {useEffect, useState} from "react";
-import './ArticlePage.scss'
-import {ArticleType} from "../../types/types";
-import {connect} from "react-redux";
-import {AppStateType} from "../../redux/rootReducer";
-import {getCurrentArticle} from "../../redux/Articles/articlesActions";
+import React from "react";
+import './Article.scss'
 import Loading from "../Loading/Loading";
-import {format} from "date-fns";
-import defaultAvatar from '../../img/default-ava.png'
-import {formatDate} from "../../helper/publishedDate";
-
-type StateTypes = {
-    currentArticle: ArticleType,
-    isLoading: boolean
-}
-
-type DispatchTypes = {
-    getCurrentArticle: (slug: string) => void
-}
+import {ArticleType} from "../../types/types";
 
 type Props = {
-    slug: string
+    publishedDate: string
+    currentArticle: ArticleType
+    avatarSrc: string
+    isLoading: boolean
+    isCurrentArticle: boolean
 }
 
-type PropsType = StateTypes & DispatchTypes & Props
-
-const ArticlePage = ({
-                         slug,
-                         getCurrentArticle, currentArticle,
-                         isLoading
-                     }: PropsType) => {
-
-    useEffect(() => {
-        getCurrentArticle(slug)
-    }, [])
-
-    const publishedDate = formatDate(currentArticle?.createdAt)
-
-    const isCurrentArticle = !!Object.keys(currentArticle).length
-
-    const avatarSrc = currentArticle?.author?.image ?
-        currentArticle.author.image : defaultAvatar
+const Article = ({
+                         currentArticle,
+                         isLoading,
+                         publishedDate,
+                         avatarSrc,
+                         isCurrentArticle
+                     }: Props) => {
 
     return (
         <div className='container'>
@@ -91,14 +69,4 @@ const ArticlePage = ({
     )
 }
 
-const mapStateToProps = (state: AppStateType): StateTypes => ({
-    currentArticle: state.articlePage.currentArticle,
-    isLoading: state.articlePage.isLoading
-})
-
-const mapDispatchToProps = {
-    getCurrentArticle
-}
-
-export default connect<StateTypes, DispatchTypes, {}, AppStateType>(
-    mapStateToProps, mapDispatchToProps)(ArticlePage)
+export default Article

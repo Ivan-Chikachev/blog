@@ -1,5 +1,6 @@
 import {ArticleType, ThunkArticlesType} from "../../types/types";
 import blogAPI from "../../api/api";
+import {Dispatch} from "redux";
 
 export const articlesActions = {
     getArticles: (articles: Array<ArticleType>, total: number) => ({
@@ -21,13 +22,13 @@ export const articlesActions = {
 }
 
 export const setCurrentPage = (number: number) => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         dispatch(articlesActions.setCurrentPage(number))
     }
 }
 
 export const onLoading = () => {
-    return (dispatch: any) => {
+    return (dispatch: Dispatch) => {
         dispatch(articlesActions.onLoading())
     }
 }

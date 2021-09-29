@@ -1,16 +1,17 @@
 import React from 'react';
 import './App.scss';
-import Articles from './components/Article/Articles';
-import CreateAccount from './components/SignUp/SignUp';
-import EditProfile from './components/EditProfile/EditProfile';
 import Header from "./components/Header/Header";
-import SignIn from "./components/SignIn/SignIn";
-import CreateArticle from "./components/CreateArticle/CreateArticle";
 import {BrowserRouter, Redirect, Route} from "react-router-dom";
-import ArticlePage from "./components/ArticlePage/ArticlePage";
 import {getArticles} from "./redux/Articles/articlesActions";
 import {connect} from "react-redux";
 import {AppStateType} from "./redux/rootReducer";
+import ArticlePage from "./pages/ArticlePage";
+import ArticlesListPage from "./pages/ArticleListPage";
+import SignInPage from "./pages/SignInPage";
+import SignUpPage from "./pages/SignUpPage";
+import EditProfilePage from "./pages/EditProfilePage";
+import CreateArticlePage from "./pages/CreateArticlePage";
+import EditArticlePage from "./pages/EditArticlePage";
 
 type StateTypes = {
 }
@@ -29,15 +30,16 @@ const App = ({getArticles}: Props) => {
             <div className='wrapper'>
                 <Header/>
                 {/*<Redirect from="/" to="/articles/page/1"/>*/}
-                <Route path='/sign-in' component={SignIn}/>
-                <Route path='/sign-up' component={CreateAccount}/>
-                <Route path='/profile' component={EditProfile}/>
-                <Route path='/create-article' component={CreateArticle}/>
+                <Route path='/sign-in' component={SignInPage}/>
+                <Route path='/sign-up' component={SignUpPage}/>
+                <Route path='/profile' component={EditProfilePage}/>
+                <Route path='/edit-article' component={EditArticlePage}/>
+                <Route path='/create-article' component={CreateArticlePage}/>
                 <Route path='/articles/page/:page'
                        render={({match}) => {
                            const page = +match.params.page - 1
                            getArticles(page)
-                           return <Articles page={page}/>
+                           return <ArticlesListPage page={page}/>
                        }}/>
                 <Route
                     exact

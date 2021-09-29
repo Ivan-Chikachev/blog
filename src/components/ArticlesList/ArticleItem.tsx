@@ -1,5 +1,5 @@
 import React from "react";
-import './Article.scss'
+import './ArticlesList.scss'
 import {ArticleType} from "../../types/types";
 import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 import { formatDate } from "../../helper/publishedDate";
@@ -8,7 +8,7 @@ type Props = {
     article: ArticleType
 }
 
-const Article = ({article}: Props) => {
+const ArticleItem = ({article}: Props) => {
 
     const publishedDate = formatDate(article.createdAt)
 
@@ -54,4 +54,4 @@ const Article = ({article}: Props) => {
     );
 }
 
-export default withRouter<Props & RouteComponentProps<{}>, any>(Article)
+export default withRouter<Props & RouteComponentProps<{}>, any>(ArticleItem)

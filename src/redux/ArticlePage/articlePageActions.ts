@@ -1,4 +1,4 @@
-import {ArticleType, ThunkArticlePageType, ThunkArticlesType} from "../../types/types";
+import {ArticleType, ThunkArticlePageType} from "../../types/types";
 import blogAPI from "../../api/api";
 
 export const articlesPageActions = {
