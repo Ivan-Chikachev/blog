@@ -5,20 +5,20 @@ const initialState = {
     currentPage: 1,
     isLoading: true,
     totalArticles: 1,
-    currentArticle: {} as ArticleType
+    isError: false
 };
 type InitialStateType = typeof initialState
 
 export const articlesReducer = (state = initialState, action: ActionsArticlesType): InitialStateType => {
     switch (action.type) {
         case 'GET_ARTICLES':
-            return {...state, articles: action.articles, totalArticles: action.total, isLoading: false};
+            return {...state, articles: action.articles, totalArticles: action.total, isLoading: false, isError: false};
         case "SET_CURRENT_PAGE":
             return {...state, articles: [], currentPage: action.number}
-        case "GET_CURRENT_ARTICLE":
-            return {...state, currentArticle: action.article, isLoading: false}
         case "ON_LOADING":
             return {...state, isLoading: true}
+        case "ON_ERROR":
+            return {...state, isError: true, isLoading: false}
         default:
             return state
     }

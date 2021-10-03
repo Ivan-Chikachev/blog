@@ -1,13 +1,17 @@
-import './CreateArticle.scss'
+import './ChangeArticle.scss'
 import React from "react";
 import Tag from "./Tag";
 
-const CreateArticle = () => {
+type Props = {
+    title: string
+}
+
+const ChangeArticle = ({title} : Props) => {
     return (
         <div>
             <form className='create-article' action="">
                 <h3 className='create-article__title'>
-                    Create New Article
+                    {title}
                 </h3>
                 <p className="create-article__label">
                     Title
@@ -46,4 +50,4 @@ const CreateArticle = () => {
     )
 }
 
-export default CreateArticle
+export default ChangeArticle

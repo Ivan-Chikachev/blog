@@ -9,8 +9,9 @@ import {getCurrentArticle} from "../redux/ArticlePage/articlePageActions";
 
 
 type StateTypes = {
-    currentArticle: ArticleType,
+    currentArticle: ArticleType
     isLoading: boolean
+    isError: boolean
 }
 
 type DispatchTypes = {
@@ -26,7 +27,7 @@ type PropsType = StateTypes & DispatchTypes & Props
 const ArticlePage = ({
                          slug,
                          getCurrentArticle, currentArticle,
-                         isLoading
+                         isLoading, isError
                      }: PropsType) => {
 
     useEffect(() => {
@@ -47,13 +48,15 @@ const ArticlePage = ({
             avatarSrc={avatarSrc}
             isLoading={isLoading}
             isCurrentArticle={isCurrentArticle}
+            isError={isError}
         />
     )
 }
 
 const mapStateToProps = (state: AppStateType): StateTypes => ({
     currentArticle: state.articlePage.currentArticle,
-    isLoading: state.articlePage.isLoading
+    isLoading: state.articlePage.isLoading,
+    isError: state.articlePage.isError
 })
 
 const mapDispatchToProps = {

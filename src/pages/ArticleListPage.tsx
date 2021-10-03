@@ -9,6 +9,7 @@ type StateTypes = {
     articles: Array<ArticleType>
     totalArticles: number
     isLoading: boolean
+    isError: boolean
 }
 
 type DispatchTypes = {
@@ -26,7 +27,7 @@ const ArticlesListPage = ({
                               articles,
                               isLoading, setCurrentPage,
                               page, totalArticles,
-                              onLoading
+                              onLoading, isError
                           }: PropTypes) => {
     return (
         <ArticlesList
@@ -36,6 +37,7 @@ const ArticlesListPage = ({
             page={page}
             totalArticles={totalArticles}
             onLoading={onLoading}
+            isError={isError}
         />
     )
 }
@@ -43,7 +45,8 @@ const ArticlesListPage = ({
 const mapStateToProps = (state: AppStateType): StateTypes => ({
     articles: state.articles.articles,
     totalArticles: state.articles.totalArticles,
-    isLoading: state.articles.isLoading
+    isLoading: state.articles.isLoading,
+    isError: state.articles.isError
 });
 
 const mapDispatchToProps = {

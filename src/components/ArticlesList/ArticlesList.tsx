@@ -4,6 +4,7 @@ import {ArticleType} from "../../types/types";
 import Article from "./ArticleItem";
 import Loading from "../Loading/Loading";
 import AppPagination from "../Pagination/Pagination";
+import Error from "../Error/Error";
 
 type Props = {
     page: number
@@ -12,19 +13,22 @@ type Props = {
     setCurrentPage: (number: number) => void
     totalArticles: number
     onLoading: () => void
+    isError: boolean
 }
 
 const ArticlesList = ({
                       articles,
                       isLoading, setCurrentPage,
                       page , totalArticles,
-                      onLoading
+                      onLoading, isError
                   }: Props) => {
     return (
         <div className="container">
             {isLoading && <Loading/>}
 
-            {articles.length ?
+            {isError && <Error/>}
+
+            {articles?.length ?
                 <>
                     {articles.map((article, i) =>
                         <Article key={i} article={article}/>

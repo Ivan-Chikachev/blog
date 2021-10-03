@@ -5,6 +5,9 @@ export const articlesPageActions = {
     getCurrentArticle: (article: ArticleType) => ({
         type: 'GET_CURRENT_ARTICLE',
         article
+    } as const),
+    onError: () => ({
+        type: 'ON_ERROR'
     } as const)
 }
 
@@ -18,7 +21,7 @@ export const getCurrentArticle = (slug: string): ThunkArticlePageType => {
             dispatch(action)
 
         } catch (e) {
-
+            dispatch(articlesPageActions.onError())
         }
     }
 }

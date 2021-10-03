@@ -1,4 +1,4 @@
-import './CreateArticle.scss'
+import './ChangeArticle.scss'
 import React from "react";
 
 const Tag = () => {

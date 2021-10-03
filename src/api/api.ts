@@ -2,7 +2,7 @@ import axios from 'axios';
 import {ArticleType, AuthUserType, ProfileType} from '../types/types';
 
 const instance = axios.create({
-    baseURL: 'https://conduit.productionready.io/api/',
+    baseURL: 'https://conduit-api-realworld.herokuapp.com/api/',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -58,7 +58,7 @@ const blogAPI = {
     },
     getListArticles(count: number = 0) {
         return instance
-            .get<GetListArticlesType>(`articles?offset=${count}`);
+            .get<GetListArticlesType>(`articles?page=${count}`);
     },
     getFeedArticles() {
         return instance

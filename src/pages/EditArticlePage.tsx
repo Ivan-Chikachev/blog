@@ -1,7 +1,7 @@
 import React from "react";
-import EditArticle from "../components/EditArticle/EditArticle";
 import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
+import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
 
 type StateTypes = {}
 
@@ -13,7 +13,7 @@ type PropsType = StateTypes & DispatchTypes & Props
 
 const EditArticlePage = ({}: PropsType) => {
     return (
-        <EditArticle/>
+        <ChangeArticle title={'Edit article'}/>
     )
 }
 

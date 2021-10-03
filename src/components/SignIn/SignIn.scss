@@ -22,7 +22,10 @@
   }
 
   &__label {
-    margin: 0 0 5px;
+    margin: 12px 0 5px;
+    &:first-of-type{
+      margin: 0 0 5px;
+    }
   }
 
   &__input {
@@ -30,19 +33,14 @@
     border-radius: 4px;
     font-size: 16px;
     padding: 12px 8px;
-    margin: 0 0 12px;
 
     &::placeholder {
       color: #BFBFBF;
     }
   }
 
-  &__input-password {
-    margin: 0 0 21px;
-  }
-
   &__btn {
-    margin: 0 0 10px;
+    margin: 21px 0 10px;
   }
 
   &__text {

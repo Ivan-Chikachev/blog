@@ -1,5 +1,5 @@
 import React from "react";
-import CreateArticle from "../components/CreateArticle/CreateArticle";
+import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
 import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
 
@@ -13,7 +13,7 @@ type PropsType = StateTypes & DispatchTypes & Props
 
 const CreateArticlePage = ({}: PropsType) => {
     return (
-        <CreateArticle/>
+        <ChangeArticle title={'Create New Article'}/>
     )
 }
 
