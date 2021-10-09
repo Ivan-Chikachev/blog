@@ -2,7 +2,7 @@ import axios from 'axios';
 import {ArticleType, AuthUserType, ProfileType} from '../types/types';
 
 const instance = axios.create({
-    baseURL: 'https://conduit-api-realworld.herokuapp.com/api/',
+    baseURL: 'https://api.realworld.io/api/',
     headers: {
         'Content-Type': 'application/json',
     },
@@ -58,7 +58,7 @@ const blogAPI = {
     },
     getListArticles(count: number = 0) {
         return instance
-            .get<GetListArticlesType>(`articles?page=${count}`);
+            .get<GetListArticlesType>(`articles?offset=${count}`);
     },
     getFeedArticles() {
         return instance
