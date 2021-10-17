@@ -2,9 +2,9 @@ import axios from 'axios';
 import {ArticleType, AuthUserType, ProfileType} from '../types/types';
 
 const instance = axios.create({
-    baseURL: 'https://api.realworld.io/api/',
+    baseURL: 'https://conduit.productionready.io/api/',
     headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
     },
 });
 
@@ -17,10 +17,10 @@ const blogAPI = {
     auth(email: string, password: string) {
         return instance
             .post<AuthUserType>('users/login', {
-                user: email, password
+                user: {email, password}
             })
     },
-    reg(username: string, email: string, password: string) {
+    register(username: string, email: string, password: string) {
         return instance
             .post<AuthUserType>('users', {
                 user: {

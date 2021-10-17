@@ -12,23 +12,34 @@ import SignUpPage from "./pages/SignUpPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import CreateArticlePage from "./pages/CreateArticlePage";
 import EditArticlePage from "./pages/EditArticlePage";
+import {logout} from './redux/Auth/authActions';
 
 type StateTypes = {
+    isAuth: boolean
+    username: string
+    avatarSrc: string | null
 }
 
 type DispatchTypes = {
     getArticles: (offset: number) => void
+    logout: () => void
 }
 
 type Props = StateTypes & DispatchTypes
 
 
-const App = ({getArticles}: Props) => {
+const App = (props: Props) => {
+
+    const {getArticles, isAuth, logout, username, avatarSrc} = props
 
     return (
         <BrowserRouter>
             <div className='wrapper'>
-                <Header/>
+                <Header
+                    logout={logout}
+                    isAuth={isAuth}
+                    username={username}
+                    avatarSrc={avatarSrc}/>
                 {/*<Redirect from="/" to="/articles/page/1"/>*/}
                 <Route path='/sign-in' component={SignInPage}/>
                 <Route path='/sign-up' component={SignUpPage}/>
@@ -53,9 +64,13 @@ const App = ({getArticles}: Props) => {
 
 
 const mapStateToProps = (state: AppStateType): StateTypes => ({
+    isAuth: state.auth.isAuth,
+    username: state.auth.user.user?.username,
+    avatarSrc: state.auth.user.user?.image
 })
 
 const mapDispatchToProps = {
+    logout,
     getArticles
 }
 

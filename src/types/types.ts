@@ -9,6 +9,7 @@ export type AuthUserType = {
         "email": string,
         "token": string,
         "username": string,
+        "password": string,
         "bio": string,
         "image": null | string
     }

@@ -24,11 +24,9 @@ export const setCurrentPage = (number: number) => (dispatch: Dispatch) => {
     dispatch(articlesActions.setCurrentPage(number))
 }
 
-
 export const onLoading = () => (dispatch: Dispatch) => {
     dispatch(articlesActions.onLoading())
 }
-
 
 export const getArticles = (offset: number): ThunkArticlesType => {
     return async (dispatch) => {
@@ -36,7 +34,6 @@ export const getArticles = (offset: number): ThunkArticlesType => {
             const res = await blogAPI.getListArticles(offset);
             const data = res.data
             const articles = data.articles
-            console.log(res)
             const total = data.articlesCount
             const action = articlesActions.getArticles(articles, total)
             dispatch(action)

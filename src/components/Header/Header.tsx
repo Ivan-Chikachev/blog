@@ -4,8 +4,17 @@ import {Link} from "react-router-dom";
 import Account from "./Account";
 import Auth from "./Auth";
 
-const Header = () => {
-    const [auth, s] = useState(false)
+type Props = {
+    isAuth: boolean
+    logout: () => void
+    avatarSrc: string | null
+    username: string
+}
+
+const Header = (props: Props) => {
+
+    const {isAuth, logout, avatarSrc, username} = props
+
     return (
         <header className='header'>
             <Link to='/articles/page/1'>
@@ -15,8 +24,12 @@ const Header = () => {
             </Link>
             <div className='header__auth-block auth'>
                 {
-                    auth ?
-                        <Account/>
+                    isAuth ?
+                        <Account
+                            avatarSrc={avatarSrc}
+                            username={username}
+                            logout={logout}
+                        />
                         :
                         <Auth/>
                 }

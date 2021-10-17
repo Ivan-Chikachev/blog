@@ -1,30 +1,73 @@
-import {ThunkAuthType} from "../../types/types";
+import {AuthUserType, ThunkAuthType, UserType} from "../../types/types";
 import blogAPI from "../../api/api";
+import {Dispatch} from "redux";
 
 export const authActions = {
-    // signUp: (username: string, email: string, password: string) => ({
-    //     type: "SIGN_UP"
-    // } as const)
+    signUp: (user: AuthUserType) => ({
+        type: "SIGN_UP",
+        user
+    } as const),
+    signIn: (user: AuthUserType) => ({
+        type: "SIGN_IN",
+        user
+    } as const),
+    setErrors: (errors: any) => ({
+        type: "SET_ERRORS",
+        errors
+    } as const),
+    setInvalidError: (errors: any) => ({
+        type: "SET_INVALID_ERRORS",
+        errors
+    } as const),
+    fetchingOff: () => ({type: "FETCHING_OFF"} as const),
+    fetchingOn: () => ({type: "FETCHING_ON"} as const),
+    logout: () => ({type: "LOGOUT"} as const),
+    resetErrors: () => ({type: "RESET_ERRORS"} as const),
+
 }
 
 export const signUp = (username: string, email: string, password: string): ThunkAuthType => {
     return async (dispatch) => {
+
+        dispatch(authActions.fetchingOn())
         try {
-            const response = await blogAPI.reg(username, email, password)
-            console.log(response)
-            const user = response.data.user
-        } catch (e) {
+            const response = await blogAPI.register(username, email, password)
+            const user = response.data
+            dispatch(authActions.signUp(user))
+
+        } catch (e: any) {
+            dispatch(authActions.fetchingOff())
+            const errors = e.response.data.errors
+            dispatch(authActions.setErrors(errors))
         }
     }
 }
 
 export const signIn = (email: string, password: string): ThunkAuthType => {
     return async (dispatch) => {
+        dispatch(authActions.fetchingOn())
         try {
             const response = await blogAPI.auth(email, password)
-            console.log(response)
-            const user = response.data.user
-        } catch (e) {
+            const user = response.data
+            dispatch(authActions.signIn(user))
+        } catch (e: any) {
+            dispatch(authActions.fetchingOff())
+            if (typeof e.response?.data !== 'object') {
+               return
+            }
+            const errors = e.response?.data?.errors
+            if(errors['email or password']) {
+                dispatch(authActions.setInvalidError(errors['email or password']))
+            }
+            dispatch(authActions.setErrors(errors))
         }
     }
+}
+
+export const logout = () => (dispatch: Dispatch) => {
+    dispatch(authActions.logout())
+}
+
+export const resetErrors = () => (dispatch: Dispatch) => {
+    dispatch(authActions.resetErrors())
 }

@@ -54,6 +54,11 @@ body {
   justify-content: center;
   transition: 0.1s ease;
 
+  &:disabled {
+    cursor: not-allowed;
+    background: #8C8C8C !important;
+  }
+
   &__medium {
     padding: 9px 11px;
   }
@@ -71,7 +76,8 @@ body {
   &__danger {
     border: 1px solid #F5222D;
     color: #F5222D;
-    &:hover{
+
+    &:hover {
       background: rgba(245, 34, 45, 0.21);
     }
   }
@@ -79,7 +85,8 @@ body {
   &__primary {
     border: 1px solid #1890FF;
     color: #1890FF;
-    &:hover{
+
+    &:hover {
       background: rgba(24, 144, 255, 0.2);
     }
   }
@@ -87,7 +94,8 @@ body {
   &__success {
     border: 1px solid #52C41A;
     color: #52C41A;
-    &:hover{
+
+    &:hover {
       background: rgba(82, 196, 26, 0.16);
     }
   }
@@ -95,7 +103,8 @@ body {
   &__light {
     color: #262626;
     border: 1px solid #D9D9D9;
-    &:hover{
+
+    &:hover {
       background: #f1f1f1;
     }
   }
@@ -103,7 +112,8 @@ body {
   &__light-br {
     color: #262626;
     border: 1px solid #262626;
-    &:hover{
+
+    &:hover {
       background: #f1f1f1;
     }
   }
@@ -112,7 +122,7 @@ body {
     background: #1890FF;
     color: #fff;
 
-    &:hover{
+    &:hover {
       background: #1b73d8;
     }
   }
@@ -149,12 +159,13 @@ input:focus {
   border: 1px solid #1890FF
 }
 
-.like{
+.like {
   width: 20px;
   padding: 0 20px;
   background-color: transparent;
   position: relative;
-  &:before{
+
+  &:before {
     content: "";
     position: absolute;
     left: 0px;
@@ -163,19 +174,20 @@ input:focus {
     display: block;
     background: url('/img/like.svg') no-repeat center center/cover;
   }
-  &.active{
-    &:before{
+
+  &.active {
+    &:before {
       background: url('/img/like-active.svg') no-repeat center center/cover;
     }
   }
 }
 
-.error-label{
+.error-label {
   font-size: 12px;
   color: #f52019;
   margin: 5px 0 10px 0;
 }
 
-input.input-error{
+input.input-error {
   border: 1px solid #f52019;
 }

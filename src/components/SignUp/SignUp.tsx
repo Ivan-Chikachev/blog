@@ -1,13 +1,29 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './SignUp.scss';
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 
 type Props = {
     signUp: (username: string, email: string, password: string) => void
+    usernameError: string
+    emailError: string
+    passwordError: string
+    isFetching: boolean
+    resetErrors: () => void
 }
 
-const SignUp = ({signUp} : Props) => {
+const SignUp = (props: Props) => {
+
+    const {
+        signUp, isFetching,
+        usernameError,
+        emailError,
+        passwordError, resetErrors
+    } = props
+
+    useEffect(()=> {
+        resetErrors()
+    }, [])
 
     const [confirmPassword, setConfirmPassword] = useState('')
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
@@ -48,6 +64,10 @@ const SignUp = ({signUp} : Props) => {
         signUp(username, email, password)
     }
 
+    const userErrors = usernameError || errors.username
+    const passwordErrors = passwordError || errors.password
+    const emailErrors = emailError || errors.email
+
     return (
         <form
             className='create-acc'
@@ -62,11 +82,11 @@ const SignUp = ({signUp} : Props) => {
             <input
                 placeholder='Username'
                 type="text"
-                className={`${errors.username? 'input-error' : ''} create-acc__input`}
+                className={`${userErrors ? 'input-error' : ''} create-acc__input`}
                 {...registerUsername}
             />
-            {errors.username && <span className='error-label'>
-              Имя должно быть от 3 до 20 символов
+            {(userErrors) && <span className='error-label'>
+                {usernameError || 'Имя должно быть от 3 до 20 символов'}
             </span>}
 
             <p className="create-acc__label">
@@ -75,21 +95,22 @@ const SignUp = ({signUp} : Props) => {
             <input
                 placeholder='Email address'
                 type="email"
-                className={`${errors.email? 'input-error' : ''} create-acc__input`}
+                className={`${emailErrors ? 'input-error' : ''} create-acc__input`}
                 {...registerEmail}/>
-            {errors.email && <span className='error-label'>
-              Введите корректный email
+            {emailErrors && <span className='error-label'>
+              {emailError || 'Введите корректный email'}
             </span>}
+
             <p className="create-acc__label">
                 Password
             </p>
             <input
                 placeholder='Password'
                 type="password"
-                className={`${errors.password? 'input-error' : ''} create-acc__input`}
+                className={`${passwordErrors ? 'input-error' : ''} create-acc__input`}
                 {...registerPassword}/>
-            {errors.password && <span className='error-label'>
-              Пароль должен быть от 6 до 40 символов
+            {passwordErrors && <span className='error-label'>
+             {passwordError || 'Пароль должен быть от 6 до 40 символов'}
             </span>}
 
             <p className="create-acc__label">
@@ -110,7 +131,9 @@ const SignUp = ({signUp} : Props) => {
                     I agree to the processing of my personal information
                 </label>
             </div>
-            <button className="create-acc__btn btn btn__for-modal btn__primary-bg">
+            <button className="create-acc__btn btn btn__for-modal btn__primary-bg"
+                    disabled={isFetching}
+            >
                 Create
             </button>
             <p className='create-acc__text'>
