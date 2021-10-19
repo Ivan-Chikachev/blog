@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {ArticleType, AuthUserType, ProfileType} from '../types/types';
+import {ArticleType, AuthUserType, AuthErrorType, ProfileType} from '../types/types';
 
 const instance = axios.create({
     baseURL: 'https://conduit.productionready.io/api/',

@@ -33,8 +33,11 @@ export const authReducer = (state = initialState, action: ActionsAuthType): Init
         case "SIGN_UP":
             return {...state, user: action.user, isAuth: true, isFetching: false}
         case "SIGN_IN":
-            console.log(action.user)
-            return {...state, user: action.user, isAuth: true, isFetching: false}
+            return {
+                ...state, user: action.data,
+                isAuth: action.data.errors === undefined,
+                isFetching: false
+            }
         case "LOGOUT":
             return {...state, isAuth: false}
         case "RESET_ERRORS":

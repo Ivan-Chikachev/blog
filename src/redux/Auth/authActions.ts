@@ -1,15 +1,16 @@
-import {AuthUserType, ThunkAuthType, UserType} from "../../types/types";
+import {AuthUserType, AuthErrorType, ThunkAuthType} from "../../types/types";
 import blogAPI from "../../api/api";
 import {Dispatch} from "redux";
+import {LS} from "../../loacalStorage/localStorage";
 
 export const authActions = {
     signUp: (user: AuthUserType) => ({
         type: "SIGN_UP",
         user
     } as const),
-    signIn: (user: AuthUserType) => ({
+    signIn: (data: any) => ({
         type: "SIGN_IN",
-        user
+        data
     } as const),
     setErrors: (errors: any) => ({
         type: "SET_ERRORS",
@@ -23,7 +24,6 @@ export const authActions = {
     fetchingOn: () => ({type: "FETCHING_ON"} as const),
     logout: () => ({type: "LOGOUT"} as const),
     resetErrors: () => ({type: "RESET_ERRORS"} as const),
-
 }
 
 export const signUp = (username: string, email: string, password: string): ThunkAuthType => {
@@ -34,6 +34,7 @@ export const signUp = (username: string, email: string, password: string): Thunk
             const response = await blogAPI.register(username, email, password)
             const user = response.data
             dispatch(authActions.signUp(user))
+            LS.setToken(user.user.token)
 
         } catch (e: any) {
             dispatch(authActions.fetchingOff())
@@ -46,26 +47,32 @@ export const signUp = (username: string, email: string, password: string): Thunk
 export const signIn = (email: string, password: string): ThunkAuthType => {
     return async (dispatch) => {
         dispatch(authActions.fetchingOn())
+
         try {
             const response = await blogAPI.auth(email, password)
-            const user = response.data
-            dispatch(authActions.signIn(user))
+
+            const data = response.data
+            dispatch(authActions.signIn(data))
+
+            if (data.user.token) {
+                LS.setToken(data.user.token)
+            }
+
         } catch (e: any) {
             dispatch(authActions.fetchingOff())
             if (typeof e.response?.data !== 'object') {
-               return
+                return
             }
-            const errors = e.response?.data?.errors
-            if(errors['email or password']) {
-                dispatch(authActions.setInvalidError(errors['email or password']))
-            }
-            dispatch(authActions.setErrors(errors))
+            const errors = e.response?.data?.errors?.body
+            const errorsBody = errors.join(' ')
+            dispatch(authActions.setInvalidError(errorsBody))
         }
     }
 }
 
 export const logout = () => (dispatch: Dispatch) => {
     dispatch(authActions.logout())
+    LS.removeToken()
 }
 
 export const resetErrors = () => (dispatch: Dispatch) => {

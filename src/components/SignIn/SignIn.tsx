@@ -75,9 +75,9 @@ const SignIn = (props: Props) => {
              {passwordError || 'Пароль должен быть от 6 до 40 символов'}
             </span>}
 
-            {invalidAuth && <span className='error-label'>
-             {'Email or password ' + invalidAuth}
-            </span>}
+            {invalidAuth && <div className='error-label'>
+             {invalidAuth}
+            </div>}
             <button
                 className='sign-in__btn btn btn__for-modal btn__primary-bg'
                 type={'submit'}

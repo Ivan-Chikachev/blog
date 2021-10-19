@@ -12,7 +12,8 @@ import SignUpPage from "./pages/SignUpPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import CreateArticlePage from "./pages/CreateArticlePage";
 import EditArticlePage from "./pages/EditArticlePage";
-import {logout} from './redux/Auth/authActions';
+import {logout, signIn} from './redux/Auth/authActions';
+import { LS } from './loacalStorage/localStorage';
 
 type StateTypes = {
     isAuth: boolean
@@ -31,6 +32,8 @@ type Props = StateTypes & DispatchTypes
 const App = (props: Props) => {
 
     const {getArticles, isAuth, logout, username, avatarSrc} = props
+
+    const token = LS.getToken()
 
     return (
         <BrowserRouter>
@@ -71,7 +74,7 @@ const mapStateToProps = (state: AppStateType): StateTypes => ({
 
 const mapDispatchToProps = {
     logout,
-    getArticles
+    getArticles,
 }
 
 export default connect<StateTypes, DispatchTypes, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(App);

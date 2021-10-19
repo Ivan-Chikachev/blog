@@ -1,17 +1,23 @@
 import {ThunkAction} from "redux-thunk";
-import { articlesPageActions } from "../redux/ArticlePage/articlePageActions";
+import {articlesPageActions} from "../redux/ArticlePage/articlePageActions";
 import {articlesActions} from "../redux/Articles/articlesActions";
-import { AppStateType } from "../redux/rootReducer";
+import {AppStateType} from "../redux/rootReducer";
 import {authActions} from "../redux/Auth/authActions";
 
 export type AuthUserType = {
-    "user": {
+    user: {
         "email": string,
         "token": string,
         "username": string,
         "password": string,
         "bio": string,
         "image": null | string
+    }
+}
+
+export type AuthErrorType = {
+    errors: {
+        body: Array<string>
     }
 }
 
