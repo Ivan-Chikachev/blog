@@ -1,7 +1,7 @@
 import React from "react";
 import {Pagination} from "antd";
 import {RouteComponentProps, withRouter} from "react-router-dom";
-import {onLoading} from "../../redux/Articles/articlesActions";
+import {onLoading} from "../../redux/App/appActions";
 
 type Props = {
     currentPage: number

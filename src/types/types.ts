@@ -1,6 +1,6 @@
 import {ThunkAction} from "redux-thunk";
-import {articlesPageActions} from "../redux/ArticlePage/articlePageActions";
-import {articlesActions} from "../redux/Articles/articlesActions";
+import {articlesPageActions} from "../redux/Article/articleActions";
+import {appActions} from "../redux/App/appActions";
 import {AppStateType} from "../redux/rootReducer";
 import {authActions} from "../redux/Auth/authActions";
 
@@ -9,10 +9,14 @@ export type AuthUserType = {
         "email": string,
         "token": string,
         "username": string,
-        "password": string,
         "bio": string,
         "image": null | string
     }
+}
+
+export type GetListArticlesType = {
+    articles: Array<ArticleType>
+    articlesCount: number
 }
 
 export type AuthErrorType = {
@@ -69,13 +73,13 @@ type PropType<T> = T extends { [key: string]: infer U } ? U : never
 
 type InferActionsType<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropType<T>>
 
-// Articles
+// App
 
-export type ActionsArticlesType = InferActionsType<typeof articlesActions>
+export type ActionsArticlesType = InferActionsType<typeof appActions>
 
 export type ThunkArticlesType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlesType>
 
-// ArticlePage
+// Article
 
 export type ActionsArticlePageType = InferActionsType<typeof articlesPageActions>
 

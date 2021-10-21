@@ -1,5 +1,5 @@
-import {ArticleType, ThunkArticlePageType} from "../../types/types";
-import blogAPI from "../../api/api";
+import {ArticleType, ThunkArticlePageType, ThunkArticlesType} from "../../types/types";
+import blogAPI from "../../services/api";
 
 export const articlesPageActions = {
     getCurrentArticle: (article: ArticleType) => ({
@@ -23,5 +23,12 @@ export const getCurrentArticle = (slug: string): ThunkArticlePageType => {
         } catch (e) {
             dispatch(articlesPageActions.onError())
         }
+    }
+}
+
+export const onFavorite = (slug: string): ThunkArticlesType => {
+    return async (dispatch) => {
+       const res = blogAPI.setFavorite(slug)
+        console.log(res)
     }
 }

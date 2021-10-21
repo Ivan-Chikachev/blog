@@ -1,20 +1,12 @@
 import {AuthUserType, AuthErrorType, ThunkAuthType} from "../../types/types";
-import blogAPI from "../../api/api";
+import blogAPI from "../../services/api";
 import {Dispatch} from "redux";
 import {LS} from "../../loacalStorage/localStorage";
 
 export const authActions = {
-    signUp: (user: AuthUserType) => ({
-        type: "SIGN_UP",
-        user
-    } as const),
-    signIn: (data: any) => ({
-        type: "SIGN_IN",
+    login: (data: any) => ({
+        type: "LOGIN",
         data
-    } as const),
-    setErrors: (errors: any) => ({
-        type: "SET_ERRORS",
-        errors
     } as const),
     setInvalidError: (errors: any) => ({
         type: "SET_INVALID_ERRORS",
@@ -32,40 +24,44 @@ export const signUp = (username: string, email: string, password: string): Thunk
         dispatch(authActions.fetchingOn())
         try {
             const response = await blogAPI.register(username, email, password)
-            const user = response.data
-            dispatch(authActions.signUp(user))
-            LS.setToken(user.user.token)
-
-        } catch (e: any) {
-            dispatch(authActions.fetchingOff())
-            const errors = e.response.data.errors
-            dispatch(authActions.setErrors(errors))
-        }
-    }
-}
-
-export const signIn = (email: string, password: string): ThunkAuthType => {
-    return async (dispatch) => {
-        dispatch(authActions.fetchingOn())
-
-        try {
-            const response = await blogAPI.auth(email, password)
-
             const data = response.data
-            dispatch(authActions.signIn(data))
+            dispatch(authActions.login(data))
 
             if (data.user.token) {
                 LS.setToken(data.user.token)
             }
 
         } catch (e: any) {
-            dispatch(authActions.fetchingOff())
+            const errors = e.response?.data?.errors?.body
+            const errorsBody = errors.join(' ')
+            dispatch(authActions.setInvalidError(errorsBody))
+        }
+        dispatch(authActions.fetchingOff())
+    }
+}
+
+export const signIn = (email: string, password: string): ThunkAuthType => {
+    return async (dispatch) => {
+
+        dispatch(authActions.fetchingOn())
+        try {
+            const response = await blogAPI.auth(email, password)
+            const data = response.data
+            dispatch(authActions.login(data))
+
+            if (data.user.token) {
+                LS.setToken(data.user.token)
+            }
+
+        } catch (e: any) {
             if (typeof e.response?.data !== 'object') {
                 return
             }
             const errors = e.response?.data?.errors?.body
             const errorsBody = errors.join(' ')
             dispatch(authActions.setInvalidError(errorsBody))
+        } finally {
+            dispatch(authActions.fetchingOff())
         }
     }
 }
@@ -73,6 +69,26 @@ export const signIn = (email: string, password: string): ThunkAuthType => {
 export const logout = () => (dispatch: Dispatch) => {
     dispatch(authActions.logout())
     LS.removeToken()
+}
+
+export const loginToken = (): ThunkAuthType => {
+    return async (dispatch: Dispatch) => {
+
+        dispatch(authActions.fetchingOn())
+        try {
+            const response = await blogAPI.getUser()
+            const data = response.data
+            dispatch(authActions.login(data))
+
+            if (data.user.token) {
+                LS.setToken(data.user.token)
+            }
+        } catch (e) {
+            console.log(e)
+        } finally {
+            dispatch(authActions.fetchingOff())
+        }
+    }
 }
 
 export const resetErrors = () => (dispatch: Dispatch) => {

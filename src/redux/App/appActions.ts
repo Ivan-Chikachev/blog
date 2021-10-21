@@ -1,8 +1,8 @@
 import {ArticleType, ThunkArticlesType} from "../../types/types";
-import blogAPI from "../../api/api";
+import blogAPI from "../../services/api";
 import {Dispatch} from "redux";
 
-export const articlesActions = {
+export const appActions = {
     getArticles: (articles: Array<ArticleType>, total: number) => ({
         type: 'GET_ARTICLES',
         articles,
@@ -21,11 +21,11 @@ export const articlesActions = {
 }
 
 export const setCurrentPage = (number: number) => (dispatch: Dispatch) => {
-    dispatch(articlesActions.setCurrentPage(number))
+    dispatch(appActions.setCurrentPage(number))
 }
 
 export const onLoading = () => (dispatch: Dispatch) => {
-    dispatch(articlesActions.onLoading())
+    dispatch(appActions.onLoading())
 }
 
 export const getArticles = (offset: number): ThunkArticlesType => {
@@ -33,13 +33,12 @@ export const getArticles = (offset: number): ThunkArticlesType => {
         try {
             const res = await blogAPI.getListArticles(offset);
             const data = res.data
-            const articles = data.articles
-            const total = data.articlesCount
-            const action = articlesActions.getArticles(articles, total)
+            const {articles, articlesCount} = data
+            const action = appActions.getArticles(articles, articlesCount)
             dispatch(action)
 
         } catch (e) {
-            dispatch(articlesActions.onError())
+            dispatch(appActions.onError())
         }
     }
 }

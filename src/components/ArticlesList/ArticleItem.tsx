@@ -3,6 +3,8 @@ import './ArticlesList.scss'
 import {ArticleType} from "../../types/types";
 import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 import {formatDate} from "../../helper/publishedDate";
+import defaultAvatar from "../../img/default-ava.png";
+import classNames from "classnames";
 
 type Props = {
     article: ArticleType
@@ -13,9 +15,10 @@ const ArticleItem = ({article}: Props) => {
     const publishedDate = formatDate(article.createdAt)
     const {
         slug, title, favoritesCount,
-        author, description, tagList
+        author, description, tagList, favorited
     } = article
 
+    const avatarSrc = author?.image || defaultAvatar
 
     return (
         <article className='article'>
@@ -23,12 +26,16 @@ const ArticleItem = ({article}: Props) => {
                 <div className="article__header-left">
                     <Link to={`/articles/${slug}`}>
                         <h3
-                            className="article__title">{title}</h3>
+                            className="article__title">{title}
+                        </h3>
                     </Link>
                     <div className="article__like-block">
                         <button
                             type="button"
-                            className='like active'
+                            className={classNames({
+                                like: true,
+                                active: favorited
+                            })}
                         >
                             {favoritesCount || 0}
                         </button>
@@ -40,7 +47,7 @@ const ArticleItem = ({article}: Props) => {
                         <span className='article__date'>{publishedDate}</span>
                     </div>
                     <div>
-                        <img className='article__avatar' src={author.image} alt=""/>
+                        <img className='article__avatar' src={avatarSrc} alt=""/>
                     </div>
                 </div>
             </header>

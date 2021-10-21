@@ -5,8 +5,6 @@ import {useForm} from 'react-hook-form';
 
 type Props = {
     signIn: (email: string, password: string) => void
-    emailError: string
-    passwordError: string
     isFetching: boolean
     invalidAuth: string
     resetErrors: () => void
@@ -14,7 +12,7 @@ type Props = {
 
 const SignIn = (props: Props) => {
 
-    const {signIn, isFetching, emailError, passwordError, invalidAuth, resetErrors} = props
+    const {signIn, isFetching, invalidAuth, resetErrors} = props
 
     useEffect(()=> {
         resetErrors()
@@ -42,8 +40,8 @@ const SignIn = (props: Props) => {
         signIn(email, password)
     }
 
-    const passwordErrors = passwordError || errors.password
-    const emailErrors = emailError || errors.email
+    const passwordErrors = errors.password
+    const emailErrors = errors.email
 
     return (
         <form
@@ -61,7 +59,7 @@ const SignIn = (props: Props) => {
                 className={`${emailErrors ? 'input-error' : ''} sign-in__input`}
                 {...registerEmail}/>
             {emailErrors && <span className='error-label'>
-              {emailError || 'Введите корректный email'}
+              Введите корректный email
             </span>}
             <p className='sign-in__label'>
                 Password
@@ -72,7 +70,7 @@ const SignIn = (props: Props) => {
                 className={`${passwordErrors ? 'input-error' : ''} sign-in__input`}
                 {...registerPassword}/>
             {passwordErrors && <span className='error-label'>
-             {passwordError || 'Пароль должен быть от 6 до 40 символов'}
+             Пароль должен быть от 6 до 40 символов
             </span>}
 
             {invalidAuth && <div className='error-label'>

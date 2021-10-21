@@ -1,25 +1,20 @@
-import axios from 'axios';
-import {ArticleType, AuthUserType, AuthErrorType, ProfileType} from '../types/types';
-
-const instance = axios.create({
-    baseURL: 'https://conduit.productionready.io/api/',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-});
-
-type GetListArticlesType = {
-    articles: Array<ArticleType>
-    articlesCount: number
-}
+import {AuthUserType, GetListArticlesType, ProfileType} from '../types/types';
+import instance from '../http';
 
 const blogAPI = {
+
     auth(email: string, password: string) {
         return instance
             .post<AuthUserType>('users/login', {
                 user: {email, password}
             })
     },
+
+    loginToken() {
+        return instance
+            .post<AuthUserType>('users/login',)
+    },
+
     register(username: string, email: string, password: string) {
         return instance
             .post<AuthUserType>('users', {
@@ -30,7 +25,7 @@ const blogAPI = {
                 }
             })
     },
-    getCurrentUser() {
+    getUser() {
         return instance
             .get<AuthUserType>('user');
     },
@@ -71,9 +66,11 @@ const blogAPI = {
     createArticle() {
         return instance
             .post(`articles`, {});
+    },
+    setFavorite(slug: string) {
+        return instance
+            .post(`articles/${slug}/favorite`, {slug});
     }
-
 };
-
 
 export default blogAPI;

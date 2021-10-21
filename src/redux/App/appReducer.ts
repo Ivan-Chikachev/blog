@@ -3,13 +3,13 @@ import {ActionsArticlesType, ArticleType} from "../../types/types";
 const initialState = {
     articles: [] as Array<ArticleType>,
     currentPage: 1,
-    isLoading: true,
+    isLoading: false,
     totalArticles: 1,
     isError: false
 };
 type InitialStateType = typeof initialState
 
-export const articlesReducer = (state = initialState, action: ActionsArticlesType): InitialStateType => {
+export const appReducer = (state = initialState, action: ActionsArticlesType): InitialStateType => {
     switch (action.type) {
         case 'GET_ARTICLES':
             return {...state, articles: action.articles, totalArticles: action.total, isLoading: false, isError: false};

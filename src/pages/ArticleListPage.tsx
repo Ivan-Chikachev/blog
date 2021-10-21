@@ -1,7 +1,7 @@
 import React from "react";
 import ArticlesList from "../components/ArticlesList/ArticlesList";
 import {ArticleType} from "../types/types";
-import {getArticles, onLoading, setCurrentPage} from "../redux/Articles/articlesActions";
+import {getArticles, onLoading, setCurrentPage} from "../redux/App/appActions";
 import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
 

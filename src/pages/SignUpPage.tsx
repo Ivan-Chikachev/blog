@@ -8,9 +8,7 @@ import {Redirect} from "react-router-dom";
 type StateTypes = {
     isAuth: boolean,
     isFetching: boolean
-    usernameError: string
-    emailError: string
-    passwordError: string
+    invalidAuth: string
 }
 
 type DispatchTypes = {
@@ -26,11 +24,9 @@ const SignUpPage = (props: PropsType) => {
 
     const {
         signUp, isAuth,
-        usernameError,
-        passwordError,
         isFetching,
-        emailError,
-        resetErrors
+        resetErrors,
+        invalidAuth
     } = props
 
     if (isAuth) {
@@ -38,22 +34,18 @@ const SignUpPage = (props: PropsType) => {
     }
 
     return <SignUp
+        invalidAuth={invalidAuth}
         resetErrors={resetErrors}
         signUp={signUp}
-        usernameError={usernameError}
-        emailError={emailError}
-        passwordError={passwordError}
         isFetching={isFetching}
     />
 }
 
 
 const mapStateToProps = (state: AppStateType): StateTypes => ({
+    invalidAuth: state.auth.invalidError,
     isAuth: state.auth.isAuth,
     isFetching: state.auth.isFetching,
-    usernameError: state.auth.errors.username[0],
-    emailError: state.auth.errors.email[0],
-    passwordError: state.auth.errors.password[0]
 })
 
 const mapDispatchToProps = {
