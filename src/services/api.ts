@@ -70,6 +70,10 @@ const blogAPI = {
     setFavorite(slug: string) {
         return instance
             .post(`articles/${slug}/favorite`, {slug});
+    },
+    removeFavorite(slug: string) {
+        return instance
+            .delete(`articles/${slug}/favorite`)
     }
 };
 

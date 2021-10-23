@@ -74,7 +74,7 @@ const SignIn = (props: Props) => {
             </span>}
 
             {invalidAuth && <div className='error-label'>
-             {invalidAuth}
+             {`Email or password ${invalidAuth}`}
             </div>}
             <button
                 className='sign-in__btn btn btn__for-modal btn__primary-bg'

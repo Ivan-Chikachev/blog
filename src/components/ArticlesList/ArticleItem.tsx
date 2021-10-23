@@ -1,22 +1,40 @@
-import React from "react";
+import React, {useState} from "react";
 import './ArticlesList.scss'
 import {ArticleType} from "../../types/types";
 import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 import {formatDate} from "../../helper/publishedDate";
 import defaultAvatar from "../../img/default-ava.png";
-import classNames from "classnames";
+import Like from "../Like/Like";
 
 type Props = {
     article: ArticleType
+    removeFavorite: (slug: string) => void
+    setFavorite: (slug: string) => void
 }
 
-const ArticleItem = ({article}: Props) => {
+const ArticleItem = (props: Props) => {
 
+    const {removeFavorite, article, setFavorite} = props
     const publishedDate = formatDate(article.createdAt)
     const {
         slug, title, favoritesCount,
-        author, description, tagList, favorited
+        author, description, tagList, favorited,
     } = article
+
+    const [isLiked, setIsLiked] = useState(favorited)
+    const [likeCount, setLikeCount] = useState(favoritesCount)
+
+    const clickLike = (slug: string) => {
+        if (isLiked) {
+            setIsLiked(false)
+            removeFavorite(slug)
+            setLikeCount(likeCount - 1)
+        } else {
+            setIsLiked(true)
+            setFavorite(slug)
+            setLikeCount(likeCount + 1)
+        }
+    }
 
     const avatarSrc = author?.image || defaultAvatar
 
@@ -30,15 +48,12 @@ const ArticleItem = ({article}: Props) => {
                         </h3>
                     </Link>
                     <div className="article__like-block">
-                        <button
-                            type="button"
-                            className={classNames({
-                                like: true,
-                                active: favorited
-                            })}
-                        >
-                            {favoritesCount || 0}
-                        </button>
+                        <Like
+                            slug={slug}
+                            isLiked={isLiked}
+                            likeCount={likeCount}
+                            clickLike={clickLike}
+                        />
                     </div>
                 </div>
                 <div className="article__header-right">

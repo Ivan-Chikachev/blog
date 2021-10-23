@@ -14,14 +14,20 @@ type Props = {
     totalArticles: number
     onLoading: () => void
     isError: boolean
+    removeFavorite: (slug: string) => void
+    setFavorite: (slug: string) => void
 }
 
-const ArticlesList = ({
-                      articles,
-                      isLoading, setCurrentPage,
-                      page , totalArticles,
-                      onLoading, isError
-                  }: Props) => {
+const ArticlesList = (props: Props) => {
+
+    const {
+        articles,
+        isLoading, setCurrentPage,
+        page , totalArticles,
+        onLoading, isError, setFavorite,
+        removeFavorite
+    } = props
+
     return (
         <div className="container">
             {isLoading && <Loading/>}
@@ -31,7 +37,11 @@ const ArticlesList = ({
             {articles?.length ?
                 <>
                     {articles.map((article, i) =>
-                        <Article key={i} article={article}/>
+                        <Article
+                            setFavorite={setFavorite}
+                            removeFavorite={removeFavorite}
+                            key={i}
+                            article={article}/>
                     )}
                     <AppPagination
                         totalArticles={totalArticles}

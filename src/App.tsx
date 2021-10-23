@@ -46,33 +46,31 @@ const App = (props: Props) => {
 
     return (
         <BrowserRouter>
-            {isFetching ? <Loading/> :
-                <div className='wrapper'>
-                    <Header
-                        logout={logout}
-                        isAuth={isAuth}
-                        username={username}
-                        avatarSrc={avatarSrc}/>
-                    <Redirect from="/" to="/articles/page/1"/>
-                    <Route path='/sign-in' component={SignInPage}/>
-                    <Route path='/sign-up' component={SignUpPage}/>
-                    <Route path='/profile' component={EditProfilePage}/>
-                    <Route path='/edit-article' component={EditArticlePage}/>
-                    <Route path='/create-article' component={CreateArticlePage}/>
-                    <Route path='/articles/page/:page'
-                           render={({match}) => {
-                               const page = +match.params.page
-                               getArticles(page)
-                               return <ArticlesListPage page={page}/>
-                           }}/>
-                    <Route
-                        exact
-                        path='/articles/:slug'
-                        render={({match}) => {
-                            return <ArticlePage slug={match.params.slug}/>
-                        }}/>
-                </div>
-            }
+            <div className='wrapper'>
+                <Header
+                    logout={logout}
+                    isAuth={isAuth}
+                    username={username}
+                    avatarSrc={avatarSrc}/>
+                {/*<Redirect from="/" to="/articles/page/1"/>*/}
+                <Route path='/sign-in' component={SignInPage}/>
+                <Route path='/sign-up' component={SignUpPage}/>
+                <Route path='/profile' component={EditProfilePage}/>
+                <Route path='/edit-article' component={EditArticlePage}/>
+                <Route path='/create-article' component={CreateArticlePage}/>
+                <Route path='/articles/page/:page'
+                       render={({match}) => {
+                           const page = +match.params.page - 1
+                           getArticles(page)
+                           return <ArticlesListPage page={page}/>
+                       }}/>
+                <Route
+                    exact
+                    path='/articles/:slug'
+                    render={({match}) => {
+                        return <ArticlePage slug={match.params.slug}/>
+                    }}/>
+            </div>
         </BrowserRouter>
     );
 }

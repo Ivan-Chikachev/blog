@@ -1,4 +1,4 @@
-import {ArticleType, ThunkArticlesType} from "../../types/types";
+import {ArticleType, ThunkAppType} from "../../types/types";
 import blogAPI from "../../services/api";
 import {Dispatch} from "redux";
 
@@ -28,7 +28,7 @@ export const onLoading = () => (dispatch: Dispatch) => {
     dispatch(appActions.onLoading())
 }
 
-export const getArticles = (offset: number): ThunkArticlesType => {
+export const getArticles = (offset: number): ThunkAppType => {
     return async (dispatch) => {
         try {
             const res = await blogAPI.getListArticles(offset);

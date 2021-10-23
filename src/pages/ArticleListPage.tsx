@@ -4,6 +4,7 @@ import {ArticleType} from "../types/types";
 import {getArticles, onLoading, setCurrentPage} from "../redux/App/appActions";
 import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
+import {removeFavorite, setFavorite} from "../redux/Article/articleActions";
 
 type StateTypes = {
     articles: Array<ArticleType>
@@ -15,6 +16,8 @@ type StateTypes = {
 type DispatchTypes = {
     setCurrentPage: (number: number) => void
     onLoading: () => void
+    setFavorite: (slug: string) => void
+    removeFavorite: (slug: string) => void
 }
 
 type Props = {
@@ -23,14 +26,17 @@ type Props = {
 
 type PropTypes = StateTypes & DispatchTypes & Props
 
-const ArticlesListPage = ({
-                              articles,
-                              isLoading, setCurrentPage,
-                              page, totalArticles,
-                              onLoading, isError
-                          }: PropTypes) => {
+const ArticlesListPage = (props: PropTypes) => {
+    const {
+        articles, isLoading, setCurrentPage,
+        page, totalArticles, setFavorite, removeFavorite,
+        onLoading, isError
+    } = props
+
     return (
         <ArticlesList
+            removeFavorite={removeFavorite}
+            setFavorite={setFavorite}
             articles={articles}
             isLoading={isLoading}
             setCurrentPage={setCurrentPage}
@@ -43,16 +49,18 @@ const ArticlesListPage = ({
 }
 
 const mapStateToProps = (state: AppStateType): StateTypes => ({
-    articles: state.articles.articles,
-    totalArticles: state.articles.totalArticles,
-    isLoading: state.articles.isLoading,
-    isError: state.articles.isError
+    articles: state.app.articles,
+    totalArticles: state.app.totalArticles,
+    isLoading: state.app.isLoading,
+    isError: state.app.isError,
 });
 
 const mapDispatchToProps = {
     getArticles,
     setCurrentPage,
-    onLoading
+    onLoading,
+    setFavorite,
+    removeFavorite
 }
 
 export default connect<StateTypes, DispatchTypes, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(ArticlesListPage);

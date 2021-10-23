@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import './Article.scss'
 import Loading from "../Loading/Loading";
 import {ArticleType} from "../../types/types";
 import Error from "../Error/Error";
 import defaultAvatar from "../../img/default-ava.png";
 import classNames from "classnames";
+import Like from "../Like/Like";
 
 type Props = {
     publishedDate: string
@@ -12,14 +13,16 @@ type Props = {
     isLoading: boolean
     isCurrentArticle: boolean
     isError: boolean
-    onFavorite: (slug: string) => void
+    setFavorite: (slug: string) => void
+    removeFavorite: (slug: string) => void
 }
 
 const Article = (props: Props) => {
     const {
         currentArticle,
         isLoading, publishedDate,
-        isCurrentArticle, isError, onFavorite
+        isCurrentArticle, isError, setFavorite,
+        removeFavorite
     } = props
 
     const {
@@ -28,6 +31,20 @@ const Article = (props: Props) => {
         favorited, slug
     } = currentArticle
 
+    const [isLiked, setIsLiked] = useState(favorited)
+    const [likeCount, setLikeCount] = useState(favoritesCount)
+
+    const clickLike = (slug: string) => {
+        if (isLiked) {
+            setIsLiked(false)
+            removeFavorite(slug)
+            setLikeCount(likeCount - 1)
+        } else {
+            setIsLiked(true)
+            setFavorite(slug)
+            setLikeCount(likeCount + 1)
+        }
+    }
     const avatarSrc = currentArticle?.author?.image || defaultAvatar
 
     return (
@@ -45,16 +62,12 @@ const Article = (props: Props) => {
                                 {title}
                             </h3>
                             <div className="header-article__like-block">
-                                <button
-                                    type="button"
-                                    className={classNames({
-                                        like: true,
-                                        active: favorited
-                                    })}
-                                    onClick={() => onFavorite(slug)}
-                                >
-                                    {favoritesCount || 0}
-                                </button>
+                                <Like
+                                    clickLike={clickLike}
+                                    isLiked={isLiked}
+                                    slug={slug}
+                                    likeCount={likeCount}
+                                />
                             </div>
                         </div>
                         <div className="header-article__tag-list">

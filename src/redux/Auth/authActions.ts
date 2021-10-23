@@ -12,6 +12,10 @@ export const authActions = {
         type: "SET_INVALID_ERRORS",
         errors
     } as const),
+    setErrors: (errors: any) => ({
+        type: "SET_ERRORS",
+        errors
+    } as const),
     fetchingOff: () => ({type: "FETCHING_OFF"} as const),
     fetchingOn: () => ({type: "FETCHING_ON"} as const),
     logout: () => ({type: "LOGOUT"} as const),
@@ -32,9 +36,10 @@ export const signUp = (username: string, email: string, password: string): Thunk
             }
 
         } catch (e: any) {
-            const errors = e.response?.data?.errors?.body
-            const errorsBody = errors.join(' ')
-            dispatch(authActions.setInvalidError(errorsBody))
+            const errors = e.response?.data?.errors
+            if (typeof errors === 'object') {
+                dispatch(authActions.setErrors(errors))
+            }
         }
         dispatch(authActions.fetchingOff())
     }
@@ -57,12 +62,12 @@ export const signIn = (email: string, password: string): ThunkAuthType => {
             if (typeof e.response?.data !== 'object') {
                 return
             }
-            const errors = e.response?.data?.errors?.body
-            const errorsBody = errors.join(' ')
-            dispatch(authActions.setInvalidError(errorsBody))
-        } finally {
-            dispatch(authActions.fetchingOff())
+            const errors = e.response?.data?.errors
+            if (errors['email or password']) {
+                dispatch(authActions.setInvalidError(errors['email or password']))
+            }
         }
+        dispatch(authActions.fetchingOff())
     }
 }
 

@@ -4,7 +4,12 @@ const initialState = {
     user: {} as AuthUserType,
     isFetching: false,
     isAuth: false,
-    invalidError: ''
+    invalidError: '',
+    errors: {
+        username: [''],
+        email: [''],
+        password: [''],
+    },
 };
 
 type InitialStateType = typeof initialState
@@ -16,13 +21,29 @@ export const authReducer = (state = initialState, action: ActionsAuthType): Init
         case "FETCHING_ON":
             return {...state, isFetching: true}
         case "SET_INVALID_ERRORS":
-            return {...state, invalidError: action.errors}
+            return {...state, invalidError: action.errors[0]}
+        case "SET_ERRORS":
+            return {
+                ...state, errors: {
+                    username: action.errors.username || '',
+                    email: action.errors.email || '',
+                    password: action.errors.password || ''
+                }
+            }
         case "LOGIN":
             return {...state, user: action.data, isAuth: action.data.errors === undefined}
         case "LOGOUT":
             return {...state, isAuth: false, user: {} as AuthUserType}
         case "RESET_ERRORS":
-            return {...state, invalidError: ''}
+            return {
+                ...state,
+                invalidError: '',
+                errors: {
+                    username: [''],
+                    email: [''],
+                    password: [''],
+                },
+            }
         default:
             return state
     }

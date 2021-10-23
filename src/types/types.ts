@@ -1,8 +1,14 @@
 import {ThunkAction} from "redux-thunk";
-import {articlesPageActions} from "../redux/Article/articleActions";
+import {articlesActions} from "../redux/Article/articleActions";
 import {appActions} from "../redux/App/appActions";
 import {AppStateType} from "../redux/rootReducer";
 import {authActions} from "../redux/Auth/authActions";
+
+export type ArticlesIsLikedType = {
+    slug: string,
+    isLiked: boolean,
+    likeCount: number
+}
 
 export type AuthUserType = {
     user: {
@@ -77,13 +83,13 @@ type InferActionsType<T extends { [key: string]: (...args: any[]) => any }> = Re
 
 export type ActionsArticlesType = InferActionsType<typeof appActions>
 
-export type ThunkArticlesType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlesType>
+export type ThunkAppType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlesType>
 
 // Article
 
-export type ActionsArticlePageType = InferActionsType<typeof articlesPageActions>
+export type ActionsArticlePageType = InferActionsType<typeof articlesActions>
 
-export type ThunkArticlePageType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlePageType>
+export type ThunkArticleType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlePageType>
 
 // Auth
 

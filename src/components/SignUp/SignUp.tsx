@@ -5,14 +5,21 @@ import {useForm} from "react-hook-form";
 
 type Props = {
     signUp: (username: string, email: string, password: string) => void
+    usernameError: string
+    emailError: string
+    passwordError: string
     isFetching: boolean
     resetErrors: () => void
-    invalidAuth: string
 }
 
 const SignUp = (props: Props) => {
 
-    const {signUp, isFetching, resetErrors, invalidAuth} = props
+    const {
+        signUp, isFetching,
+        usernameError,
+        emailError,
+        passwordError, resetErrors
+    } = props
 
     useEffect(() => {
         resetErrors()
@@ -57,9 +64,9 @@ const SignUp = (props: Props) => {
         signUp(username, email, password)
     }
 
-    const userErrors = errors.username
-    const passwordErrors = errors.password
-    const emailErrors = errors.email
+    const userErrors = usernameError || errors.username
+    const passwordErrors = passwordError || errors.password
+    const emailErrors = emailError || errors.email
 
     return (
         <form
@@ -79,7 +86,7 @@ const SignUp = (props: Props) => {
                 {...registerUsername}
             />
             {(userErrors) && <span className='error-label'>
-                Имя должно быть от 3 до 20 символов
+                {usernameError || 'Имя должно быть от 3 до 20 символов'}
             </span>}
 
             <p className="create-acc__label">
@@ -91,7 +98,7 @@ const SignUp = (props: Props) => {
                 className={`${emailErrors ? 'input-error' : ''} create-acc__input`}
                 {...registerEmail}/>
             {emailErrors && <span className='error-label'>
-              Введите корректный email
+              {emailError || 'Введите корректный email'}
             </span>}
 
             <p className="create-acc__label">
@@ -103,7 +110,7 @@ const SignUp = (props: Props) => {
                 className={`${passwordErrors ? 'input-error' : ''} create-acc__input`}
                 {...registerPassword}/>
             {passwordErrors && <span className='error-label'>
-             Пароль должен быть от 6 до 40 символов
+             {passwordError || 'Пароль должен быть от 6 до 40 символов'}
             </span>}
 
             <p className="create-acc__label">
@@ -124,14 +131,6 @@ const SignUp = (props: Props) => {
                     I agree to the processing of my personal information
                 </label>
             </div>
-
-            {
-                invalidAuth &&
-                <div className='error-label'>
-                    {invalidAuth}
-                </div>
-            }
-
             <button className="create-acc__btn btn btn__for-modal btn__primary-bg"
                     disabled={isFetching}
             >

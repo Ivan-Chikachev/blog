@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from "react";
 import {connect} from "react-redux";
-import defaultAvatar from '../img/default-ava.png'
 import {ArticleType} from "../types/types";
 import {AppStateType} from "../redux/rootReducer";
 import Article from "../components/ArticlePage/Article";
 import {formatDate} from "../helper/publishedDate";
-import {getCurrentArticle, onFavorite} from "../redux/Article/articleActions";
+import {getCurrentArticle, setFavorite, removeFavorite} from "../redux/Article/articleActions";
 
 
 type StateTypes = {
@@ -16,7 +15,8 @@ type StateTypes = {
 
 type DispatchTypes = {
     getCurrentArticle: (slug: string) => void
-    onFavorite: (slug: string) => void
+    setFavorite: (slug: string) => void
+    removeFavorite: (slug: string) => void
 }
 
 type Props = {
@@ -29,7 +29,8 @@ const ArticlePage = (props: PropsType) => {
 
     const {
         slug, getCurrentArticle, currentArticle,
-        isLoading, isError, onFavorite
+        isLoading, isError, setFavorite,
+        removeFavorite
     } = props
 
     useEffect(() => {
@@ -47,20 +48,22 @@ const ArticlePage = (props: PropsType) => {
             isLoading={isLoading}
             isCurrentArticle={isCurrentArticle}
             isError={isError}
-            onFavorite={onFavorite}
+            setFavorite={setFavorite}
+            removeFavorite={removeFavorite}
         />
     )
 }
 
 const mapStateToProps = (state: AppStateType): StateTypes => ({
-    currentArticle: state.articlePage.currentArticle,
-    isLoading: state.articlePage.isLoading,
-    isError: state.articlePage.isError
+    currentArticle: state.articles.currentArticle,
+    isLoading: state.articles.isLoading,
+    isError: state.articles.isError,
 })
 
 const mapDispatchToProps = {
     getCurrentArticle,
-    onFavorite
+    setFavorite,
+    removeFavorite,
 }
 
 export default connect<StateTypes, DispatchTypes, {}, AppStateType>(
