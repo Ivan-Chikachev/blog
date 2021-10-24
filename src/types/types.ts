@@ -4,10 +4,11 @@ import {appActions} from "../redux/App/appActions";
 import {AppStateType} from "../redux/rootReducer";
 import {authActions} from "../redux/Auth/authActions";
 
-export type ArticlesIsLikedType = {
-    slug: string,
-    isLiked: boolean,
-    likeCount: number
+export type createArticleType = {
+    "title": string,
+    "description": string,
+    "body": string,
+    "tagList": Array<string>
 }
 
 export type AuthUserType = {

@@ -12,12 +12,11 @@ export const appActions = {
         type: 'SET_CURRENT_PAGE',
         number
     } as const),
-    onLoading: () => ({
-        type: 'ON_LOADING'
-    } as const),
     onError: () => ({
         type: 'ON_ERROR'
-    } as const)
+    } as const),
+    fetchingOff: () => ({type: "FETCHING_OFF"} as const),
+    fetchingOn: () => ({type: "FETCHING_ON"} as const),
 }
 
 export const setCurrentPage = (number: number) => (dispatch: Dispatch) => {
@@ -25,11 +24,12 @@ export const setCurrentPage = (number: number) => (dispatch: Dispatch) => {
 }
 
 export const onLoading = () => (dispatch: Dispatch) => {
-    dispatch(appActions.onLoading())
+    // dispatch(appActions.fetchingOn())
 }
 
 export const getArticles = (offset: number): ThunkAppType => {
     return async (dispatch) => {
+        dispatch(appActions.fetchingOn())
         try {
             const res = await blogAPI.getListArticles(offset);
             const data = res.data
@@ -40,5 +40,6 @@ export const getArticles = (offset: number): ThunkAppType => {
         } catch (e) {
             dispatch(appActions.onError())
         }
+        dispatch(appActions.fetchingOff())
     }
 }

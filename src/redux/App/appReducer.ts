@@ -12,13 +12,15 @@ type InitialStateType = typeof initialState
 export const appReducer = (state = initialState, action: ActionsArticlesType): InitialStateType => {
     switch (action.type) {
         case 'GET_ARTICLES':
-            return {...state, articles: action.articles, totalArticles: action.total, isLoading: false, isError: false};
+            return {...state, articles: action.articles, totalArticles: action.total, isError: false};
         case "SET_CURRENT_PAGE":
             return {...state, articles: [], currentPage: action.number}
-        case "ON_LOADING":
+        case "FETCHING_ON":
             return {...state, isLoading: true}
+        case "FETCHING_OFF":
+            return {...state, isLoading: false}
         case "ON_ERROR":
-            return {...state, isError: true, isLoading: false}
+            return {...state, isError: true}
         default:
             return state
     }

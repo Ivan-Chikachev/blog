@@ -165,6 +165,6 @@ input:focus {
   margin: 5px 0 10px 0;
 }
 
-input.input-error {
+textarea.input-error, input.input-error {
   border: 1px solid #f52019;
 }

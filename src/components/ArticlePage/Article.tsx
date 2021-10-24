@@ -4,7 +4,6 @@ import Loading from "../Loading/Loading";
 import {ArticleType} from "../../types/types";
 import Error from "../Error/Error";
 import defaultAvatar from "../../img/default-ava.png";
-import classNames from "classnames";
 import Like from "../Like/Like";
 
 type Props = {
@@ -13,8 +12,10 @@ type Props = {
     isLoading: boolean
     isCurrentArticle: boolean
     isError: boolean
+    isNoData: boolean
     setFavorite: (slug: string) => void
     removeFavorite: (slug: string) => void
+    isAuth: boolean
 }
 
 const Article = (props: Props) => {
@@ -22,7 +23,7 @@ const Article = (props: Props) => {
         currentArticle,
         isLoading, publishedDate,
         isCurrentArticle, isError, setFavorite,
-        removeFavorite
+        removeFavorite, isNoData, isAuth
     } = props
 
     const {
@@ -54,6 +55,8 @@ const Article = (props: Props) => {
 
             {isError && <Error/>}
 
+            {isNoData && <div>Пост не найден</div>}
+
             {isCurrentArticle && <article className='article-page'>
                 <header className="article-page__header header-article">
                     <div className="header-article__left-header">
@@ -67,6 +70,7 @@ const Article = (props: Props) => {
                                     isLiked={isLiked}
                                     slug={slug}
                                     likeCount={likeCount}
+                                    disabled={!isAuth}
                                 />
                             </div>
                         </div>

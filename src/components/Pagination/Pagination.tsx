@@ -27,7 +27,6 @@ const AppPagination = ({
                     onChange={page => {
                         history.push(`/articles/page/${page}`)
                         setCurrentPage(page)
-                        onLoading()
                     }}/>
     )
 }

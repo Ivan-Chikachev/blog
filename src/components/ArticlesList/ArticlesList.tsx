@@ -1,31 +1,45 @@
 import React from "react";
 import './ArticlesList.scss'
 import {ArticleType} from "../../types/types";
-import Article from "./ArticleItem";
+import ArticleItem from "./ArticleItem";
 import Loading from "../Loading/Loading";
 import AppPagination from "../Pagination/Pagination";
 import Error from "../Error/Error";
+import {connect} from "react-redux";
+import {AppStateType} from "../../redux/rootReducer";
+import {getArticles, onLoading, setCurrentPage} from "../../redux/App/appActions";
+import {removeFavorite, setFavorite} from "../../redux/Article/articleActions";
+
+type StateTypes = {
+    articles: Array<ArticleType>
+    totalArticles: number
+    isLoading: boolean
+    isError: boolean
+    isAuth: boolean
+}
+
+type DispatchTypes = {
+    setCurrentPage: (number: number) => void
+    onLoading: () => void
+    setFavorite: (slug: string) => void
+    removeFavorite: (slug: string) => void
+    getArticles: (offset: number) => void
+}
 
 type Props = {
     page: number
-    articles: Array<ArticleType>
-    isLoading: boolean
-    setCurrentPage: (number: number) => void
-    totalArticles: number
-    onLoading: () => void
-    isError: boolean
-    removeFavorite: (slug: string) => void
-    setFavorite: (slug: string) => void
 }
 
-const ArticlesList = (props: Props) => {
+type PropTypes = StateTypes & DispatchTypes & Props
+
+const ArticlesList = (props: PropTypes) => {
 
     const {
         articles,
         isLoading, setCurrentPage,
-        page , totalArticles,
+        page, totalArticles,
         onLoading, isError, setFavorite,
-        removeFavorite
+        removeFavorite, isAuth
     } = props
 
     return (
@@ -37,11 +51,12 @@ const ArticlesList = (props: Props) => {
             {articles?.length ?
                 <>
                     {articles.map((article, i) =>
-                        <Article
+                        <ArticleItem
                             setFavorite={setFavorite}
                             removeFavorite={removeFavorite}
                             key={i}
-                            article={article}/>
+                            article={article}
+                            isAuth={isAuth}/>
                     )}
                     <AppPagination
                         totalArticles={totalArticles}
@@ -49,10 +64,29 @@ const ArticlesList = (props: Props) => {
                         setCurrentPage={setCurrentPage}
                         onLoading={onLoading}/>
                 </>
-                : null
+                :
+                <div>
+                    Нет постов
+                </div>
             }
         </div>
     );
 }
 
-export default ArticlesList
+const mapStateToProps = (state: AppStateType): StateTypes => ({
+    articles: state.app.articles,
+    totalArticles: state.app.totalArticles,
+    isLoading: state.app.isLoading,
+    isError: state.app.isError,
+    isAuth: state.auth.isAuth
+});
+
+const mapDispatchToProps = {
+    getArticles,
+    setCurrentPage,
+    onLoading,
+    setFavorite,
+    removeFavorite,
+}
+
+export default connect<StateTypes, DispatchTypes, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(ArticlesList);

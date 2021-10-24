@@ -1,4 +1,4 @@
-import {AuthUserType, GetListArticlesType, ProfileType} from '../types/types';
+import {AuthUserType, createArticleType, GetListArticlesType, ProfileType} from '../types/types';
 import instance from '../http';
 
 const blogAPI = {
@@ -8,11 +8,6 @@ const blogAPI = {
             .post<AuthUserType>('users/login', {
                 user: {email, password}
             })
-    },
-
-    loginToken() {
-        return instance
-            .post<AuthUserType>('users/login',)
     },
 
     register(username: string, email: string, password: string) {
@@ -53,7 +48,7 @@ const blogAPI = {
     },
     getListArticles(count: number = 0) {
         return instance
-            .get<GetListArticlesType>(`articles?offset=${count}`);
+            .get<GetListArticlesType>(`articles?limit=10&offset=${count}`);
     },
     getFeedArticles() {
         return instance
@@ -63,9 +58,9 @@ const blogAPI = {
         return instance
             .get(`articles/${slug}`);
     },
-    createArticle() {
+    createArticle(article: createArticleType) {
         return instance
-            .post(`articles`, {});
+            .post(`articles`, {article});
     },
     setFavorite(slug: string) {
         return instance

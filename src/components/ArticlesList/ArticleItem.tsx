@@ -10,11 +10,12 @@ type Props = {
     article: ArticleType
     removeFavorite: (slug: string) => void
     setFavorite: (slug: string) => void
+    isAuth: boolean
 }
 
 const ArticleItem = (props: Props) => {
 
-    const {removeFavorite, article, setFavorite} = props
+    const {removeFavorite, article, setFavorite, isAuth} = props
     const publishedDate = formatDate(article.createdAt)
     const {
         slug, title, favoritesCount,
@@ -53,6 +54,7 @@ const ArticleItem = (props: Props) => {
                             isLiked={isLiked}
                             likeCount={likeCount}
                             clickLike={clickLike}
+                            disabled={!isAuth}
                         />
                     </div>
                 </div>

@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './SignUp.scss';
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
+import classNames from "classnames";
 
 type Props = {
     signUp: (username: string, email: string, password: string) => void
@@ -82,7 +83,10 @@ const SignUp = (props: Props) => {
             <input
                 placeholder='Username'
                 type="text"
-                className={`${userErrors ? 'input-error' : ''} create-acc__input`}
+                className={classNames({
+                    "create-acc__input": true,
+                    'input-error': userErrors
+                })}
                 {...registerUsername}
             />
             {(userErrors) && <span className='error-label'>
@@ -131,8 +135,10 @@ const SignUp = (props: Props) => {
                     I agree to the processing of my personal information
                 </label>
             </div>
-            <button className="create-acc__btn btn btn__for-modal btn__primary-bg"
-                    disabled={isFetching}
+            <button
+                className="create-acc__btn btn btn__for-modal btn__primary-bg"
+                type='submit'
+                disabled={isFetching}
             >
                 Create
             </button>

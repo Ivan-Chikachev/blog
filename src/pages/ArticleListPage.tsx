@@ -1,66 +1,36 @@
-import React from "react";
+import React, {useEffect} from "react";
 import ArticlesList from "../components/ArticlesList/ArticlesList";
-import {ArticleType} from "../types/types";
-import {getArticles, onLoading, setCurrentPage} from "../redux/App/appActions";
+import {getArticles} from "../redux/App/appActions";
 import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
-import {removeFavorite, setFavorite} from "../redux/Article/articleActions";
-
-type StateTypes = {
-    articles: Array<ArticleType>
-    totalArticles: number
-    isLoading: boolean
-    isError: boolean
-}
 
 type DispatchTypes = {
-    setCurrentPage: (number: number) => void
-    onLoading: () => void
-    setFavorite: (slug: string) => void
-    removeFavorite: (slug: string) => void
+    getArticles: (offset: number) => void
 }
 
 type Props = {
     page: number
 }
 
-type PropTypes = StateTypes & DispatchTypes & Props
+type PropTypes = DispatchTypes & Props
 
 const ArticlesListPage = (props: PropTypes) => {
-    const {
-        articles, isLoading, setCurrentPage,
-        page, totalArticles, setFavorite, removeFavorite,
-        onLoading, isError
-    } = props
+
+    const {page, getArticles} = props
+
+    useEffect(() => {
+        getArticles(page)
+    }, [page])
 
     return (
         <ArticlesList
-            removeFavorite={removeFavorite}
-            setFavorite={setFavorite}
-            articles={articles}
-            isLoading={isLoading}
-            setCurrentPage={setCurrentPage}
             page={page}
-            totalArticles={totalArticles}
-            onLoading={onLoading}
-            isError={isError}
         />
     )
 }
 
-const mapStateToProps = (state: AppStateType): StateTypes => ({
-    articles: state.app.articles,
-    totalArticles: state.app.totalArticles,
-    isLoading: state.app.isLoading,
-    isError: state.app.isError,
-});
-
 const mapDispatchToProps = {
-    getArticles,
-    setCurrentPage,
-    onLoading,
-    setFavorite,
-    removeFavorite
+    getArticles
 }
 
-export default connect<StateTypes, DispatchTypes, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(ArticlesListPage);
+export default connect(()=> {}, mapDispatchToProps)(ArticlesListPage);

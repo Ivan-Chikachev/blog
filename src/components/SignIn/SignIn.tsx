@@ -14,7 +14,7 @@ const SignIn = (props: Props) => {
 
     const {signIn, isFetching, invalidAuth, resetErrors} = props
 
-    useEffect(()=> {
+    useEffect(() => {
         resetErrors()
     }, [])
 
@@ -74,7 +74,7 @@ const SignIn = (props: Props) => {
             </span>}
 
             {invalidAuth && <div className='error-label'>
-             {`Email or password ${invalidAuth}`}
+                {`Email or password ${invalidAuth}`}
             </div>}
             <button
                 className='sign-in__btn btn btn__for-modal btn__primary-bg'

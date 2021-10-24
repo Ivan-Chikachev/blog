@@ -13,7 +13,11 @@ type PropsType = StateTypes & DispatchTypes & Props
 
 const EditArticlePage = ({}: PropsType) => {
     return (
-        <ChangeArticle title={'Edit article'}/>
+        <ChangeArticle
+            submit={() => {
+            }}
+            isLoading={false}
+            title={'Edit article'}/>
     )
 }
 

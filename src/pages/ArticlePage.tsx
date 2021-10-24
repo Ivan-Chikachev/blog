@@ -11,6 +11,8 @@ type StateTypes = {
     currentArticle: ArticleType
     isLoading: boolean
     isError: boolean
+    isNoData: boolean
+    isAuth: boolean
 }
 
 type DispatchTypes = {
@@ -30,7 +32,7 @@ const ArticlePage = (props: PropsType) => {
     const {
         slug, getCurrentArticle, currentArticle,
         isLoading, isError, setFavorite,
-        removeFavorite
+        removeFavorite, isNoData, isAuth
     } = props
 
     useEffect(() => {
@@ -43,6 +45,7 @@ const ArticlePage = (props: PropsType) => {
 
     return (
         <Article
+            isNoData={isNoData}
             currentArticle={currentArticle}
             publishedDate={publishedDate}
             isLoading={isLoading}
@@ -50,14 +53,17 @@ const ArticlePage = (props: PropsType) => {
             isError={isError}
             setFavorite={setFavorite}
             removeFavorite={removeFavorite}
+            isAuth={isAuth}
         />
     )
 }
 
 const mapStateToProps = (state: AppStateType): StateTypes => ({
     currentArticle: state.articles.currentArticle,
-    isLoading: state.articles.isLoading,
+    isLoading: state.articles.isLoad,
     isError: state.articles.isError,
+    isNoData: state.articles.isNoData,
+    isAuth: state.auth.isAuth
 })
 
 const mapDispatchToProps = {

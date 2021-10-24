@@ -2,7 +2,6 @@ import React, {useEffect} from 'react';
 import './App.scss';
 import Header from "./components/Header/Header";
 import {BrowserRouter, Redirect, Route} from "react-router-dom";
-import {getArticles} from "./redux/App/appActions";
 import {connect} from "react-redux";
 import {AppStateType} from "./redux/rootReducer";
 import ArticlePage from "./pages/ArticlePage";
@@ -14,7 +13,6 @@ import CreateArticlePage from "./pages/CreateArticlePage";
 import EditArticlePage from "./pages/EditArticlePage";
 import {loginToken, logout} from './redux/Auth/authActions';
 import {LS} from './loacalStorage/localStorage';
-import Loading from "./components/Loading/Loading";
 
 type StateTypes = {
     isAuth: boolean
@@ -24,7 +22,6 @@ type StateTypes = {
 }
 
 type DispatchTypes = {
-    getArticles: (offset: number) => void
     logout: () => void
     loginToken: () => void
 }
@@ -34,7 +31,7 @@ type Props = StateTypes & DispatchTypes
 
 const App = (props: Props) => {
 
-    const {loginToken, getArticles, isAuth, logout, username, avatarSrc, isFetching} = props
+    const {loginToken, isAuth, logout, username, avatarSrc, isFetching} = props
 
     const token = LS.getToken()
 
@@ -61,8 +58,8 @@ const App = (props: Props) => {
                 <Route path='/articles/page/:page'
                        render={({match}) => {
                            const page = +match.params.page - 1
-                           getArticles(page)
-                           return <ArticlesListPage page={page}/>
+                           return <ArticlesListPage
+                               page={page}/>
                        }}/>
                 <Route
                     exact
@@ -85,7 +82,6 @@ const mapStateToProps = (state: AppStateType): StateTypes => ({
 
 const mapDispatchToProps = {
     logout,
-    getArticles,
     loginToken
 }
 
