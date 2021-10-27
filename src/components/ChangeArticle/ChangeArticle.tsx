@@ -1,5 +1,5 @@
 import './ChangeArticle.scss'
-import React from "react";
+import React, {useState} from "react";
 import Tag from "./Tag";
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
@@ -12,6 +12,7 @@ type Props = {
 
 const ChangeArticle = ({title, submit, isLoading}: Props) => {
 
+    const [tags, setTags] = useState<Array<string>>([])
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
 
@@ -20,7 +21,7 @@ const ChangeArticle = ({title, submit, isLoading}: Props) => {
             title: data.title,
             description: data.description,
             body: data.text,
-            tagList: []
+            tagList: tags
         })
     }
     const registerTitle = {
@@ -39,6 +40,7 @@ const ChangeArticle = ({title, submit, isLoading}: Props) => {
         })
     }
     const isError = Boolean(Object.keys(errors).length)
+
     return (
         <div>
             <form className='create-article'
@@ -84,11 +86,11 @@ const ChangeArticle = ({title, submit, isLoading}: Props) => {
                 </p>
                 <div className="create-article__tag-block">
                     <div className="">
-                        <Tag/>
+                        <Tag
+                            tags={tags}
+                            setTags={setTags}
+                        />
                     </div>
-                    <button className="create-article__btn create-article__btn-add btn btn__primary btn__for-modal">
-                        Add tag
-                    </button>
                 </div>
                 {isError && <span className='error-label'>
                     Заполните все поля

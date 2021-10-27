@@ -11,6 +11,13 @@ export type createArticleType = {
     "tagList": Array<string>
 }
 
+export type AlertType = {
+    msg: string
+    type: typesIsAlert
+}
+
+export type typesIsAlert = 'success' | 'error' | 'warning' | 'info'
+
 export type AuthUserType = {
     user: {
         "email": string,

@@ -2,14 +2,14 @@ import React, {useState} from "react";
 import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
 import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
-import {createArticleType} from "../types/types";
+import {AlertType, createArticleType} from "../types/types";
 import {createArticle} from "../redux/Article/articleActions";
-import SuccessAlert from "../components/SuccessAlert/SuccessAlert";
+import Alert from "../components/Alert/Alert";
 
 type StateTypes = {
     isLoading: boolean
     isShowAlert: boolean
-    alertMessage: string
+    alert: AlertType
 }
 
 type DispatchTypes = {
@@ -20,12 +20,13 @@ type Props = {}
 
 type PropsType = StateTypes & DispatchTypes & Props
 
-const CreateArticlePage = ({createArticle, isLoading, isShowAlert, alertMessage}: PropsType) => {
+const CreateArticlePage = ({createArticle, isLoading, isShowAlert, alert}: PropsType) => {
 
     return (
         <>
-            {isShowAlert && <SuccessAlert
-                message={alertMessage}
+            {isShowAlert && <Alert
+                type={alert.type}
+                message={alert.msg}
             />}
             <ChangeArticle
                 isLoading={isLoading}
@@ -38,7 +39,7 @@ const CreateArticlePage = ({createArticle, isLoading, isShowAlert, alertMessage}
 const mapStateToProps = (state: AppStateType): StateTypes => ({
     isLoading: state.articles.isLoad,
     isShowAlert: state.articles.isShowAlert,
-    alertMessage: state.articles.alertMessage
+    alert: state.articles.alert
 })
 
 const mapDispatchToProps = {

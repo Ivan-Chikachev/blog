@@ -1,4 +1,4 @@
-import {ArticleType, createArticleType, ThunkArticleType} from "../../types/types";
+import {AlertType, ArticleType, createArticleType, ThunkArticleType} from "../../types/types";
 import blogAPI from "../../services/api";
 import {Dispatch} from "redux";
 
@@ -15,7 +15,7 @@ export const articlesActions = {
     } as const),
     fetchingOff: () => ({type: "FETCHING_OFF"} as const),
     fetchingOn: () => ({type: "FETCHING_ON"} as const),
-    showAlert: (val: string) => ({type: "SHOW_ALERT", val} as const),
+    showAlert: (val: AlertType) => ({type: "SHOW_ALERT", val} as const),
     closeAlert: () => ({type: "CLOSE_ALERT"} as const),
 }
 
@@ -69,10 +69,14 @@ export const createArticle = (article: createArticleType): ThunkArticleType => {
         try {
             const res = await blogAPI.createArticle(article)
             if (res.status === 200) {
-                dispatch(articlesActions.showAlert('Пост успешно создан'))
+                dispatch(articlesActions.showAlert({
+                    msg: 'Пост успешно создан', type: 'success'
+                }))
             }
         } catch (e) {
-            dispatch(articlesActions.showAlert('Такой пост уже есть'))
+            dispatch(articlesActions.showAlert({
+                msg: 'Такой пост уже есть', type: "error"
+            }))
         }
         dispatch(articlesActions.fetchingOff())
 
