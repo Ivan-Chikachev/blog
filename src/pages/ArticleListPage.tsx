@@ -1,7 +1,6 @@
 import React, {useEffect} from "react";
 import ArticlesList from "../components/ArticlesList/ArticlesList";
 import {getArticles} from "../redux/App/appActions";
-import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
 
 type DispatchTypes = {
@@ -33,4 +32,4 @@ const mapDispatchToProps = {
     getArticles
 }
 
-export default connect(()=> {}, mapDispatchToProps)(ArticlesListPage);
+export default connect(()=> ({}), mapDispatchToProps)(ArticlesListPage);

@@ -1,11 +1,13 @@
-import {ActionsArticlesType, ArticleType} from "../../types/types";
+import {ActionsArticlesType, AlertType, ArticleType} from "../../types/types";
 
 const initialState = {
     articles: [] as Array<ArticleType>,
     currentPage: 1,
     isLoading: false,
     totalArticles: 1,
-    isError: false
+    isError: false,
+    alert: {} as AlertType,
+    isShowAlert: false
 };
 type InitialStateType = typeof initialState
 
@@ -21,6 +23,10 @@ export const appReducer = (state = initialState, action: ActionsArticlesType): I
             return {...state, isLoading: false}
         case "ON_ERROR":
             return {...state, isError: true}
+        case "SHOW_ALERT":
+            return {...state, isShowAlert: true, alert: {msg: action.val.msg, type: action.val.type}}
+        case "CLOSE_ALERT":
+            return {...state, isShowAlert: false, alert: {...state.alert, msg: ''}}
         default:
             return state
     }

@@ -1,6 +1,7 @@
-import {AlertType, ArticleType, createArticleType, ThunkArticleType} from "../../types/types";
+import {ArticleType, createArticleType, ThunkAppType, ThunkArticleType, updateArticleType} from "../../types/types";
 import blogAPI from "../../services/api";
 import {Dispatch} from "redux";
+import {appActions} from "../App/appActions";
 
 export const articlesActions = {
     getCurrentArticle: (article: ArticleType) => ({
@@ -15,8 +16,6 @@ export const articlesActions = {
     } as const),
     fetchingOff: () => ({type: "FETCHING_OFF"} as const),
     fetchingOn: () => ({type: "FETCHING_ON"} as const),
-    showAlert: (val: AlertType) => ({type: "SHOW_ALERT", val} as const),
-    closeAlert: () => ({type: "CLOSE_ALERT"} as const),
 }
 
 export const getCurrentArticle = (slug: string): ThunkArticleType => {
@@ -62,26 +61,71 @@ export const removeFavorite = (slug: string): ThunkArticleType => {
     }
 }
 
-export const createArticle = (article: createArticleType): ThunkArticleType => {
+export const createArticle = (article: createArticleType): ThunkAppType => {
     return async (dispatch) => {
         dispatch(articlesActions.fetchingOn())
 
         try {
             const res = await blogAPI.createArticle(article)
             if (res.status === 200) {
-                dispatch(articlesActions.showAlert({
+                dispatch(appActions.showAlert({
                     msg: 'Пост успешно создан', type: 'success'
                 }))
             }
         } catch (e) {
-            dispatch(articlesActions.showAlert({
+            dispatch(appActions.showAlert({
                 msg: 'Такой пост уже есть', type: "error"
             }))
         }
         dispatch(articlesActions.fetchingOff())
 
         setTimeout(() => {
-            dispatch(articlesActions.closeAlert())
+            dispatch(appActions.closeAlert())
+        }, 3000)
+    }
+}
+
+export const updateArticle = (slug: string, article: updateArticleType): ThunkAppType => {
+    return async (dispatch) => {
+        dispatch(articlesActions.fetchingOn())
+
+        try {
+            const res = await blogAPI.updateArticle(slug, article)
+            if (res.status === 200) {
+                dispatch(appActions.showAlert({
+                    msg: 'Пост успешно обновлен', type: 'success'
+                }))
+            }
+        } catch (e) {
+            dispatch(appActions.showAlert({
+                msg: 'Ошибка', type: "error"
+            }))
+        }
+        dispatch(articlesActions.fetchingOff())
+
+        setTimeout(() => {
+            dispatch(appActions.closeAlert())
+        }, 3000)
+    }
+}
+
+export const deleteArticle = (slug: string): ThunkAppType => {
+    return async (dispatch) => {
+        try {
+            const res = await blogAPI.deleteArticle(slug)
+            if (res.status === 204) {
+                dispatch(appActions.showAlert({
+                    msg: 'Пост удален', type: 'success'
+                }))
+            }
+        } catch (e) {
+            dispatch(appActions.showAlert({
+                msg: 'Ошибка', type: "error"
+            }))
+        }
+
+        setTimeout(() => {
+            dispatch(appActions.closeAlert())
         }, 3000)
     }
 }

@@ -2,26 +2,38 @@ import React from 'react';
 import EditProfile from '../components/EditProfile/EditProfile';
 import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
+import {updateUser} from "../redux/User/userActions";
+import {UpdateUserType} from "../types/types";
 
-type StateTypes = {}
+type StateTypes = {
+    isLoading: boolean
+}
 
-type DispatchTypes = {}
+type DispatchTypes = {
+    updateUser: (user: UpdateUserType) => void
+}
 
 type Props = {}
 
 type PropsType = StateTypes & DispatchTypes & Props
 
-const EditProfilePage = ({}: PropsType) => {
+const EditProfilePage = ({updateUser, isLoading}: PropsType) => {
     return (
-        <EditProfile/>
+        <EditProfile
+            updateUser={updateUser}
+            isLoading={isLoading}
+        />
     )
 }
 
 
-const mapStateToProps = (state: AppStateType): StateTypes => ({})
+const mapStateToProps = (state: AppStateType): StateTypes => ({
+    isLoading: state.user.isFetching
+})
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+    updateUser
+}
 
-export default connect<StateTypes, DispatchTypes, {}, AppStateType>(
-    mapStateToProps, mapDispatchToProps)(EditProfilePage)
+export default connect(mapStateToProps, mapDispatchToProps)(EditProfilePage)
 

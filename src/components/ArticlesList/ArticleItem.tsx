@@ -43,7 +43,7 @@ const ArticleItem = (props: Props) => {
         <article className='article'>
             <header className="article__header">
                 <div className="article__header-left">
-                    <Link to={`/articles/${slug}`}>
+                    <Link to={`/article/${slug}`}>
                         <h3
                             className="article__title">{title}
                         </h3>

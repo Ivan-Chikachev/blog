@@ -1,4 +1,4 @@
-import {ArticleType, ThunkAppType} from "../../types/types";
+import {AlertType, ArticleType, ThunkAppType} from "../../types/types";
 import blogAPI from "../../services/api";
 import {Dispatch} from "redux";
 
@@ -17,6 +17,8 @@ export const appActions = {
     } as const),
     fetchingOff: () => ({type: "FETCHING_OFF"} as const),
     fetchingOn: () => ({type: "FETCHING_ON"} as const),
+    showAlert: (val: AlertType) => ({type: "SHOW_ALERT", val} as const),
+    closeAlert: () => ({type: "CLOSE_ALERT"} as const),
 }
 
 export const setCurrentPage = (number: number) => (dispatch: Dispatch) => {
@@ -41,5 +43,9 @@ export const getArticles = (offset: number): ThunkAppType => {
             dispatch(appActions.onError())
         }
         dispatch(appActions.fetchingOff())
+
+        setTimeout(() => {
+            dispatch(appActions.closeAlert())
+        }, 3000)
     }
 }

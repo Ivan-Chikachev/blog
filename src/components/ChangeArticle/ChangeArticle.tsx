@@ -3,30 +3,43 @@ import React, {useState} from "react";
 import Tag from "./Tag";
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
+import {createArticleType, updateArticleType} from "../../types/types";
 
 type Props = {
     title: string
-    submit: (article: any) => void
-    isLoading: boolean
+    createSubmit?: (article: createArticleType) => void,
+    updateSubmit?: (slug: string, article: updateArticleType) => void
+    isLoading: boolean,
+    slug?: string,
 }
 
-const ChangeArticle = ({title, submit, isLoading}: Props) => {
+const ChangeArticle = (props: Props) => {
+
+    const {title, createSubmit, updateSubmit, isLoading, slug} = props
 
     const [tags, setTags] = useState<Array<string>>([])
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
 
     const onSubmit = (data: any) => {
-        submit({
+        updateSubmit && slug && updateSubmit(slug, {
+            title: data.title,
+            description: data.description,
+            body: data.text,
+        })
+
+        createSubmit && createSubmit({
             title: data.title,
             description: data.description,
             body: data.text,
             tagList: tags
         })
     }
+
     const registerTitle = {
         ...register('title', {
             required: true,
+            value: 'asd'
         })
     }
     const registerDescription = {
@@ -81,17 +94,21 @@ const ChangeArticle = ({title, submit, isLoading}: Props) => {
                         'input-error': errors.text
                     })}
                     {...registerText}/>
-                <p className="create-article__label">
-                    Tags
-                </p>
-                <div className="create-article__tag-block">
-                    <div className="">
-                        <Tag
-                            tags={tags}
-                            setTags={setTags}
-                        />
-                    </div>
-                </div>
+                {createSubmit &&
+                    <>
+                        <p className="create-article__label">
+                            Tags
+                        </p>
+                        <div className="create-article__tag-block">
+                            <div className="">
+                                <Tag
+                                    tags={tags}
+                                    setTags={setTags}
+                                />
+                            </div>
+                        </div>
+                    </>
+                }
                 {isError && <span className='error-label'>
                     Заполните все поля
                 </span>}

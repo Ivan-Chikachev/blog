@@ -3,12 +3,27 @@ import {articlesActions} from "../redux/Article/articleActions";
 import {appActions} from "../redux/App/appActions";
 import {AppStateType} from "../redux/rootReducer";
 import {authActions} from "../redux/Auth/authActions";
+import { userActions } from "../redux/User/userActions";
+
+export type UpdateUserType = {
+    "email": string,
+    "token": string,
+    "username": string,
+    "bio": string,
+    "image": string
+}
 
 export type createArticleType = {
     "title": string,
     "description": string,
     "body": string,
     "tagList": Array<string>
+}
+
+export type updateArticleType = {
+    "title": string,
+    "description": string,
+    "body": string,
 }
 
 export type AlertType = {
@@ -81,7 +96,7 @@ export type CommentType = {
     }
 }
 
-// General
+// Base types
 
 type PropType<T> = T extends { [key: string]: infer U } ? U : never
 
@@ -104,3 +119,9 @@ export type ThunkArticleType = ThunkAction<Promise<void>, AppStateType, unknown,
 export type ActionsAuthType = InferActionsType<typeof authActions>
 
 export type ThunkAuthType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsAuthType>
+
+// User
+
+export type ActionsUserType = InferActionsType<typeof userActions>
+
+export type ThunkUserType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsUserType>

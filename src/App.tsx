@@ -13,12 +13,16 @@ import CreateArticlePage from "./pages/CreateArticlePage";
 import EditArticlePage from "./pages/EditArticlePage";
 import {loginToken, logout} from './redux/Auth/authActions';
 import {LS} from './loacalStorage/localStorage';
+import {AlertType} from "./types/types";
+import Alert from "./components/Alert/Alert";
 
 type StateTypes = {
     isAuth: boolean
     username: string
     avatarSrc: string | null
-    isFetching: boolean
+    isFetching: boolean,
+    isShowAlert: boolean,
+    alert: AlertType
 }
 
 type DispatchTypes = {
@@ -31,7 +35,7 @@ type Props = StateTypes & DispatchTypes
 
 const App = (props: Props) => {
 
-    const {loginToken, isAuth, logout, username, avatarSrc, isFetching} = props
+    const {isShowAlert, alert, loginToken, isAuth, logout, username, avatarSrc, isFetching} = props
 
     const token = LS.getToken()
 
@@ -44,6 +48,10 @@ const App = (props: Props) => {
     return (
         <BrowserRouter>
             <div className='wrapper'>
+                {isShowAlert && <Alert
+                    type={alert.type}
+                    message={alert.msg}
+                />}
                 <Header
                     logout={logout}
                     isAuth={isAuth}
@@ -53,8 +61,14 @@ const App = (props: Props) => {
                 <Route path='/sign-in' component={SignInPage}/>
                 <Route path='/sign-up' component={SignUpPage}/>
                 <Route path='/profile' component={EditProfilePage}/>
-                <Route path='/edit-article' component={EditArticlePage}/>
                 <Route path='/create-article' component={CreateArticlePage}/>
+                <Route path='/article/:slug/edit-article'
+                       render={({match}) => {
+                           return <EditArticlePage
+                               slug={match.params.slug}
+                           />
+                       }}
+                />
                 <Route path='/articles/page/:page'
                        render={({match}) => {
                            const page = +match.params.page - 1
@@ -63,9 +77,9 @@ const App = (props: Props) => {
                        }}/>
                 <Route
                     exact
-                    path='/articles/:slug'
+                    path='/article/:slug'
                     render={({match}) => {
-                        return <ArticlePage slug={match.params.slug}/>
+                        return <ArticlePage  slug={match.params.slug}/>
                     }}/>
             </div>
         </BrowserRouter>
@@ -77,7 +91,9 @@ const mapStateToProps = (state: AppStateType): StateTypes => ({
     isFetching: state.auth.isFetching,
     isAuth: state.auth.isAuth,
     username: state.auth.user.user?.username,
-    avatarSrc: state.auth.user.user?.image
+    avatarSrc: state.auth.user.user?.image,
+    isShowAlert: state.app.isShowAlert,
+    alert: state.app.alert
 })
 
 const mapDispatchToProps = {

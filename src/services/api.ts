@@ -1,4 +1,11 @@
-import {AuthUserType, createArticleType, GetListArticlesType, ProfileType} from '../types/types';
+import {
+    AuthUserType,
+    createArticleType,
+    GetListArticlesType,
+    ProfileType,
+    updateArticleType,
+    UpdateUserType
+} from '../types/types';
 import instance from '../http';
 
 const blogAPI = {
@@ -24,15 +31,9 @@ const blogAPI = {
         return instance
             .get<AuthUserType>('user');
     },
-    updateUser(email: string, bio: string, image: string) {
+    updateUser(user: UpdateUserType) {
         return instance
-            .put<AuthUserType>('user', {
-                user: {
-                    email,
-                    bio,
-                    image
-                }
-            });
+            .put<AuthUserType>('user', {user});
     },
     getProfile(username: string) {
         return instance
@@ -61,6 +62,14 @@ const blogAPI = {
     createArticle(article: createArticleType) {
         return instance
             .post(`articles`, {article});
+    },
+    updateArticle(slug: string, article: updateArticleType) {
+        return instance
+            .put(`articles/${slug}`, {article});
+    },
+    deleteArticle(slug: string) {
+        return instance
+            .delete(`articles/${slug}`);
     },
     setFavorite(slug: string) {
         return instance

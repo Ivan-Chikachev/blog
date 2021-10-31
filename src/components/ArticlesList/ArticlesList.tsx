@@ -44,30 +44,31 @@ const ArticlesList = (props: PropTypes) => {
 
     return (
         <div className="container">
-            {isLoading && <Loading/>}
 
             {isError && <Error/>}
 
-            {articles?.length ?
-                <>
-                    {articles.map((article, i) =>
-                        <ArticleItem
-                            setFavorite={setFavorite}
-                            removeFavorite={removeFavorite}
-                            key={i}
-                            article={article}
-                            isAuth={isAuth}/>
-                    )}
-                    <AppPagination
-                        totalArticles={totalArticles}
-                        currentPage={page}
-                        setCurrentPage={setCurrentPage}
-                        onLoading={onLoading}/>
-                </>
-                :
-                <div>
-                    Нет постов
-                </div>
+            {isLoading ? <Loading/> :
+
+                articles?.length ?
+                    <>
+                        {articles.map((article, i) =>
+                            <ArticleItem
+                                setFavorite={setFavorite}
+                                removeFavorite={removeFavorite}
+                                key={i}
+                                article={article}
+                                isAuth={isAuth}/>
+                        )}
+                        <AppPagination
+                            totalArticles={totalArticles}
+                            currentPage={page}
+                            setCurrentPage={setCurrentPage}
+                            onLoading={onLoading}/>
+                    </>
+                    :
+                    <div>
+                        Нет постов
+                    </div>
             }
         </div>
     );

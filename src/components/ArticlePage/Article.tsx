@@ -5,6 +5,7 @@ import {ArticleType} from "../../types/types";
 import Error from "../Error/Error";
 import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
+import {Link} from "react-router-dom";
 
 type Props = {
     publishedDate: string
@@ -15,15 +16,15 @@ type Props = {
     isNoData: boolean
     setFavorite: (slug: string) => void
     removeFavorite: (slug: string) => void
+    deleteArticle: (slug: string) => void
     isAuth: boolean
 }
 
 const Article = (props: Props) => {
     const {
-        currentArticle,
-        isLoading, publishedDate,
+        currentArticle, isLoading, publishedDate,
         isCurrentArticle, isError, setFavorite,
-        removeFavorite, isNoData, isAuth
+        removeFavorite, isNoData, isAuth, deleteArticle
     } = props
 
     const {
@@ -46,6 +47,7 @@ const Article = (props: Props) => {
             setLikeCount(likeCount + 1)
         }
     }
+
     const avatarSrc = currentArticle?.author?.image || defaultAvatar
 
     return (
@@ -55,7 +57,7 @@ const Article = (props: Props) => {
 
             {isError && <Error/>}
 
-            {isNoData && <div>Пост не найден</div>}
+            {isNoData && !isCurrentArticle && <div>Пост не найден</div>}
 
             {isCurrentArticle && <article className='article-page'>
                 <header className="article-page__header header-article">
@@ -95,6 +97,13 @@ const Article = (props: Props) => {
                         </div>
                     </div>
                 </header>
+                <Link to={`/article/${slug}/edit-article`} className='link'>
+                    Edit
+                </Link>
+                <button
+                    onClick={() => deleteArticle(slug)}>
+                    delete
+                </button>
                 <div className="article-page__text">
                     {body}
                 </div>

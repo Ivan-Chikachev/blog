@@ -4,7 +4,7 @@ import {ArticleType} from "../types/types";
 import {AppStateType} from "../redux/rootReducer";
 import Article from "../components/ArticlePage/Article";
 import {formatDate} from "../helper/publishedDate";
-import {getCurrentArticle, setFavorite, removeFavorite} from "../redux/Article/articleActions";
+import {getCurrentArticle, setFavorite, removeFavorite, deleteArticle} from "../redux/Article/articleActions";
 
 
 type StateTypes = {
@@ -19,6 +19,7 @@ type DispatchTypes = {
     getCurrentArticle: (slug: string) => void
     setFavorite: (slug: string) => void
     removeFavorite: (slug: string) => void
+    deleteArticle: (slug: string) => void
 }
 
 type Props = {
@@ -32,7 +33,7 @@ const ArticlePage = (props: PropsType) => {
     const {
         slug, getCurrentArticle, currentArticle,
         isLoading, isError, setFavorite,
-        removeFavorite, isNoData, isAuth
+        removeFavorite, isNoData, isAuth, deleteArticle
     } = props
 
     useEffect(() => {
@@ -54,13 +55,14 @@ const ArticlePage = (props: PropsType) => {
             setFavorite={setFavorite}
             removeFavorite={removeFavorite}
             isAuth={isAuth}
+            deleteArticle={deleteArticle}
         />
     )
 }
 
 const mapStateToProps = (state: AppStateType): StateTypes => ({
     currentArticle: state.articles.currentArticle,
-    isLoading: state.articles.isLoad,
+    isLoading: state.articles.isLoading,
     isError: state.articles.isError,
     isNoData: state.articles.isNoData,
     isAuth: state.auth.isAuth
@@ -68,6 +70,7 @@ const mapStateToProps = (state: AppStateType): StateTypes => ({
 
 const mapDispatchToProps = {
     getCurrentArticle,
+    deleteArticle,
     setFavorite,
     removeFavorite,
 }

@@ -13,11 +13,12 @@ type Props = {
     }
 }
 
-const AppPagination = ({
-                           currentPage, setCurrentPage,
-                           history, totalArticles,
-                           onLoading
-                       }: Props) => {
+const AppPagination = (props: Props) => {
+    const {
+        currentPage, setCurrentPage,
+        history, totalArticles,
+    } = props
+
     return (
         <Pagination current={currentPage}
                     defaultPageSize={20}
