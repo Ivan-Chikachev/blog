@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import './Article.scss'
 import Loading from "../Loading/Loading";
 import {ArticleType} from "../../types/types";
 import Error from "../Error/Error";
 import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
-import {Link} from "react-router-dom";
+import {Link, Redirect} from "react-router-dom";
+import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
 
 type Props = {
     publishedDate: string
@@ -35,6 +36,11 @@ const Article = (props: Props) => {
 
     const [isLiked, setIsLiked] = useState(favorited)
     const [likeCount, setLikeCount] = useState(favoritesCount)
+    const [isRedirect, setIsRedirect] = useState(false)
+
+    if (isRedirect) {
+        return <Redirect to="/articles/page/1"/>
+    }
 
     const clickLike = (slug: string) => {
         if (isLiked) {
@@ -50,6 +56,21 @@ const Article = (props: Props) => {
 
     const avatarSrc = currentArticle?.author?.image || defaultAvatar
 
+    const clickDeleteArticle = (slug: string) => {
+        deleteArticle(slug)
+        setIsRedirect(true)
+    }
+
+    const tagsRender = () => {
+        return tagList?.map((tag, index) =>
+            <div
+                key={tag}
+                className="header-article__tag-item">
+                {tag}
+            </div>
+        )
+    }
+
     return (
         <div className='container'>
 
@@ -57,7 +78,10 @@ const Article = (props: Props) => {
 
             {isError && <Error/>}
 
-            {isNoData && !isCurrentArticle && <div>Пост не найден</div>}
+            {isNoData &&
+            !isCurrentArticle &&
+            !isLoading &&
+            <div>Пост не найден</div>}
 
             {isCurrentArticle && <article className='article-page'>
                 <header className="article-page__header header-article">
@@ -77,11 +101,7 @@ const Article = (props: Props) => {
                             </div>
                         </div>
                         <div className="header-article__tag-list">
-                            {tagList?.map((tag, index) =>
-                                <div key={index} className="header-article__tag-item">
-                                    {tag}
-                                </div>
-                            )}
+                            {tagsRender()}
                         </div>
                         <div className="header-article__description">
                             {description}
@@ -89,21 +109,27 @@ const Article = (props: Props) => {
                     </div>
                     <div className="header-article__right-header">
                         <div className="header-article__info">
-                            <h5 className='header-article__name'>{author.username}</h5>
-                            <span className='header-article__date'>{publishedDate}</span>
+                            <div>
+                                <h5 className='header-article__name'>{author.username}</h5>
+                                <span className='header-article__date'>{publishedDate}</span>
+                            </div>
+                            <div>
+                                <img className='header-article__avatar' src={avatarSrc} alt=""/>
+                            </div>
                         </div>
                         <div>
-                            <img className='header-article__avatar' src={avatarSrc} alt=""/>
+                            <ConfirmDelete
+                                slug={slug}
+                                clickDeleteArticle={clickDeleteArticle}
+                            />
+                            <Link
+                                className='btn btn__success btn__medium'
+                                to={`/article/${slug}/edit-article`}>
+                                Edit
+                            </Link>
                         </div>
                     </div>
                 </header>
-                <Link to={`/article/${slug}/edit-article`} className='link'>
-                    Edit
-                </Link>
-                <button
-                    onClick={() => deleteArticle(slug)}>
-                    delete
-                </button>
                 <div className="article-page__text">
                     {body}
                 </div>

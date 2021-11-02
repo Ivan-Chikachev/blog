@@ -2,7 +2,6 @@ import {
     AuthUserType,
     createArticleType,
     GetListArticlesType,
-    ProfileType,
     updateArticleType,
     UpdateUserType
 } from '../types/types';
@@ -35,25 +34,9 @@ const blogAPI = {
         return instance
             .put<AuthUserType>('user', {user});
     },
-    getProfile(username: string) {
-        return instance
-            .get<ProfileType>(`profiles/${username}`);
-    },
-    followUser(username: string) {
-        return instance
-            .post<ProfileType>(`profiles/${username}/follow`);
-    },
-    unfollowUser(username: string) {
-        return instance
-            .delete<ProfileType>(`profiles/${username}/follow`);
-    },
     getListArticles(count: number = 0) {
         return instance
             .get<GetListArticlesType>(`articles?limit=10&offset=${count}`);
-    },
-    getFeedArticles() {
-        return instance
-            .get(`articles/feed`);
     },
     getArticle(slug: string) {
         return instance

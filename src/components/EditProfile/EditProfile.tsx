@@ -1,42 +1,58 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './EditProfile.scss';
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
 import {UpdateUserType} from "../../types/types";
+import {Redirect} from "react-router-dom";
 
 type props = {
     updateUser: (user: UpdateUserType) => void
     isLoading: boolean
+    username: string
 }
 
-const EditProfile = ({updateUser, isLoading}: props) => {
+const EditProfile = ({updateUser, isLoading, username}: props) => {
 
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
 
+    const [isRedirect, setIsRedirect] = useState(false)
+
+    if (isRedirect) {
+        return <Redirect to="/articles/page/1"/>
+    }
+
     const onSubmit = (data: any) => {
-        const {username, avatar} = data
+        const {username, avatar, email} = data
         const user: UpdateUserType = {
             username: username,
             bio: '',
-            email: '',
+            email: email,
             image: avatar,
             token: ''
         }
         updateUser(user)
+        setIsRedirect(true)
     }
 
     const registerUsername = {
         ...register('username', {
             required: true,
             minLength: 2,
-            maxLength: 40
+            maxLength: 40,
+            value: username
         })
     }
     const registerAvatar = {
         ...register('avatar', {
             required: true,
             minLength: 5,
+        })
+    }
+    const registerEmail = {
+        ...register('email', {
+            required: true,
+            pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
         })
     }
 
@@ -64,7 +80,16 @@ const EditProfile = ({updateUser, isLoading}: props) => {
             </p>
             <input
                 placeholder='Email address'
-                type="email" className="edit-profile__input"/>
+                type="email"
+                className={classNames({
+                    "edit-profile__input": true,
+                    'input-error': errors.email
+                })}
+                {...registerEmail}
+            />
+            {errors.email && <span className='error-label'>
+              Введите корректный email
+            </span>}
             {/*<p className="edit-profile__label">*/}
             {/*    New password*/}
             {/*</p>*/}

@@ -7,6 +7,7 @@ import {UpdateUserType} from "../types/types";
 
 type StateTypes = {
     isLoading: boolean
+    username: string
 }
 
 type DispatchTypes = {
@@ -17,18 +18,20 @@ type Props = {}
 
 type PropsType = StateTypes & DispatchTypes & Props
 
-const EditProfilePage = ({updateUser, isLoading}: PropsType) => {
+const EditProfilePage = ({updateUser, isLoading, username}: PropsType) => {
     return (
         <EditProfile
             updateUser={updateUser}
             isLoading={isLoading}
+            username={username}
         />
     )
 }
 
 
 const mapStateToProps = (state: AppStateType): StateTypes => ({
-    isLoading: state.user.isFetching
+    isLoading: state.user.isFetching,
+    username: state.auth.user?.user?.username
 })
 
 const mapDispatchToProps = {

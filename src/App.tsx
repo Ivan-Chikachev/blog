@@ -35,7 +35,7 @@ type Props = StateTypes & DispatchTypes
 
 const App = (props: Props) => {
 
-    const {isShowAlert, alert, loginToken, isAuth, logout, username, avatarSrc, isFetching} = props
+    const {isShowAlert, alert, loginToken, isAuth, logout, username, avatarSrc} = props
 
     const token = LS.getToken()
 

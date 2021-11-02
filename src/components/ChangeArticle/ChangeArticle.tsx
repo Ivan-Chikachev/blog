@@ -4,6 +4,7 @@ import Tag from "./Tag";
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
 import {createArticleType, updateArticleType} from "../../types/types";
+import {Redirect} from "react-router";
 
 type Props = {
     title: string
@@ -18,8 +19,13 @@ const ChangeArticle = (props: Props) => {
     const {title, createSubmit, updateSubmit, isLoading, slug} = props
 
     const [tags, setTags] = useState<Array<string>>([])
+    const [isRedirect, setIsRedirect] = useState(false)
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
+
+    if (isRedirect) {
+        return <Redirect to="/articles/page/1"/>
+    }
 
     const onSubmit = (data: any) => {
         updateSubmit && slug && updateSubmit(slug, {
@@ -34,12 +40,12 @@ const ChangeArticle = (props: Props) => {
             body: data.text,
             tagList: tags
         })
+        setIsRedirect(true)
     }
 
     const registerTitle = {
         ...register('title', {
             required: true,
-            value: 'asd'
         })
     }
     const registerDescription = {
@@ -95,19 +101,19 @@ const ChangeArticle = (props: Props) => {
                     })}
                     {...registerText}/>
                 {createSubmit &&
-                    <>
-                        <p className="create-article__label">
-                            Tags
-                        </p>
-                        <div className="create-article__tag-block">
-                            <div className="">
-                                <Tag
-                                    tags={tags}
-                                    setTags={setTags}
-                                />
-                            </div>
+                <>
+                    <p className="create-article__label">
+                        Tags
+                    </p>
+                    <div className="create-article__tag-block">
+                        <div className="">
+                            <Tag
+                                tags={tags}
+                                setTags={setTags}
+                            />
                         </div>
-                    </>
+                    </div>
+                </>
                 }
                 {isError && <span className='error-label'>
                     Заполните все поля

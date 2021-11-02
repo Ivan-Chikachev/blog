@@ -2,6 +2,7 @@ import {AuthUserType, AuthErrorType, ThunkAuthType} from "../../types/types";
 import blogAPI from "../../services/api";
 import {Dispatch} from "redux";
 import {LS} from "../../loacalStorage/localStorage";
+import {appActions} from "../App/appActions";
 
 export const authActions = {
     login: (data: any) => ({
@@ -74,6 +75,12 @@ export const signIn = (email: string, password: string): ThunkAuthType => {
 export const logout = () => (dispatch: Dispatch) => {
     dispatch(authActions.logout())
     LS.removeToken()
+    dispatch(appActions.showAlert({
+        msg: 'Вы вышли из системы', type: 'info'
+    }))
+    setTimeout(() => {
+        dispatch(appActions.closeAlert())
+    }, 3000)
 }
 
 export const loginToken = (): ThunkAuthType => {

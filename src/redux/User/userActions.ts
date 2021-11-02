@@ -8,8 +8,8 @@ export const userActions = {
 }
 
 export const updateUser = (user: UpdateUserType): ThunkAppType => {
-    console.log(user)
     return async (dispatch) => {
+
         dispatch(userActions.fetchingOn())
         try {
             const res = await blogAPI.updateUser(user)

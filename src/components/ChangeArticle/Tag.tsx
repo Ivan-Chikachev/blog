@@ -25,19 +25,18 @@ const Tag = ({tags, setTags}: Props) => {
         setTags(newTags)
     }
 
-    const tagsRender = tags.map((i, index) => {
+    const tagsRender = tags.map((item, index) => {
         return (
-            <div className='tag__wrap'>
+            <div className='tag__wrap' key={item + index}>
                 <div
-                    className='tag__item'
-                    key={index}>
-                    {i}
+                    className='tag__item'>
+                    {item}
                 </div>
                 <button
                     className='tag__delete'
                     onClick={(e: any) => {
                         e.preventDefault()
-                        deleteClick(i)
+                        deleteClick(item)
                     }}>
                     delete
                 </button>

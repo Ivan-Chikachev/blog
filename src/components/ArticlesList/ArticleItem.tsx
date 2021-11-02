@@ -37,6 +37,14 @@ const ArticleItem = (props: Props) => {
         }
     }
 
+    const tagsRender = () => {
+        return tagList?.map((tag, index) =>
+            <div key={index} className="article__tag-item">
+                {tag}
+            </div>
+        )
+    }
+
     const avatarSrc = author?.image || defaultAvatar
 
     return (
@@ -69,11 +77,7 @@ const ArticleItem = (props: Props) => {
                 </div>
             </header>
             <div className="article__tag-list">
-                {tagList?.map((tag, index) =>
-                    <div key={index} className="article__tag-item">
-                        {tag}
-                    </div>
-                )}
+                {tagsRender()}
             </div>
             <div className="article__text">
                 {description}
