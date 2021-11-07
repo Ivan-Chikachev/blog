@@ -47,6 +47,7 @@ const EditProfile = ({updateUser, isLoading, username}: props) => {
         ...register('avatar', {
             required: true,
             minLength: 5,
+            pattern: /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-] +[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/
         })
     }
     const registerEmail = {
@@ -88,19 +89,8 @@ const EditProfile = ({updateUser, isLoading, username}: props) => {
                 {...registerEmail}
             />
             {errors.email && <span className='error-label'>
-              Введите корректный email
+              Please, enter a valid email
             </span>}
-            {/*<p className="edit-profile__label">*/}
-            {/*    New password*/}
-            {/*</p>*/}
-            {/*<input*/}
-            {/*    placeholder='New password'*/}
-            {/*    type="password"*/}
-            {/*    className={classNames({*/}
-            {/*        "edit-profile__input": true,*/}
-            {/*        'input-error': errors.p*/}
-            {/*    })}*/}
-            {/*/>*/}
             <p className="edit-profile__label">
                 Avatar image (url)
             </p>
@@ -112,7 +102,11 @@ const EditProfile = ({updateUser, isLoading, username}: props) => {
                     "edit-profile__input-avatar": true,
                     'input-error': errors.avatar
                 })}
-                {...registerAvatar}/>
+                {...registerAvatar}
+            />
+            {errors.avatar && <span className='error-label'>
+              Please, enter a valid url address
+            </span>}
             <button
                 disabled={isLoading}
                 type='submit'

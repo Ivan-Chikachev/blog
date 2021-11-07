@@ -7,7 +7,7 @@ import AppPagination from "../Pagination/Pagination";
 import Error from "../Error/Error";
 import {connect} from "react-redux";
 import {AppStateType} from "../../redux/rootReducer";
-import {getArticles, onLoading, setCurrentPage} from "../../redux/App/appActions";
+import {getArticles, setCurrentPage} from "../../redux/App/appActions";
 import {removeFavorite, setFavorite} from "../../redux/Article/articleActions";
 
 type StateTypes = {
@@ -20,7 +20,6 @@ type StateTypes = {
 
 type DispatchTypes = {
     setCurrentPage: (number: number) => void
-    onLoading: () => void
     setFavorite: (slug: string) => void
     removeFavorite: (slug: string) => void
     getArticles: (offset: number) => void
@@ -38,7 +37,7 @@ const ArticlesList = (props: PropTypes) => {
         articles,
         isLoading, setCurrentPage,
         page, totalArticles,
-        onLoading, isError, setFavorite,
+        isError, setFavorite,
         removeFavorite, isAuth
     } = props
 
@@ -58,7 +57,7 @@ const ArticlesList = (props: PropTypes) => {
 
             {noData() &&
             !isLoading &&
-            <div>Нет постов</div>}
+            <div>No articles found</div>}
 
             {articles.map((article, i) =>
                 <ArticleItem
@@ -73,7 +72,6 @@ const ArticlesList = (props: PropTypes) => {
                 totalArticles={totalArticles}
                 currentPage={page}
                 setCurrentPage={setCurrentPage}
-                onLoading={onLoading}
             />}
         </div>
     );
@@ -90,7 +88,6 @@ const mapStateToProps = (state: AppStateType): StateTypes => ({
 const mapDispatchToProps = {
     getArticles,
     setCurrentPage,
-    onLoading,
     setFavorite,
     removeFavorite,
 }

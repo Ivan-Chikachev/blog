@@ -21,6 +21,8 @@ export const articleReducer = (state = initialState, action: ActionsArticlePageT
             return {...state, isLoading: true}
         case "FETCHING_OFF":
             return {...state, isLoading: false}
+        case "RESET_CURRENT_ARTICLE":
+            return {...state, currentArticle: {} as ArticleType}
         default:
             return state
     }

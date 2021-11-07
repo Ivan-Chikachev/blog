@@ -53,7 +53,8 @@ const ArticleItem = (props: Props) => {
                 <div className="article__header-left">
                     <Link to={`/article/${slug}`}>
                         <h3
-                            className="article__title">{title}
+                            className="article__title">
+                            {title}
                         </h3>
                     </Link>
                     <div className="article__like-block">

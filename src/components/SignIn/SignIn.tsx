@@ -59,7 +59,7 @@ const SignIn = (props: Props) => {
                 className={`${emailErrors ? 'input-error' : ''} sign-in__input`}
                 {...registerEmail}/>
             {emailErrors && <span className='error-label'>
-              Введите корректный email
+              Please, enter a valid email
             </span>}
             <p className='sign-in__label'>
                 Password
@@ -70,7 +70,7 @@ const SignIn = (props: Props) => {
                 className={`${passwordErrors ? 'input-error' : ''} sign-in__input`}
                 {...registerPassword}/>
             {passwordErrors && <span className='error-label'>
-             Пароль должен быть от 6 до 40 символов
+             Password must contain 6-40 characters
             </span>}
 
             {invalidAuth && <div className='error-label'>

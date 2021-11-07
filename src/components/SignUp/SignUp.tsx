@@ -90,7 +90,7 @@ const SignUp = (props: Props) => {
                 {...registerUsername}
             />
             {(userErrors) && <span className='error-label'>
-                {usernameError || 'Имя должно быть от 3 до 20 символов'}
+                {usernameError || 'Username must contain 3-20 characters'}
             </span>}
 
             <p className="create-acc__label">
@@ -102,7 +102,7 @@ const SignUp = (props: Props) => {
                 className={`${emailErrors ? 'input-error' : ''} create-acc__input`}
                 {...registerEmail}/>
             {emailErrors && <span className='error-label'>
-              {emailError || 'Введите корректный email'}
+              {emailError || 'Please, enter a valid email'}
             </span>}
 
             <p className="create-acc__label">
@@ -114,7 +114,7 @@ const SignUp = (props: Props) => {
                 className={`${passwordErrors ? 'input-error' : ''} create-acc__input`}
                 {...registerPassword}/>
             {passwordErrors && <span className='error-label'>
-             {passwordError || 'Пароль должен быть от 6 до 40 символов'}
+             {passwordError || 'Password must contain 6-40 characters'}
             </span>}
 
             <p className="create-acc__label">
@@ -125,7 +125,7 @@ const SignUp = (props: Props) => {
                 type="password" className="create-acc__input"
                 {...registerConfirmPassword}/>
             {confirmPassword && <span className='error-label'>
-              Пароли не совпадают
+              Password do not match
             </span>}
 
             <div className='create-acc__line'/>

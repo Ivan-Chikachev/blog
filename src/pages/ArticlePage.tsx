@@ -4,7 +4,7 @@ import {ArticleType} from "../types/types";
 import {AppStateType} from "../redux/rootReducer";
 import Article from "../components/ArticlePage/Article";
 import {formatDate} from "../helper/publishedDate";
-import {getCurrentArticle, setFavorite, removeFavorite, deleteArticle} from "../redux/Article/articleActions";
+import {getCurrentArticle, setFavorite, removeFavorite, deleteArticle, resetCurrentArticle} from "../redux/Article/articleActions";
 
 
 type StateTypes = {
@@ -13,6 +13,7 @@ type StateTypes = {
     isError: boolean
     isNoData: boolean
     isAuth: boolean
+    username: string
 }
 
 type DispatchTypes = {
@@ -20,6 +21,7 @@ type DispatchTypes = {
     setFavorite: (slug: string) => void
     removeFavorite: (slug: string) => void
     deleteArticle: (slug: string) => void
+    resetCurrentArticle: () => void
 }
 
 type Props = {
@@ -32,7 +34,7 @@ const ArticlePage = (props: PropsType) => {
 
     const {
         slug, getCurrentArticle, currentArticle,
-        isLoading, isError, setFavorite,
+        isLoading, isError, setFavorite, username,
         removeFavorite, isNoData, isAuth, deleteArticle
     } = props
 
@@ -56,6 +58,8 @@ const ArticlePage = (props: PropsType) => {
             removeFavorite={removeFavorite}
             isAuth={isAuth}
             deleteArticle={deleteArticle}
+            username={username}
+            resetCurrentArticle={resetCurrentArticle}
         />
     )
 }
@@ -65,7 +69,8 @@ const mapStateToProps = (state: AppStateType): StateTypes => ({
     isLoading: state.articles.isLoading,
     isError: state.articles.isError,
     isNoData: state.articles.isNoData,
-    isAuth: state.auth.isAuth
+    isAuth: state.auth.isAuth,
+    username: state.auth.user?.user?.username
 })
 
 const mapDispatchToProps = {
@@ -73,6 +78,7 @@ const mapDispatchToProps = {
     deleteArticle,
     setFavorite,
     removeFavorite,
+    resetCurrentArticle
 }
 
 export default connect<StateTypes, DispatchTypes, {}, AppStateType>(

@@ -25,10 +25,6 @@ export const setCurrentPage = (number: number) => (dispatch: Dispatch) => {
     dispatch(appActions.setCurrentPage(number))
 }
 
-export const onLoading = () => (dispatch: Dispatch) => {
-    // dispatch(appActions.fetchingOn())
-}
-
 export const getArticles = (offset: number): ThunkAppType => {
     return async (dispatch) => {
         dispatch(appActions.fetchingOn())

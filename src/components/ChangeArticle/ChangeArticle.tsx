@@ -116,7 +116,7 @@ const ChangeArticle = (props: Props) => {
                 </>
                 }
                 {isError && <span className='error-label'>
-                    Заполните все поля
+                    Please, fill in form fields
                 </span>}
                 <button
                     disabled={isLoading}

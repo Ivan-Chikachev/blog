@@ -8,6 +8,9 @@ export const articlesActions = {
         type: 'GET_CURRENT_ARTICLE',
         article
     } as const),
+    resetCurrentArticle: () => ({
+        type: 'RESET_CURRENT_ARTICLE'
+    } as const),
     onError: () => ({
         type: 'ON_ERROR'
     } as const),
@@ -18,8 +21,14 @@ export const articlesActions = {
     fetchingOn: () => ({type: "FETCHING_ON"} as const),
 }
 
+
+export const resetCurrentArticle = () => (dispatch: Dispatch) => {
+    dispatch(articlesActions.resetCurrentArticle())
+}
+
 export const getCurrentArticle = (slug: string): ThunkArticleType => {
     return async (dispatch) => {
+        dispatch(articlesActions.resetCurrentArticle())
         dispatch(articlesActions.fetchingOn())
 
         try {
@@ -69,12 +78,12 @@ export const createArticle = (article: createArticleType): ThunkAppType => {
             const res = await blogAPI.createArticle(article)
             if (res.status === 200) {
                 dispatch(appActions.showAlert({
-                    msg: 'Пост успешно создан', type: 'success'
+                    msg: 'Article created successfully', type: 'success'
                 }))
             }
         } catch (e) {
             dispatch(appActions.showAlert({
-                msg: 'Такой пост уже есть', type: "error"
+                msg: 'Such an article already exists', type: "error"
             }))
         }
         dispatch(articlesActions.fetchingOff())
@@ -93,12 +102,12 @@ export const updateArticle = (slug: string, article: updateArticleType): ThunkAp
             const res = await blogAPI.updateArticle(slug, article)
             if (res.status === 200) {
                 dispatch(appActions.showAlert({
-                    msg: 'Пост успешно обновлен', type: 'success'
+                    msg: 'Article updated successfully', type: 'success'
                 }))
             }
         } catch (e) {
             dispatch(appActions.showAlert({
-                msg: 'Ошибка', type: "error"
+                msg: 'Error', type: "error"
             }))
         }
         dispatch(articlesActions.fetchingOff())
@@ -115,12 +124,12 @@ export const deleteArticle = (slug: string): ThunkAppType => {
             const res = await blogAPI.deleteArticle(slug)
             if (res.status === 204) {
                 dispatch(appActions.showAlert({
-                    msg: 'Пост удален', type: 'success'
+                    msg: 'Article deleted', type: 'success'
                 }))
             }
         } catch (e) {
             dispatch(appActions.showAlert({
-                msg: 'Ошибка', type: "error"
+                msg: 'Error', type: "error"
             }))
         }
 

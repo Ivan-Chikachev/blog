@@ -15,14 +15,14 @@ export const updateUser = (user: UpdateUserType): ThunkAppType => {
             const res = await blogAPI.updateUser(user)
             if (res.status === 200) {
                 dispatch(appActions.showAlert({
-                    msg: 'Данные успешно обновлены', type: 'success'
+                    msg: 'Successfully updated', type: 'success'
                 }))
             }
 
         } catch (e: any) {
             console.log(e)
             dispatch(appActions.showAlert({
-                msg: 'Ошибка', type: 'success'
+                msg: 'Error', type: 'error'
             }))
         }
         dispatch(userActions.fetchingOff())

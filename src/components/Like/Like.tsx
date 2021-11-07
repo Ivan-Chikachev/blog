@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React from "react"
+import React, {useEffect} from "react"
 import './Like.scss'
 
 type Props = {
@@ -12,7 +12,6 @@ type Props = {
 
 const Like = (props: Props) => {
     const {isLiked, clickLike, likeCount, slug, disabled} = props
-
     return (
         <button
             type="button"
@@ -28,4 +27,4 @@ const Like = (props: Props) => {
     )
 }
 
-export default Like
+export default React.memo(Like)

@@ -1,4 +1,4 @@
-import {AuthUserType, AuthErrorType, ThunkAuthType} from "../../types/types";
+import {ThunkAuthType} from "../../types/types";
 import blogAPI from "../../services/api";
 import {Dispatch} from "redux";
 import {LS} from "../../loacalStorage/localStorage";
@@ -76,7 +76,7 @@ export const logout = () => (dispatch: Dispatch) => {
     dispatch(authActions.logout())
     LS.removeToken()
     dispatch(appActions.showAlert({
-        msg: 'Вы вышли из системы', type: 'info'
+        msg: 'You are logged out', type: 'info'
     }))
     setTimeout(() => {
         dispatch(appActions.closeAlert())

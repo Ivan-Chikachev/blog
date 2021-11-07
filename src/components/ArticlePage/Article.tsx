@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './Article.scss'
 import Loading from "../Loading/Loading";
 import {ArticleType} from "../../types/types";
@@ -17,15 +17,18 @@ type Props = {
     isNoData: boolean
     setFavorite: (slug: string) => void
     removeFavorite: (slug: string) => void
+    resetCurrentArticle: () => void
     deleteArticle: (slug: string) => void
     isAuth: boolean
+    username: string
 }
 
 const Article = (props: Props) => {
     const {
         currentArticle, isLoading, publishedDate,
         isCurrentArticle, isError, setFavorite,
-        removeFavorite, isNoData, isAuth, deleteArticle
+        removeFavorite, isNoData, isAuth, deleteArticle,
+        username, resetCurrentArticle
     } = props
 
     const {
@@ -37,6 +40,12 @@ const Article = (props: Props) => {
     const [isLiked, setIsLiked] = useState(favorited)
     const [likeCount, setLikeCount] = useState(favoritesCount)
     const [isRedirect, setIsRedirect] = useState(false)
+
+    useEffect(() => {
+        return () => {
+            resetCurrentArticle()
+        }
+    })
 
     if (isRedirect) {
         return <Redirect to="/articles/page/1"/>
@@ -71,6 +80,8 @@ const Article = (props: Props) => {
         )
     }
 
+    const isVisibleActions = isAuth && author?.username === username
+
     return (
         <div className='container'>
 
@@ -81,7 +92,7 @@ const Article = (props: Props) => {
             {isNoData &&
             !isCurrentArticle &&
             !isLoading &&
-            <div>Пост не найден</div>}
+            <div>Article not found</div>}
 
             {isCurrentArticle && <article className='article-page'>
                 <header className="article-page__header header-article">
@@ -117,7 +128,7 @@ const Article = (props: Props) => {
                                 <img className='header-article__avatar' src={avatarSrc} alt=""/>
                             </div>
                         </div>
-                        <div>
+                        {isVisibleActions && <div>
                             <ConfirmDelete
                                 slug={slug}
                                 clickDeleteArticle={clickDeleteArticle}
@@ -127,7 +138,7 @@ const Article = (props: Props) => {
                                 to={`/article/${slug}/edit-article`}>
                                 Edit
                             </Link>
-                        </div>
+                        </div>}
                     </div>
                 </header>
                 <div className="article-page__text">

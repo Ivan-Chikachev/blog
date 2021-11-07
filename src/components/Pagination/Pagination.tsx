@@ -1,13 +1,11 @@
 import React from "react";
 import {Pagination} from "antd";
 import {RouteComponentProps, withRouter} from "react-router-dom";
-import {onLoading} from "../../redux/App/appActions";
 
 type Props = {
     currentPage: number
     setCurrentPage: (number: number) => void
     totalArticles: number
-    onLoading: () => void
     history: {
         push: (page: string) => void
     }
