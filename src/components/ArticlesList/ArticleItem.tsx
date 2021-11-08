@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import './ArticlesList.scss'
 import {ArticleType} from "../../types/types";
 import {Link, RouteComponentProps, withRouter} from "react-router-dom";
@@ -24,6 +24,11 @@ const ArticleItem = (props: Props) => {
 
     const [isLiked, setIsLiked] = useState(favorited)
     const [likeCount, setLikeCount] = useState(favoritesCount)
+
+    useEffect(()=> {
+        setLikeCount(favoritesCount)
+        setIsLiked(favorited)
+    }, [favoritesCount, favorited])
 
     const clickLike = (slug: string) => {
         if (isLiked) {

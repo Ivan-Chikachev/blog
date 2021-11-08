@@ -4,7 +4,7 @@ import {ArticleType} from "../types/types";
 import {AppStateType} from "../redux/rootReducer";
 import Article from "../components/ArticlePage/Article";
 import {formatDate} from "../helper/publishedDate";
-import {getCurrentArticle, setFavorite, removeFavorite, deleteArticle, resetCurrentArticle} from "../redux/Article/articleActions";
+import {getCurrentArticle, setFavorite, removeFavorite, deleteArticle} from "../redux/Article/articleActions";
 
 
 type StateTypes = {
@@ -21,7 +21,6 @@ type DispatchTypes = {
     setFavorite: (slug: string) => void
     removeFavorite: (slug: string) => void
     deleteArticle: (slug: string) => void
-    resetCurrentArticle: () => void
 }
 
 type Props = {
@@ -59,7 +58,6 @@ const ArticlePage = (props: PropsType) => {
             isAuth={isAuth}
             deleteArticle={deleteArticle}
             username={username}
-            resetCurrentArticle={resetCurrentArticle}
         />
     )
 }
@@ -78,7 +76,6 @@ const mapDispatchToProps = {
     deleteArticle,
     setFavorite,
     removeFavorite,
-    resetCurrentArticle
 }
 
 export default connect<StateTypes, DispatchTypes, {}, AppStateType>(

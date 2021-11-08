@@ -71,7 +71,7 @@ const App = (props: Props) => {
                 />
                 <Route path='/articles/page/:page'
                        render={({match}) => {
-                           const page = +match.params.page - 1
+                           const page = +match.params.page
                            return <ArticlesListPage
                                page={page}/>
                        }}/>

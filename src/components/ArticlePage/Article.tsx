@@ -17,7 +17,6 @@ type Props = {
     isNoData: boolean
     setFavorite: (slug: string) => void
     removeFavorite: (slug: string) => void
-    resetCurrentArticle: () => void
     deleteArticle: (slug: string) => void
     isAuth: boolean
     username: string
@@ -28,7 +27,7 @@ const Article = (props: Props) => {
         currentArticle, isLoading, publishedDate,
         isCurrentArticle, isError, setFavorite,
         removeFavorite, isNoData, isAuth, deleteArticle,
-        username, resetCurrentArticle
+        username
     } = props
 
     const {
@@ -42,10 +41,9 @@ const Article = (props: Props) => {
     const [isRedirect, setIsRedirect] = useState(false)
 
     useEffect(() => {
-        return () => {
-            resetCurrentArticle()
-        }
-    })
+        setLikeCount(favoritesCount)
+        setIsLiked(favorited)
+    }, [favoritesCount, favorited])
 
     if (isRedirect) {
         return <Redirect to="/articles/page/1"/>

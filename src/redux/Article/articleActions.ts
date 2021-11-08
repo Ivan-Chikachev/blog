@@ -8,9 +8,6 @@ export const articlesActions = {
         type: 'GET_CURRENT_ARTICLE',
         article
     } as const),
-    resetCurrentArticle: () => ({
-        type: 'RESET_CURRENT_ARTICLE'
-    } as const),
     onError: () => ({
         type: 'ON_ERROR'
     } as const),
@@ -21,16 +18,10 @@ export const articlesActions = {
     fetchingOn: () => ({type: "FETCHING_ON"} as const),
 }
 
-
-export const resetCurrentArticle = () => (dispatch: Dispatch) => {
-    dispatch(articlesActions.resetCurrentArticle())
-}
-
 export const getCurrentArticle = (slug: string): ThunkArticleType => {
     return async (dispatch) => {
-        dispatch(articlesActions.resetCurrentArticle())
-        dispatch(articlesActions.fetchingOn())
 
+        dispatch(articlesActions.fetchingOn())
         try {
             const res = await blogAPI.getArticle(slug);
             const data = res.data
