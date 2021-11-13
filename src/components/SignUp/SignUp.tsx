@@ -2,35 +2,30 @@ import React, {useEffect, useState} from 'react';
 import './SignUp.scss';
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
-import classNames from "classnames";
 import {InputType} from "../../types/types";
 import Input from "../Input/Input";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../redux/rootReducer";
+import {resetErrors, signUp} from "../../redux/Auth/authActions";
 
-type Props = {
-    signUp: (username: string, email: string, password: string) => void
-    usernameError: string
-    emailError: string
-    passwordError: string
-    isFetching: boolean
-    resetErrors: () => void
-}
-
-const SignUp = (props: Props) => {
-
-    const {
-        signUp, isFetching,
-        usernameError,
-        emailError,
-        passwordError, resetErrors
-    } = props
-
-    useEffect(() => {
-        resetErrors()
-    }, [])
+const SignUp = () => {
 
     const [confirmPassword, setConfirmPassword] = useState('')
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
+
+    const usernameError = useSelector<AppStateType, string>(state => state.auth.errors.username[0])
+    const emailError = useSelector<AppStateType, string>(state => state.auth.errors.email[0])
+    const passwordError = useSelector<AppStateType, string>(state => state.auth.errors.password[0])
+    const isFetching = useSelector<AppStateType, boolean>(state => state.auth.isFetching)
+
+    const dispatch = useDispatch()
+    const signUpp = (username: string, email: string, password: string) =>
+        dispatch(signUp(username, email, password))
+
+    useEffect(() => {
+        dispatch(resetErrors())
+    }, [])
 
     const registerEmail = {
         ...register('email', {
@@ -64,7 +59,7 @@ const SignUp = (props: Props) => {
         }
         setConfirmPassword('')
         const {username, email, password} = data
-        signUp(username, email, password)
+        signUpp(username, email, password)
     }
 
     const userErrors = usernameError || errors.username
@@ -102,7 +97,7 @@ const SignUp = (props: Props) => {
             errorMessage: ' Password do not match',
             errors: confirmPassword,
             registerInput: registerConfirmPassword,
-            inputLabel: 'Repeat Password'
+            inputLabel: 'Repeat password'
         }
     ]
 
@@ -116,6 +111,7 @@ const SignUp = (props: Props) => {
             </h3>
             {inputs.map(i =>
                 <Input
+                    key={i.inputLabel}
                     registerInput={i.registerInput}
                     errors={i.errors}
                     type={i.type}

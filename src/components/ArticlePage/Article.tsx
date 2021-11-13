@@ -7,28 +7,21 @@ import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
 import {Link, Redirect} from "react-router-dom";
 import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../redux/rootReducer";
+import {formatDate} from "../../helper/publishedDate";
+import {setFavorite, removeFavorite, deleteArticle} from "../../redux/Article/articleActions";
 
-type Props = {
-    publishedDate: string
-    currentArticle: ArticleType
-    isLoading: boolean
-    isCurrentArticle: boolean
-    isError: boolean
-    isNoData: boolean
-    setFavorite: (slug: string) => void
-    removeFavorite: (slug: string) => void
-    deleteArticle: (slug: string) => void
-    isAuth: boolean
-    username: string
-}
+const Article = () => {
 
-const Article = (props: Props) => {
-    const {
-        currentArticle, isLoading, publishedDate,
-        isCurrentArticle, isError, setFavorite,
-        removeFavorite, isNoData, isAuth, deleteArticle,
-        username
-    } = props
+    const currentArticle = useSelector<AppStateType, ArticleType>(s => s.articles.currentArticle)
+    const isLoading = useSelector<AppStateType, boolean>(s => s.articles.isLoading)
+    const isError = useSelector<AppStateType, boolean>(s => s.articles.isError)
+    const isNoData = useSelector<AppStateType, boolean>(s => s.articles.isNoData)
+    const isAuth = useSelector<AppStateType, boolean>(s => s.auth.isAuth)
+    const username = useSelector<AppStateType, string>(s => s.auth.user?.user?.username)
+
+    const dispatch = useDispatch()
 
     const {
         title, body, favoritesCount,
@@ -52,24 +45,27 @@ const Article = (props: Props) => {
     const clickLike = (slug: string) => {
         if (isLiked) {
             setIsLiked(false)
-            removeFavorite(slug)
+            dispatch(removeFavorite(slug))
             setLikeCount(likeCount - 1)
         } else {
             setIsLiked(true)
-            setFavorite(slug)
+            dispatch(setFavorite(slug))
             setLikeCount(likeCount + 1)
         }
     }
 
-    const avatarSrc = currentArticle?.author?.image || defaultAvatar
-
     const clickDeleteArticle = (slug: string) => {
-        deleteArticle(slug)
+        dispatch(deleteArticle(slug))
         setIsRedirect(true)
     }
 
+    const avatarSrc = currentArticle?.author?.image || defaultAvatar
+    const isVisibleActions = isAuth && author?.username === username
+    const publishedDate = formatDate(currentArticle?.createdAt)
+    const isCurrentArticle = !!Object.keys(currentArticle).length
+
     const tagsRender = () => {
-        return tagList?.map((tag, index) =>
+        return tagList?.map(tag =>
             <div
                 key={tag}
                 className="header-article__tag-item">
@@ -77,8 +73,6 @@ const Article = (props: Props) => {
             </div>
         )
     }
-
-    const isVisibleActions = isAuth && author?.username === username
 
     return (
         <div className='container'>
@@ -126,7 +120,8 @@ const Article = (props: Props) => {
                                 <img className='header-article__avatar' src={avatarSrc} alt=""/>
                             </div>
                         </div>
-                        {isVisibleActions && <div>
+                        {isVisibleActions &&
+                        <div>
                             <ConfirmDelete
                                 slug={slug}
                                 clickDeleteArticle={clickDeleteArticle}
@@ -136,7 +131,8 @@ const Article = (props: Props) => {
                                 to={`/article/${slug}/edit-article`}>
                                 Edit
                             </Link>
-                        </div>}
+                        </div>
+                        }
                     </div>
                 </header>
                 <div className="article-page__text">

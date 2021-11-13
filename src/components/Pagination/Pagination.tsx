@@ -1,10 +1,11 @@
 import React from "react";
 import {Pagination} from "antd";
 import {RouteComponentProps, withRouter} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {setCurrentPage} from "../../redux/App/appActions";
 
 type Props = {
     currentPage: number
-    setCurrentPage: (number: number) => void
     totalArticles: number
     history: {
         push: (page: string) => void
@@ -13,19 +14,21 @@ type Props = {
 
 const AppPagination = (props: Props) => {
     const {
-        currentPage, setCurrentPage,
+        currentPage,
         history, totalArticles,
     } = props
 
+    const dispatch = useDispatch()
+
     return (
         <Pagination current={currentPage}
-                    defaultPageSize={20}
+                    defaultPageSize={10}
                     showSizeChanger={false}
                     total={totalArticles}
                     className='pagination'
                     onChange={page => {
                         history.push(`/articles/page/${page}`)
-                        setCurrentPage(page)
+                        dispatch(setCurrentPage(page))
                     }}/>
     )
 }

@@ -4,24 +4,28 @@ import './SignIn.scss';
 import {useForm} from 'react-hook-form';
 import Input from '../Input/Input';
 import {InputType} from "../../types/types";
+import {resetErrors, signIn} from "../../redux/Auth/authActions";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../redux/rootReducer";
 
-type Props = {
-    signIn: (email: string, password: string) => void
-    isFetching: boolean
-    invalidAuth: string
-    resetErrors: () => void
-}
+const SignIn = () => {
 
-const SignIn = (props: Props) => {
+    const dispatch = useDispatch()
 
-    const {signIn, isFetching, invalidAuth, resetErrors} = props
-
-    useEffect(() => {
-        resetErrors()
-    }, [])
+    const isFetching = useSelector<AppStateType, boolean>(state => state.auth.isFetching)
+    const invalidAuth = useSelector<AppStateType, string>(state => state.auth.invalidError)
 
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
+
+    useEffect(() => {
+        dispatch(resetErrors())
+    }, [])
+
+    const onSubmit = (data: any) => {
+        const {email, password} = data
+        dispatch(signIn(email, password))
+    }
 
     const registerEmail = {
         ...register('email', {
@@ -35,11 +39,6 @@ const SignIn = (props: Props) => {
             minLength: 5,
             maxLength: 40
         })
-
-    }
-    const onSubmit = (data: any) => {
-        const {email, password} = data
-        signIn(email, password)
     }
 
     const inputs: Array<InputType> = [
@@ -70,6 +69,7 @@ const SignIn = (props: Props) => {
             </h3>
             {inputs.map(i =>
                 <Input
+                    key={i.inputLabel}
                     registerInput={i.registerInput}
                     errors={i.errors}
                     type={i.type}

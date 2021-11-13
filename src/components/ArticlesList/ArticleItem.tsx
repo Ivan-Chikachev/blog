@@ -5,18 +5,20 @@ import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 import {formatDate} from "../../helper/publishedDate";
 import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
+import {useDispatch, useSelector} from "react-redux";
+import { removeFavorite, setFavorite } from "../../redux/Article/articleActions";
+import {AppStateType} from "../../redux/rootReducer";
 
 type Props = {
     article: ArticleType
-    removeFavorite: (slug: string) => void
-    setFavorite: (slug: string) => void
-    isAuth: boolean
 }
 
-const ArticleItem = (props: Props) => {
+const ArticleItem = ({article}: Props) => {
 
-    const {removeFavorite, article, setFavorite, isAuth} = props
-    const publishedDate = formatDate(article.createdAt)
+    const isAuth = useSelector<AppStateType, boolean>(s=> s.auth.isAuth)
+
+    const dispatch = useDispatch()
+
     const {
         slug, title, favoritesCount,
         author, description, tagList, favorited,
@@ -33,11 +35,11 @@ const ArticleItem = (props: Props) => {
     const clickLike = (slug: string) => {
         if (isLiked) {
             setIsLiked(false)
-            removeFavorite(slug)
+            dispatch(removeFavorite(slug))
             setLikeCount(likeCount - 1)
         } else {
             setIsLiked(true)
-            setFavorite(slug)
+            dispatch(setFavorite(slug))
             setLikeCount(likeCount + 1)
         }
     }
@@ -50,6 +52,7 @@ const ArticleItem = (props: Props) => {
         )
     }
 
+    const publishedDate = formatDate(article.createdAt)
     const avatarSrc = author?.image || defaultAvatar
 
     return (

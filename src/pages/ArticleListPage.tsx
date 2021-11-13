@@ -1,24 +1,19 @@
 import React, {useEffect} from "react";
 import ArticlesList from "../components/ArticlesList/ArticlesList";
 import {getArticles} from "../redux/App/appActions";
-import {connect} from "react-redux";
-
-type DispatchTypes = {
-    getArticles: (offset: number) => void
-}
+import {useDispatch} from "react-redux";
 
 type Props = {
     page: number
 }
 
-type PropTypes = DispatchTypes & Props
 
-const ArticlesListPage = (props: PropTypes) => {
+const ArticlesListPage = ({page}: Props) => {
 
-    const {page, getArticles} = props
+    const dispatch = useDispatch()
 
     useEffect(() => {
-        getArticles(page)
+        dispatch(getArticles(page))
     }, [page])
 
     return (
@@ -28,8 +23,4 @@ const ArticlesListPage = (props: PropTypes) => {
     )
 }
 
-const mapDispatchToProps = {
-    getArticles
-}
-
-export default connect(()=> ({}), mapDispatchToProps)(ArticlesListPage);
+export default ArticlesListPage

@@ -4,14 +4,16 @@ import {useForm} from "react-hook-form";
 import classNames from "classnames";
 import {UpdateUserType} from "../../types/types";
 import {Redirect} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "../../redux/rootReducer";
+import { updateUser } from '../../redux/User/userActions';
 
-type props = {
-    updateUser: (user: UpdateUserType) => void
-    isLoading: boolean
-    username: string
-}
+const EditProfile = () => {
 
-const EditProfile = ({updateUser, isLoading, username}: props) => {
+    const isLoading = useSelector<AppStateType, boolean>(s=> s.user.isFetching)
+    const username = useSelector<AppStateType, string>(s=> s.auth.user?.user?.username)
+
+    const dispatch = useDispatch()
 
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
@@ -31,7 +33,7 @@ const EditProfile = ({updateUser, isLoading, username}: props) => {
             image: avatar,
             token: ''
         }
-        updateUser(user)
+        dispatch(updateUser(user))
         setIsRedirect(true)
     }
 

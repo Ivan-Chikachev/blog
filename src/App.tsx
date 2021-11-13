@@ -1,8 +1,8 @@
 import React, {useEffect} from 'react';
 import './App.scss';
 import Header from "./components/Header/Header";
-import {BrowserRouter, Redirect, Route} from "react-router-dom";
-import {connect} from "react-redux";
+import {BrowserRouter, Route} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
 import {AppStateType} from "./redux/rootReducer";
 import ArticlePage from "./pages/ArticlePage";
 import ArticlesListPage from "./pages/ArticleListPage";
@@ -11,49 +11,38 @@ import SignUpPage from "./pages/SignUpPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import CreateArticlePage from "./pages/CreateArticlePage";
 import EditArticlePage from "./pages/EditArticlePage";
-import {loginToken, logout} from './redux/Auth/authActions';
+import {loginToken} from './redux/Auth/authActions';
 import {LS} from './loacalStorage/localStorage';
 import {AlertType} from "./types/types";
 import Alert from "./components/Alert/Alert";
 
-type StateTypes = {
-    isAuth: boolean
-    username: string
-    avatarSrc: string | null
-    isFetching: boolean,
-    isShowAlert: boolean,
-    alert: AlertType
-}
+const App = () => {
 
-type DispatchTypes = {
-    logout: () => void
-    loginToken: () => void
-}
+    const isAuth = useSelector<AppStateType, boolean>(s => s.auth.isAuth)
+    const username = useSelector<AppStateType, string>(s => s.auth.user.user?.username)
+    const avatarSrc = useSelector<AppStateType, string | null>(s => s.auth.user.user?.image)
+    const isShowAlert = useSelector<AppStateType, boolean>(s => s.app.isShowAlert)
+    const alert = useSelector<AppStateType, AlertType>(s => s.app.alert)
 
-type Props = StateTypes & DispatchTypes
-
-
-const App = (props: Props) => {
-
-    const {isShowAlert, alert, loginToken, isAuth, logout, username, avatarSrc} = props
-
-    const token = LS.getToken()
+    const dispatch = useDispatch()
 
     useEffect(() => {
+        const token = LS.getToken()
         if (token) {
-            loginToken()
+            dispatch(loginToken())
         }
     }, [])
 
     return (
         <BrowserRouter>
             <div className='wrapper'>
-                {isShowAlert && <Alert
-                    type={alert.type}
-                    message={alert.msg}
-                />}
+                {isShowAlert &&
+                    <Alert
+                        type={alert.type}
+                        message={alert.msg}
+                    />
+                }
                 <Header
-                    logout={logout}
                     isAuth={isAuth}
                     username={username}
                     avatarSrc={avatarSrc}/>
@@ -86,20 +75,4 @@ const App = (props: Props) => {
     );
 }
 
-
-const mapStateToProps = (state: AppStateType): StateTypes => ({
-    isFetching: state.auth.isFetching,
-    isAuth: state.auth.isAuth,
-    username: state.auth.user.user?.username,
-    avatarSrc: state.auth.user.user?.image,
-    isShowAlert: state.app.isShowAlert,
-    alert: state.app.alert
-})
-
-const mapDispatchToProps = {
-    logout,
-    loginToken
-}
-
-export default connect<StateTypes, DispatchTypes, {}, AppStateType>(mapStateToProps, mapDispatchToProps)(App);
-
+export default App
