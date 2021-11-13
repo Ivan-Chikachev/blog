@@ -3,6 +3,8 @@ import './SignUp.scss';
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
+import {InputType} from "../../types/types";
+import Input from "../Input/Input";
 
 type Props = {
     signUp: (username: string, email: string, password: string) => void
@@ -69,6 +71,41 @@ const SignUp = (props: Props) => {
     const passwordErrors = passwordError || errors.password
     const emailErrors = emailError || errors.email
 
+    const inputs: Array<InputType> = [
+        {
+            type: 'text',
+            placeholder: 'Username',
+            errorMessage: usernameError || 'Username must contain 3-20 characters',
+            errors: userErrors,
+            registerInput: registerUsername,
+            inputLabel: 'Username'
+        },
+        {
+            type: 'email',
+            placeholder: 'Email address',
+            errorMessage: emailError || 'Please, enter a valid email',
+            errors: emailErrors,
+            registerInput: registerEmail,
+            inputLabel: 'Email address'
+        },
+        {
+            type: 'password',
+            placeholder: 'Password',
+            errorMessage: 'Password must contain 6-40 characters',
+            errors: passwordErrors,
+            registerInput: registerPassword,
+            inputLabel: 'Password'
+        },
+        {
+            type: 'password',
+            placeholder: 'Repeat password',
+            errorMessage: ' Password do not match',
+            errors: confirmPassword,
+            registerInput: registerConfirmPassword,
+            inputLabel: 'Repeat Password'
+        }
+    ]
+
     return (
         <form
             className='create-acc'
@@ -77,57 +114,17 @@ const SignUp = (props: Props) => {
             <h3 className='create-acc__title'>
                 Create new account
             </h3>
-            <p className="create-acc__label">
-                Username
-            </p>
-            <input
-                placeholder='Username'
-                type="text"
-                className={classNames({
-                    "create-acc__input": true,
-                    'input-error': userErrors
-                })}
-                {...registerUsername}
-            />
-            {(userErrors) && <span className='error-label'>
-                {usernameError || 'Username must contain 3-20 characters'}
-            </span>}
-
-            <p className="create-acc__label">
-                Email address
-            </p>
-            <input
-                placeholder='Email address'
-                type="email"
-                className={`${emailErrors ? 'input-error' : ''} create-acc__input`}
-                {...registerEmail}/>
-            {emailErrors && <span className='error-label'>
-              {emailError || 'Please, enter a valid email'}
-            </span>}
-
-            <p className="create-acc__label">
-                Password
-            </p>
-            <input
-                placeholder='Password'
-                type="password"
-                className={`${passwordErrors ? 'input-error' : ''} create-acc__input`}
-                {...registerPassword}/>
-            {passwordErrors && <span className='error-label'>
-             {passwordError || 'Password must contain 6-40 characters'}
-            </span>}
-
-            <p className="create-acc__label">
-                Repeat Password
-            </p>
-            <input
-                placeholder='Password'
-                type="password" className="create-acc__input"
-                {...registerConfirmPassword}/>
-            {confirmPassword && <span className='error-label'>
-              Password do not match
-            </span>}
-
+            {inputs.map(i =>
+                <Input
+                    registerInput={i.registerInput}
+                    errors={i.errors}
+                    type={i.type}
+                    errorMessage={i.errorMessage}
+                    inputLabel={i.inputLabel}
+                    placeholder={i.placeholder}
+                    className={i.className}
+                />
+            )}
             <div className='create-acc__line'/>
             <div className="create-acc__agree">
                 <label>

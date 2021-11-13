@@ -3,8 +3,9 @@ import React, {useState} from "react";
 import Tag from "./Tag";
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
-import {createArticleType, updateArticleType} from "../../types/types";
+import {createArticleType, InputType, updateArticleType} from "../../types/types";
 import {Redirect} from "react-router";
+import Input from "../Input/Input";
 
 type Props = {
     title: string
@@ -60,6 +61,23 @@ const ChangeArticle = (props: Props) => {
     }
     const isError = Boolean(Object.keys(errors).length)
 
+    const inputs: Array<InputType> = [
+        {
+            type: 'text',
+            placeholder: 'Title',
+            errors: errors.title,
+            registerInput: registerTitle,
+            inputLabel: 'Title'
+        },
+        {
+            type: 'text',
+            placeholder: 'Short description',
+            errors: errors.description,
+            registerInput: registerDescription,
+            inputLabel: 'Short description'
+        }
+    ]
+
     return (
         <div>
             <form className='create-article'
@@ -68,28 +86,17 @@ const ChangeArticle = (props: Props) => {
                 <h3 className='create-article__title'>
                     {title}
                 </h3>
-                <p className="create-article__label">
-                    Title
-                </p>
-                <input
-                    placeholder='Title'
-                    type="text"
-                    className={classNames({
-                        "create-article__input": true,
-                        'input-error': errors.title
-                    })}
-                    {...registerTitle}/>
-                <p className="create-article__label">
-                    Short description
-                </p>
-                <input
-                    placeholder='Short description'
-                    type="text"
-                    className={classNames({
-                        "create-article__input": true,
-                        'input-error': errors.description
-                    })}
-                    {...registerDescription}/>
+                {inputs.map(i =>
+                    <Input
+                        registerInput={i.registerInput}
+                        errors={i.errors}
+                        type={i.type}
+                        errorMessage={i.errorMessage}
+                        inputLabel={i.inputLabel}
+                        placeholder={i.placeholder}
+                        className={i.className}
+                    />
+                )}
                 <p className="create-article__label">
                     Text
                 </p>

@@ -2,6 +2,8 @@ import React, {useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import './SignIn.scss';
 import {useForm} from 'react-hook-form';
+import Input from '../Input/Input';
+import {InputType} from "../../types/types";
 
 type Props = {
     signIn: (email: string, password: string) => void
@@ -40,8 +42,24 @@ const SignIn = (props: Props) => {
         signIn(email, password)
     }
 
-    const passwordErrors = errors.password
-    const emailErrors = errors.email
+    const inputs: Array<InputType> = [
+        {
+            type: 'email',
+            placeholder: 'Email address',
+            errorMessage: 'Please, enter a valid email',
+            errors: errors.email,
+            registerInput: registerEmail,
+            inputLabel: 'Email address'
+        },
+        {
+            type: 'password',
+            placeholder: 'Password',
+            errorMessage: 'Password must contain 6-40 characters',
+            errors: errors.password,
+            registerInput: registerPassword,
+            inputLabel: 'Password'
+        }
+    ]
 
     return (
         <form
@@ -50,32 +68,22 @@ const SignIn = (props: Props) => {
             <h3 className='sign-in__title'>
                 Sign In
             </h3>
-            <p className='sign-in__label'>
-                Email address
-            </p>
-            <input
-                placeholder='Email address'
-                type='email'
-                className={`${emailErrors ? 'input-error' : ''} sign-in__input`}
-                {...registerEmail}/>
-            {emailErrors && <span className='error-label'>
-              Please, enter a valid email
-            </span>}
-            <p className='sign-in__label'>
-                Password
-            </p>
-            <input
-                placeholder='Password'
-                type='password'
-                className={`${passwordErrors ? 'input-error' : ''} sign-in__input`}
-                {...registerPassword}/>
-            {passwordErrors && <span className='error-label'>
-             Password must contain 6-40 characters
-            </span>}
-
-            {invalidAuth && <div className='error-label'>
-                {`Email or password ${invalidAuth}`}
-            </div>}
+            {inputs.map(i =>
+                <Input
+                    registerInput={i.registerInput}
+                    errors={i.errors}
+                    type={i.type}
+                    errorMessage={i.errorMessage}
+                    inputLabel={i.inputLabel}
+                    placeholder={i.placeholder}
+                    className={i.className}
+                />
+            )}
+            {invalidAuth &&
+                <div className='error-label'>
+                    {`Email or password ${invalidAuth}`}
+                </div>
+            }
             <button
                 className='sign-in__btn btn btn__for-modal btn__primary-bg'
                 type={'submit'}

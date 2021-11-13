@@ -5,6 +5,17 @@ import {AppStateType} from "../redux/rootReducer";
 import {authActions} from "../redux/Auth/authActions";
 import { userActions } from "../redux/User/userActions";
 
+export type InputType = {
+    placeholder: string
+    type: string
+    errors: string
+    registerInput: object
+    errorMessage?: string
+    inputLabel: string
+    className?: string
+    value?: string
+}
+
 export type UpdateUserType = {
     "email": string,
     "token": string,

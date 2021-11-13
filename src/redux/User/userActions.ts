@@ -1,4 +1,4 @@
-import {ThunkAppType, ThunkUserType, UpdateUserType} from "../../types/types";
+import {ThunkAppType, UpdateUserType} from "../../types/types";
 import blogAPI from "../../services/api";
 import {appActions} from "../App/appActions";
 
