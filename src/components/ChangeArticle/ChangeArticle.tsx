@@ -13,12 +13,12 @@ type Props = {
     updateSubmit?: (slug: string, article: updateArticleType) => void
     isLoading: boolean,
     slug?: string,
-    article?: ArticleType
+    currentArticle?: ArticleType
 }
 
 const ChangeArticle = (props: Props) => {
 
-    const {title, createSubmit, updateSubmit, isLoading, slug, article} = props
+    const {title, createSubmit, updateSubmit, isLoading, slug, currentArticle} = props
 
     const [tags, setTags] = useState<Array<string>>([])
     const [isRedirect, setIsRedirect] = useState(false)
@@ -48,19 +48,19 @@ const ChangeArticle = (props: Props) => {
     const registerTitle = {
         ...register('title', {
             required: true,
-            value: article?.title || ''
+            value: currentArticle?.title || ''
         })
     }
     const registerDescription = {
         ...register('description', {
             required: true,
-            value: article?.description || ''
+            value: currentArticle?.description || ''
         })
     }
     const registerText = {
         ...register('text', {
             required: true,
-            value: article?.body || ''
+            value: currentArticle?.body || ''
         })
     }
     const isError = Boolean(Object.keys(errors).length)

@@ -1,14 +1,8 @@
 import React, {useEffect} from "react";
-import {connect} from "react-redux";
 import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
 import {updateArticle} from "../redux/Article/articleActions";
-import {updateArticleType} from "../types/types";
 import {RouteComponentProps, withRouter} from "react-router-dom";
-import {useAppSelector} from "../hooks/reduxHook";
-
-type DispatchTypes = {
-    updateArticle: (slug: string, article: updateArticleType) => void
-}
+import {useAppDispatch, useAppSelector} from "../hooks/reduxHook";
 
 type Props = {
     slug: string,
@@ -17,32 +11,28 @@ type Props = {
     }
 }
 
-type PropsType = DispatchTypes & Props
-
-const EditArticlePage = (props: PropsType) => {
-    const {updateArticle, slug, history} = props
+const EditArticlePage = (props: Props) => {
+    const {slug, history} = props
 
     const isLoading = useAppSelector(s => s.app.isLoading)
-    const article = useAppSelector(s => s.articles.currentArticle)
+    const currentArticle = useAppSelector(s => s.articles.currentArticle)
 
-    useEffect(()=> {
+    const dispatch = useAppDispatch()
+
+    useEffect(() => {
         history.push(`/article/${slug}/edit-article`)
     }, [])
 
+    const submit = dispatch(() => updateArticle)
+
     return (
         <ChangeArticle
-            article={article}
             slug={slug}
-            updateSubmit={updateArticle}
+            updateSubmit={submit}
             isLoading={isLoading}
+            currentArticle={currentArticle}
             title={'Edit article'}/>
     )
 }
 
-const mapDispatchToProps = {
-    updateArticle
-}
-
-
-export default connect(
-    ()=>({}), mapDispatchToProps)(withRouter<Props & RouteComponentProps<{}>, any>(EditArticlePage))
+export default (withRouter<Props & RouteComponentProps<{}>, any>(EditArticlePage))
