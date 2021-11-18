@@ -1,4 +1,5 @@
-import {ActionsArticlesType, AlertType, ArticleType} from "../../types/types";
+import {AlertType, ArticleType} from "../../types/types";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
     articles: [] as Array<ArticleType>,
@@ -11,23 +12,39 @@ const initialState = {
 };
 type InitialStateType = typeof initialState
 
-export const appReducer = (state = initialState, action: ActionsArticlesType): InitialStateType => {
-    switch (action.type) {
-        case 'GET_ARTICLES':
-            return {...state, articles: action.articles, totalArticles: action.total, isError: false};
-        case "SET_CURRENT_PAGE":
-            return {...state, articles: [], currentPage: action.number}
-        case "FETCHING_ON":
-            return {...state, isLoading: true}
-        case "FETCHING_OFF":
-            return {...state, isLoading: false}
-        case "ON_ERROR":
-            return {...state, isError: true}
-        case "SHOW_ALERT":
-            return {...state, isShowAlert: true, alert: {msg: action.val.msg, type: action.val.type}}
-        case "CLOSE_ALERT":
-            return {...state, isShowAlert: false, alert: {...state.alert, msg: ''}}
-        default:
-            return state
+const appSlice = createSlice({
+    name: 'app',
+    initialState,
+    reducers: {
+        GET_ARTICLES(state, action: PayloadAction<{ articles: ArticleType[], articlesCount: number }>) {
+            state.articles = action.payload.articles
+            state.isError = false
+            state.totalArticles = action.payload.articlesCount
+        },
+        SET_CURRENT_PAGE(state, action: PayloadAction<number>) {
+            state.articles = []
+            state.currentPage = action.payload
+        },
+        FETCHING_ON(state) {
+            state.isLoading = true
+        },
+        FETCHING_OFF(state) {
+            state.isLoading = false
+        },
+        ON_ERROR(state) {
+            state.isError = true
+        },
+        SHOW_ALERT(state, action: PayloadAction<AlertType>) {
+            state.isShowAlert = true
+            state.alert = {msg: action.payload.msg, type: action.payload.type}
+        },
+        CLOSE_ALERT(state) {
+            state.isShowAlert = false
+            state.alert = {...state.alert, msg: ''}
+        }
     }
-}
+})
+
+export const appReducer = appSlice.reducer
+export const appActions = appSlice.actions
+

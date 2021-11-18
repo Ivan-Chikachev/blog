@@ -1,27 +1,22 @@
 import React, {useEffect, useState} from "react";
 import './Article.scss'
 import Loading from "../Loading/Loading";
-import {ArticleType} from "../../types/types";
 import Error from "../Error/Error";
 import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
 import {Link, Redirect} from "react-router-dom";
 import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "../../redux/rootReducer";
 import {formatDate} from "../../helper/publishedDate";
-import {setFavorite, removeFavorite, deleteArticle} from "../../redux/Article/articleActions";
+import {deleteArticle, removeFavorite, setFavorite} from "../../redux/Article/articleActions";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
 const Article = () => {
 
-    const currentArticle = useSelector<AppStateType, ArticleType>(s => s.articles.currentArticle)
-    const isLoading = useSelector<AppStateType, boolean>(s => s.articles.isLoading)
-    const isError = useSelector<AppStateType, boolean>(s => s.articles.isError)
-    const isNoData = useSelector<AppStateType, boolean>(s => s.articles.isNoData)
-    const isAuth = useSelector<AppStateType, boolean>(s => s.auth.isAuth)
-    const username = useSelector<AppStateType, string>(s => s.auth.user?.user?.username)
+    const {isError, isNoData, currentArticle, isLoading} = useAppSelector(s => s.articles)
+    const isAuth = useAppSelector(s => s.auth.isAuth)
+    const username = useAppSelector(s => s.auth.user?.user?.username)
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const {
         title, body, favoritesCount,

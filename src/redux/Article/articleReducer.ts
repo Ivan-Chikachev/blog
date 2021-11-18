@@ -1,4 +1,5 @@
-import {ActionsArticlePageType, ArticleType} from "../../types/types";
+import {ArticleType} from "../../types/types";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
     currentArticle: {} as ArticleType,
@@ -7,21 +8,28 @@ const initialState = {
     isNoData: false,
 };
 
-type InitialStateType = typeof initialState
-
-export const articleReducer = (state = initialState, action: ActionsArticlePageType): InitialStateType => {
-    switch (action.type) {
-        case "GET_CURRENT_ARTICLE":
-            return {...state, currentArticle: action.article, isError: false}
-        case "ON_ERROR":
-            return {...state, isError: true}
-        case "SET_NO_DATA":
-            return {...state, isNoData: true}
-        case "FETCHING_ON":
-            return {...state, isLoading: true}
-        case "FETCHING_OFF":
-            return {...state, isLoading: false}
-        default:
-            return state
+const articlesSlice = createSlice({
+    name: 'articles',
+    initialState,
+    reducers: {
+        GET_CURRENT_ARTICLE(state, action: PayloadAction<ArticleType>) {
+            state.currentArticle = action.payload
+            state.isError = false
+        },
+        ON_ERROR(state) {
+            state.isError = true
+        },
+        SET_NO_DATA(state) {
+            state.isNoData = true
+        },
+        FETCHING_ON(state) {
+            state.isLoading = true
+        },
+        FETCHING_OFF(state) {
+            state.isLoading = false
+        },
     }
-}
+})
+
+export const articlesReducer = articlesSlice.reducer
+export const articlesActions = articlesSlice.actions

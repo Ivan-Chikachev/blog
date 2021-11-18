@@ -1,4 +1,4 @@
-import {ActionsUserType} from "../../types/types";
+import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     isFetching: false,
@@ -6,13 +6,18 @@ const initialState = {
 
 type InitialStateType = typeof initialState
 
-export const userReducer = (state = initialState, action: ActionsUserType): InitialStateType => {
-    switch (action.type) {
-        case "FETCHING_OFF":
-            return {...state, isFetching: false}
-        case "FETCHING_ON":
-            return {...state, isFetching: true}
-        default:
-            return state
+const userSlice = createSlice({
+    name: 'user',
+    initialState,
+    reducers: {
+        FETCHING_OFF(state) {
+            state.isFetching = false
+        },
+        FETCHING_ON(state) {
+            state.isFetching = true
+        },
     }
-}
+})
+
+export const userReducer = userSlice.reducer
+export const userActions = userSlice.actions

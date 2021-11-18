@@ -1,48 +1,36 @@
-import {ArticleType, createArticleType, ThunkAppType, ThunkArticleType, updateArticleType} from "../../types/types";
+import {createArticleType, updateArticleType} from "../../types/types";
 import blogAPI from "../../services/api";
-import {Dispatch} from "redux";
-import {appActions} from "../App/appActions";
+import {articlesActions} from "./articleReducer";
+import {AppDispatch} from "../rootReducer";
+import {appActions} from "../App/appReducer";
 
-export const articlesActions = {
-    getCurrentArticle: (article: ArticleType) => ({
-        type: 'GET_CURRENT_ARTICLE',
-        article
-    } as const),
-    onError: () => ({
-        type: 'ON_ERROR'
-    } as const),
-    setNoData: () => ({
-        type: 'SET_NO_DATA'
-    } as const),
-    fetchingOff: () => ({type: "FETCHING_OFF"} as const),
-    fetchingOn: () => ({type: "FETCHING_ON"} as const),
-}
+export const getCurrentArticle = (slug: string) => {
+    return async (dispatch: AppDispatch) => {
 
-export const getCurrentArticle = (slug: string): ThunkArticleType => {
-    return async (dispatch) => {
-
-        dispatch(articlesActions.fetchingOn())
+        dispatch(articlesActions.FETCHING_ON())
         try {
             const res = await blogAPI.getArticle(slug);
             const data = res.data
             const article = data.article
 
             if (!Object.keys(article).length) {
-                dispatch(articlesActions.setNoData())
+                dispatch(articlesActions.SET_NO_DATA())
             }
 
-            const action = articlesActions.getCurrentArticle(article)
+            const action = articlesActions.GET_CURRENT_ARTICLE(article)
             dispatch(action)
 
         } catch (e) {
-            dispatch(articlesActions.onError())
+            dispatch(articlesActions.ON_ERROR())
         }
-        dispatch(articlesActions.fetchingOff())
+        finally {
+            dispatch(articlesActions.FETCHING_OFF())
+        }
     }
 }
 
-export const setFavorite = (slug: string): ThunkArticleType => {
-    return async (dispatch) => {
+export const setFavorite = (slug: string) => {
+    return async () => {
         try {
             blogAPI.setFavorite(slug)
         } catch (e) {
@@ -51,8 +39,8 @@ export const setFavorite = (slug: string): ThunkArticleType => {
     }
 }
 
-export const removeFavorite = (slug: string): ThunkArticleType => {
-    return async (dispatch) => {
+export const removeFavorite = (slug: string) => {
+    return async () => {
         try {
             blogAPI.removeFavorite(slug)
         } catch (e) {
@@ -61,71 +49,71 @@ export const removeFavorite = (slug: string): ThunkArticleType => {
     }
 }
 
-export const createArticle = (article: createArticleType): ThunkAppType => {
-    return async (dispatch) => {
-        dispatch(articlesActions.fetchingOn())
+export const createArticle = (article: createArticleType) => {
+    return async (dispatch: AppDispatch) => {
+        dispatch(articlesActions.FETCHING_ON())
 
         try {
             const res = await blogAPI.createArticle(article)
             if (res.status === 200) {
-                dispatch(appActions.showAlert({
+                dispatch(appActions.SHOW_ALERT({
                     msg: 'Article created successfully', type: 'success'
                 }))
             }
         } catch (e) {
-            dispatch(appActions.showAlert({
+            dispatch(appActions.SHOW_ALERT({
                 msg: 'Such an article already exists', type: "error"
             }))
         }
-        dispatch(articlesActions.fetchingOff())
+        dispatch(articlesActions.FETCHING_OFF())
 
         setTimeout(() => {
-            dispatch(appActions.closeAlert())
+            dispatch(appActions.CLOSE_ALERT())
         }, 3000)
     }
 }
 
-export const updateArticle = (slug: string, article: updateArticleType): ThunkAppType => {
-    return async (dispatch) => {
-        dispatch(articlesActions.fetchingOn())
+export const updateArticle = (slug: string, article: updateArticleType) => {
+    return async (dispatch: AppDispatch) => {
+        dispatch(articlesActions.FETCHING_ON())
 
         try {
             const res = await blogAPI.updateArticle(slug, article)
             if (res.status === 200) {
-                dispatch(appActions.showAlert({
+                dispatch(appActions.SHOW_ALERT({
                     msg: 'Article updated successfully', type: 'success'
                 }))
             }
         } catch (e) {
-            dispatch(appActions.showAlert({
+            dispatch(appActions.SHOW_ALERT({
                 msg: 'Error', type: "error"
             }))
         }
-        dispatch(articlesActions.fetchingOff())
+        dispatch(articlesActions.FETCHING_OFF())
 
         setTimeout(() => {
-            dispatch(appActions.closeAlert())
+            dispatch(appActions.CLOSE_ALERT())
         }, 3000)
     }
 }
 
-export const deleteArticle = (slug: string): ThunkAppType => {
-    return async (dispatch) => {
+export const deleteArticle = (slug: string) => {
+    return async (dispatch: AppDispatch) => {
         try {
             const res = await blogAPI.deleteArticle(slug)
             if (res.status === 204) {
-                dispatch(appActions.showAlert({
+                dispatch(appActions.SHOW_ALERT({
                     msg: 'Article deleted', type: 'success'
                 }))
             }
         } catch (e) {
-            dispatch(appActions.showAlert({
+            dispatch(appActions.SHOW_ALERT({
                 msg: 'Error', type: "error"
             }))
         }
 
         setTimeout(() => {
-            dispatch(appActions.closeAlert())
+            dispatch(appActions.CLOSE_ALERT())
         }, 3000)
     }
 }

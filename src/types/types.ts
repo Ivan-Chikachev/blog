@@ -1,10 +1,3 @@
-import {ThunkAction} from "redux-thunk";
-import {articlesActions} from "../redux/Article/articleActions";
-import {appActions} from "../redux/App/appActions";
-import {AppStateType} from "../redux/rootReducer";
-import {authActions} from "../redux/Auth/authActions";
-import { userActions } from "../redux/User/userActions";
-
 export type InputType = {
     placeholder: string
     type: string
@@ -39,10 +32,10 @@ export type updateArticleType = {
 
 export type AlertType = {
     msg: string
-    type: typesIsAlert
+    type: typesOfAlert
 }
 
-export type typesIsAlert = 'success' | 'error' | 'warning' | 'info'
+export type typesOfAlert = 'success' | 'error' | 'warning' | 'info'
 
 export type AuthUserType = {
     user: {
@@ -52,6 +45,7 @@ export type AuthUserType = {
         "bio": string,
         "image": null | string
     }
+    "errors"?: string
 }
 
 export type GetListArticlesType = {
@@ -106,33 +100,3 @@ export type CommentType = {
         "author": _ProfileType
     }
 }
-
-// Base types
-
-type PropType<T> = T extends { [key: string]: infer U } ? U : never
-
-type InferActionsType<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropType<T>>
-
-// App
-
-export type ActionsArticlesType = InferActionsType<typeof appActions>
-
-export type ThunkAppType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlesType>
-
-// Article
-
-export type ActionsArticlePageType = InferActionsType<typeof articlesActions>
-
-export type ThunkArticleType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlePageType>
-
-// Auth
-
-export type ActionsAuthType = InferActionsType<typeof authActions>
-
-export type ThunkAuthType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsAuthType>
-
-// User
-
-export type ActionsUserType = InferActionsType<typeof userActions>
-
-export type ThunkUserType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsUserType>

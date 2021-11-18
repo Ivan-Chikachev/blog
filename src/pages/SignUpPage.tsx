@@ -1,12 +1,11 @@
 import React from "react";
 import SignUp from "../components/SignUp/SignUp";
-import {AppStateType} from "../redux/rootReducer";
-import {useSelector} from "react-redux";
 import {Redirect} from "react-router-dom";
+import {useAppSelector} from "../hooks/reduxHook";
 
 const SignUpPage = () => {
 
-    const isAuth = useSelector<AppStateType, boolean>(state => state.auth.isAuth)
+    const isAuth = useAppSelector(state => state.auth.isAuth)
 
     if (isAuth) {
         return <Redirect to='/articles/page/1'/>
