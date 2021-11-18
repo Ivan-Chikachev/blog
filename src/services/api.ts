@@ -1,4 +1,10 @@
-import {AuthUserType, GetListArticlesType, ProfileType} from '../types/types';
+import {
+    AuthUserType,
+    createArticleType,
+    GetListArticlesType,
+    updateArticleType,
+    UpdateUserType
+} from '../types/types';
 import instance from '../http';
 
 const blogAPI = {
@@ -8,11 +14,6 @@ const blogAPI = {
             .post<AuthUserType>('users/login', {
                 user: {email, password}
             })
-    },
-
-    loginToken() {
-        return instance
-            .post<AuthUserType>('users/login',)
     },
 
     register(username: string, email: string, password: string) {
@@ -29,47 +30,37 @@ const blogAPI = {
         return instance
             .get<AuthUserType>('user');
     },
-    updateUser(email: string, bio: string, image: string) {
+    updateUser(user: UpdateUserType) {
         return instance
-            .put<AuthUserType>('user', {
-                user: {
-                    email,
-                    bio,
-                    image
-                }
-            });
-    },
-    getProfile(username: string) {
-        return instance
-            .get<ProfileType>(`profiles/${username}`);
-    },
-    followUser(username: string) {
-        return instance
-            .post<ProfileType>(`profiles/${username}/follow`);
-    },
-    unfollowUser(username: string) {
-        return instance
-            .delete<ProfileType>(`profiles/${username}/follow`);
+            .put<AuthUserType>('user', {user});
     },
     getListArticles(count: number = 0) {
         return instance
-            .get<GetListArticlesType>(`articles?offset=${count}`);
-    },
-    getFeedArticles() {
-        return instance
-            .get(`articles/feed`);
+            .get<GetListArticlesType>(`articles?limit=10&offset=${count}`);
     },
     getArticle(slug: string) {
         return instance
             .get(`articles/${slug}`);
     },
-    createArticle() {
+    createArticle(article: createArticleType) {
         return instance
-            .post(`articles`, {});
+            .post(`articles`, {article});
+    },
+    updateArticle(slug: string, article: updateArticleType) {
+        return instance
+            .put(`articles/${slug}`, {article});
+    },
+    deleteArticle(slug: string) {
+        return instance
+            .delete(`articles/${slug}`);
     },
     setFavorite(slug: string) {
         return instance
             .post(`articles/${slug}/favorite`, {slug});
+    },
+    removeFavorite(slug: string) {
+        return instance
+            .delete(`articles/${slug}/favorite`)
     }
 };
 

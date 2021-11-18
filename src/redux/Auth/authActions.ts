@@ -1,53 +1,41 @@
-import {AuthUserType, AuthErrorType, ThunkAuthType} from "../../types/types";
 import blogAPI from "../../services/api";
-import {Dispatch} from "redux";
 import {LS} from "../../loacalStorage/localStorage";
+import {AppDispatch} from "../rootReducer";
+import {authActions} from "./authReducer";
+import {appActions} from "../App/appReducer";
 
-export const authActions = {
-    login: (data: any) => ({
-        type: "LOGIN",
-        data
-    } as const),
-    setInvalidError: (errors: any) => ({
-        type: "SET_INVALID_ERRORS",
-        errors
-    } as const),
-    fetchingOff: () => ({type: "FETCHING_OFF"} as const),
-    fetchingOn: () => ({type: "FETCHING_ON"} as const),
-    logout: () => ({type: "LOGOUT"} as const),
-    resetErrors: () => ({type: "RESET_ERRORS"} as const),
-}
 
-export const signUp = (username: string, email: string, password: string): ThunkAuthType => {
-    return async (dispatch) => {
+export const signUp = (username: string, email: string, password: string) => {
+    return async (dispatch: AppDispatch) => {
 
-        dispatch(authActions.fetchingOn())
+        dispatch(appActions.FETCHING_ON())
         try {
             const response = await blogAPI.register(username, email, password)
             const data = response.data
-            dispatch(authActions.login(data))
+            dispatch(authActions.LOGIN({data}))
 
             if (data.user.token) {
                 LS.setToken(data.user.token)
             }
 
         } catch (e: any) {
-            const errors = e.response?.data?.errors?.body
-            const errorsBody = errors.join(' ')
-            dispatch(authActions.setInvalidError(errorsBody))
+            const errors = e.response?.data?.errors
+            if (typeof errors === 'object') {
+                dispatch(authActions.SET_ERRORS(errors))
+            }
         }
-        dispatch(authActions.fetchingOff())
+        dispatch(appActions.FETCHING_OFF())
     }
 }
 
-export const signIn = (email: string, password: string): ThunkAuthType => {
-    return async (dispatch) => {
+export const signIn = (email: string, password: string) => {
+    return async (dispatch: AppDispatch) => {
 
-        dispatch(authActions.fetchingOn())
+        dispatch(appActions.FETCHING_ON())
         try {
             const response = await blogAPI.auth(email, password)
             const data = response.data
-            dispatch(authActions.login(data))
+            dispatch(authActions.LOGIN({data}))
 
             if (data.user.token) {
                 LS.setToken(data.user.token)
@@ -57,28 +45,35 @@ export const signIn = (email: string, password: string): ThunkAuthType => {
             if (typeof e.response?.data !== 'object') {
                 return
             }
-            const errors = e.response?.data?.errors?.body
-            const errorsBody = errors.join(' ')
-            dispatch(authActions.setInvalidError(errorsBody))
+            const errors = e.response?.data?.errors
+            if (errors['email or password']) {
+                dispatch(authActions.SET_INVALID_ERRORS(errors['email or password']))
+            }
         } finally {
-            dispatch(authActions.fetchingOff())
+            dispatch(appActions.FETCHING_OFF())
         }
     }
 }
 
-export const logout = () => (dispatch: Dispatch) => {
-    dispatch(authActions.logout())
+export const logout = () => (dispatch: AppDispatch) => {
+    dispatch(authActions.LOGOUT())
     LS.removeToken()
+    dispatch(appActions.SHOW_ALERT({
+        msg: 'You are logged out', type: 'info'
+    }))
+    setTimeout(() => {
+        dispatch(appActions.CLOSE_ALERT())
+    }, 3000)
 }
 
-export const loginToken = (): ThunkAuthType => {
-    return async (dispatch: Dispatch) => {
+export const loginToken = () => {
+    return async (dispatch: AppDispatch) => {
 
-        dispatch(authActions.fetchingOn())
+        dispatch(appActions.FETCHING_ON())
         try {
             const response = await blogAPI.getUser()
             const data = response.data
-            dispatch(authActions.login(data))
+            dispatch(authActions.LOGIN({data}))
 
             if (data.user.token) {
                 LS.setToken(data.user.token)
@@ -86,11 +81,11 @@ export const loginToken = (): ThunkAuthType => {
         } catch (e) {
             console.log(e)
         } finally {
-            dispatch(authActions.fetchingOff())
+            dispatch(appActions.FETCHING_OFF())
         }
     }
 }
 
-export const resetErrors = () => (dispatch: Dispatch) => {
-    dispatch(authActions.resetErrors())
+export const resetErrors = () => (dispatch: AppDispatch) => {
+    dispatch(authActions.RESET_ERRORS())
 }

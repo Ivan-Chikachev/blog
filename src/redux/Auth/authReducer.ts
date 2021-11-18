@@ -1,29 +1,45 @@
-import {ActionsAuthType, AuthUserType} from "../../types/types";
+import {AuthUserType} from "../../types/types";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
     user: {} as AuthUserType,
-    isFetching: false,
     isAuth: false,
-    invalidError: ''
+    invalidError: '',
+    errors: {
+        username: [''],
+        email: [''],
+        password: [''],
+    },
 };
 
-type InitialStateType = typeof initialState
-
-export const authReducer = (state = initialState, action: ActionsAuthType): InitialStateType => {
-    switch (action.type) {
-        case "FETCHING_OFF":
-            return {...state, isFetching: false}
-        case "FETCHING_ON":
-            return {...state, isFetching: true}
-        case "SET_INVALID_ERRORS":
-            return {...state, invalidError: action.errors}
-        case "LOGIN":
-            return {...state, user: action.data, isAuth: action.data.errors === undefined}
-        case "LOGOUT":
-            return {...state, isAuth: false, user: {} as AuthUserType}
-        case "RESET_ERRORS":
-            return {...state, invalidError: ''}
-        default:
-            return state
+const authSlice = createSlice({
+    name: 'auth',
+    initialState,
+    reducers: {
+        LOGIN(state, action: PayloadAction<{ data: AuthUserType }>) {
+            state.user = action.payload.data
+            state.isAuth = action.payload.data.errors === undefined
+        },
+        LOGOUT(state) {
+            state.isAuth = false
+            state.user = {} as AuthUserType
+        },
+        SET_INVALID_ERRORS(state, action: PayloadAction<string[]>) {
+            state.invalidError = action.payload[0]
+        },
+        SET_ERRORS(state, action: PayloadAction<{ errors: { username: string, email: string, password: string } }>) {
+            state.errors.email = [action.payload.errors.email] || ['']
+            state.errors.username = [action.payload.errors.username] || ['']
+            state.errors.password = [action.payload.errors.password] || ['']
+        },
+        RESET_ERRORS(state) {
+            state.errors.email = ['']
+            state.errors.username = ['']
+            state.errors.password = ['']
+            state.invalidError = ''
+        }
     }
-}
+})
+
+export const authReducer = authSlice.reducer
+export const authActions = authSlice.actions

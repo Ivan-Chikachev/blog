@@ -1,8 +1,41 @@
-import {ThunkAction} from "redux-thunk";
-import {articlesPageActions} from "../redux/Article/articleActions";
-import {appActions} from "../redux/App/appActions";
-import {AppStateType} from "../redux/rootReducer";
-import {authActions} from "../redux/Auth/authActions";
+export type InputType = {
+    placeholder: string
+    type: string
+    errors: string
+    registerInput: object
+    errorMessage?: string
+    inputLabel: string
+    className?: string
+    value?: string
+}
+
+export type UpdateUserType = {
+    "email": string,
+    "token": string,
+    "username": string,
+    "bio": string,
+    "image": string
+}
+
+export type createArticleType = {
+    "title": string,
+    "description": string,
+    "body": string,
+    "tagList": Array<string>
+}
+
+export type updateArticleType = {
+    "title": string,
+    "description": string,
+    "body": string,
+}
+
+export type AlertType = {
+    msg: string
+    type: typesOfAlert
+}
+
+export type typesOfAlert = 'success' | 'error' | 'warning' | 'info'
 
 export type AuthUserType = {
     user: {
@@ -12,6 +45,7 @@ export type AuthUserType = {
         "bio": string,
         "image": null | string
     }
+    "errors"?: string
 }
 
 export type GetListArticlesType = {
@@ -66,27 +100,3 @@ export type CommentType = {
         "author": _ProfileType
     }
 }
-
-// General
-
-type PropType<T> = T extends { [key: string]: infer U } ? U : never
-
-type InferActionsType<T extends { [key: string]: (...args: any[]) => any }> = ReturnType<PropType<T>>
-
-// App
-
-export type ActionsArticlesType = InferActionsType<typeof appActions>
-
-export type ThunkArticlesType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlesType>
-
-// Article
-
-export type ActionsArticlePageType = InferActionsType<typeof articlesPageActions>
-
-export type ThunkArticlePageType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsArticlePageType>
-
-// Auth
-
-export type ActionsAuthType = InferActionsType<typeof authActions>
-
-export type ThunkAuthType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsAuthType>

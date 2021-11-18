@@ -1,46 +1,137 @@
 import './ChangeArticle.scss'
-import React from "react";
+import React, {useState} from "react";
 import Tag from "./Tag";
+import {useForm} from "react-hook-form";
+import classNames from "classnames";
+import {ArticleType, createArticleType, InputType, updateArticleType} from "../../types/types";
+import {Redirect} from "react-router";
+import Input from "../Input/Input";
 
 type Props = {
     title: string
+    createSubmit?: (article: createArticleType) => void,
+    updateSubmit?: (slug: string, article: updateArticleType) => void
+    isLoading: boolean,
+    slug?: string,
+    article?: ArticleType
 }
 
-const ChangeArticle = ({title} : Props) => {
+const ChangeArticle = (props: Props) => {
+
+    const {title, createSubmit, updateSubmit, isLoading, slug, article} = props
+
+    const [tags, setTags] = useState<Array<string>>([])
+    const [isRedirect, setIsRedirect] = useState(false)
+    const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
+    const {errors} = formState
+
+    if (isRedirect) {
+        return <Redirect to="/articles/page/1"/>
+    }
+
+    const onSubmit = (data: any) => {
+        updateSubmit && slug && updateSubmit(slug, {
+            title: data.title,
+            description: data.description,
+            body: data.text,
+        })
+
+        createSubmit && createSubmit({
+            title: data.title,
+            description: data.description,
+            body: data.text,
+            tagList: tags
+        })
+        setIsRedirect(true)
+    }
+
+    const registerTitle = {
+        ...register('title', {
+            required: true,
+            value: article?.title || ''
+        })
+    }
+    const registerDescription = {
+        ...register('description', {
+            required: true,
+            value: article?.description || ''
+        })
+    }
+    const registerText = {
+        ...register('text', {
+            required: true,
+            value: article?.body || ''
+        })
+    }
+    const isError = Boolean(Object.keys(errors).length)
+
+    const inputs: Array<InputType> = [
+        {
+            type: 'text',
+            placeholder: 'Title',
+            errors: errors.title,
+            registerInput: registerTitle,
+            inputLabel: 'Title'
+        },
+        {
+            type: 'text',
+            placeholder: 'Short description',
+            errors: errors.description,
+            registerInput: registerDescription,
+            inputLabel: 'Short description'
+        }
+    ]
+
     return (
         <div>
-            <form className='create-article' action="">
+            <form className='create-article'
+                  onSubmit={handleSubmit(onSubmit)}
+                  action="">
                 <h3 className='create-article__title'>
                     {title}
                 </h3>
-                <p className="create-article__label">
-                    Title
-                </p>
-                <input
-                    placeholder='Title'
-                    type="text" className="create-article__input"/>
-                <p className="create-article__label">
-                    Short description
-                </p>
-                <input
-                    placeholder='Short description'
-                    type="text" className="create-article__input"/>
+                {inputs.map(i =>
+                    <Input
+                        key={i.inputLabel}
+                        registerInput={i.registerInput}
+                        errors={i.errors}
+                        type={i.type}
+                        errorMessage={i.errorMessage}
+                        inputLabel={i.inputLabel}
+                        placeholder={i.placeholder}
+                        className={i.className}
+                    />
+                )}
                 <p className="create-article__label">
                     Text
                 </p>
-                <textarea className='create-article__textarea' placeholder='Text'/>
-                <p className="create-article__label">
-                    Tags
-                </p>
-                <div className="create-article__tag-block">
-                    <div className="">
-                        <Tag/>
+                <textarea
+                    placeholder='Text'
+                    className={classNames({
+                        "create-article__textarea": true,
+                        'input-error': errors.text
+                    })}
+                    {...registerText}/>
+                {createSubmit &&
+                <>
+                    <p className="create-article__label">
+                        Tags
+                    </p>
+                    <div className="create-article__tag-block">
+                        <div className="">
+                            <Tag
+                                tags={tags}
+                                setTags={setTags}
+                            />
+                        </div>
                     </div>
-                    <button className="create-article__btn create-article__btn-add btn btn__primary btn__for-modal">
-                        Add tag
-                    </button>
-                </div>
+                </>
+                }
+                {isError && <span className='error-label'>
+                    Please, fill in form fields
+                </span>}
                 <button
+                    disabled={isLoading}
                     type='submit'
                     className="create-article__btn btn btn__for-modal btn__primary-bg">
                     Send

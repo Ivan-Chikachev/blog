@@ -1,17 +1,19 @@
 import {Link} from "react-router-dom";
 import React from "react";
 import defaultAvatar from '../../img/default-ava.png'
+import {useDispatch} from "react-redux";
+import {logout} from "../../redux/Auth/authActions";
 
 
 type Props = {
-    logout: () => void
     avatarSrc: string | null
     username: string
 }
 
 const Account = (props: Props) => {
 
-    const {logout, avatarSrc, username} = props
+    const {avatarSrc, username} = props
+    const dispatch = useDispatch()
 
     const avatar = avatarSrc || defaultAvatar
 
@@ -30,7 +32,7 @@ const Account = (props: Props) => {
                     alt=""/>
             </Link>
             <button
-                onClick={logout}
+                onClick={() => dispatch(logout())}
                 className='btn btn__large btn__light-br auth__item'>
                 Log out
             </button>

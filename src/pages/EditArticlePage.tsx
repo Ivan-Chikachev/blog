@@ -1,25 +1,48 @@
-import React from "react";
-import {AppStateType} from "../redux/rootReducer";
+import React, {useEffect} from "react";
 import {connect} from "react-redux";
 import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
+import {updateArticle} from "../redux/Article/articleActions";
+import {updateArticleType} from "../types/types";
+import {RouteComponentProps, withRouter} from "react-router-dom";
+import {useAppSelector} from "../hooks/reduxHook";
 
-type StateTypes = {}
+type DispatchTypes = {
+    updateArticle: (slug: string, article: updateArticleType) => void
+}
 
-type DispatchTypes = {}
+type Props = {
+    slug: string,
+    history: {
+        push: (page: string) => void
+    }
+}
 
-type Props = {}
+type PropsType = DispatchTypes & Props
 
-type PropsType = StateTypes & DispatchTypes & Props
+const EditArticlePage = (props: PropsType) => {
+    const {updateArticle, slug, history} = props
 
-const EditArticlePage = ({}: PropsType) => {
+    const isLoading = useAppSelector(s => s.app.isLoading)
+    const article = useAppSelector(s => s.articles.currentArticle)
+
+    useEffect(()=> {
+        history.push(`/article/${slug}/edit-article`)
+    }, [])
+
     return (
-        <ChangeArticle title={'Edit article'}/>
+        <ChangeArticle
+            article={article}
+            slug={slug}
+            updateSubmit={updateArticle}
+            isLoading={isLoading}
+            title={'Edit article'}/>
     )
 }
 
-const mapStateToProps = (state: AppStateType): StateTypes => ({})
+const mapDispatchToProps = {
+    updateArticle
+}
 
-const mapDispatchToProps = {}
 
-export default connect<StateTypes, DispatchTypes, {}, AppStateType>(
-    mapStateToProps, mapDispatchToProps)(EditArticlePage)
+export default connect(
+    ()=>({}), mapDispatchToProps)(withRouter<Props & RouteComponentProps<{}>, any>(EditArticlePage))

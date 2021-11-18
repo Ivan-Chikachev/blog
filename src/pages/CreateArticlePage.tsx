@@ -1,25 +1,30 @@
 import React from "react";
 import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
-import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
+import {createArticleType} from "../types/types";
+import {createArticle} from "../redux/Article/articleActions";
+import {useAppSelector} from "../hooks/reduxHook";
 
-type StateTypes = {}
+type DispatchTypes = {
+    createArticle: (article: createArticleType) => void
+}
 
-type DispatchTypes = {}
+type PropsType = DispatchTypes
 
-type Props = {}
+const CreateArticlePage = ({createArticle}: PropsType) => {
 
-type PropsType = StateTypes & DispatchTypes & Props
+    const isLoading = useAppSelector(s => s.app.isLoading)
 
-const CreateArticlePage = ({}: PropsType) => {
     return (
-        <ChangeArticle title={'Create New Article'}/>
+        <ChangeArticle
+            isLoading={isLoading}
+            createSubmit={createArticle}
+            title={'Create New Article'}/>
     )
 }
 
-const mapStateToProps = (state: AppStateType): StateTypes => ({})
+const mapDispatchToProps = {
+    createArticle
+}
 
-const mapDispatchToProps = {}
-
-export default connect<StateTypes, DispatchTypes, {}, AppStateType>(
-    mapStateToProps, mapDispatchToProps)(CreateArticlePage)
+export default connect(()=> ({}), mapDispatchToProps)(CreateArticlePage)

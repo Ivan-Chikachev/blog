@@ -1,33 +1,34 @@
 import React from "react";
 import {Pagination} from "antd";
 import {RouteComponentProps, withRouter} from "react-router-dom";
-import {onLoading} from "../../redux/App/appActions";
+import {setCurrentPage} from "../../redux/App/appActions";
+import {useAppDispatch} from "../../hooks/reduxHook";
 
 type Props = {
     currentPage: number
-    setCurrentPage: (number: number) => void
     totalArticles: number
-    onLoading: () => void
     history: {
         push: (page: string) => void
     }
 }
 
-const AppPagination = ({
-                           currentPage, setCurrentPage,
-                           history, totalArticles,
-                           onLoading
-                       }: Props) => {
+const AppPagination = (props: Props) => {
+    const {
+        currentPage,
+        history, totalArticles,
+    } = props
+
+    const dispatch = useAppDispatch()
+
     return (
         <Pagination current={currentPage}
-                    defaultPageSize={20}
+                    defaultPageSize={10}
                     showSizeChanger={false}
                     total={totalArticles}
                     className='pagination'
                     onChange={page => {
                         history.push(`/articles/page/${page}`)
-                        setCurrentPage(page)
-                        onLoading()
+                        dispatch(setCurrentPage(page))
                     }}/>
     )
 }

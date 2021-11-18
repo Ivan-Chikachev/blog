@@ -1,26 +1,23 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import './Article.scss'
 import Loading from "../Loading/Loading";
-import {ArticleType} from "../../types/types";
 import Error from "../Error/Error";
 import defaultAvatar from "../../img/default-ava.png";
-import classNames from "classnames";
+import Like from "../Like/Like";
+import {Link, Redirect} from "react-router-dom";
+import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
+import {formatDate} from "../../helper/publishedDate";
+import {deleteArticle, removeFavorite, setFavorite} from "../../redux/Article/articleActions";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
-type Props = {
-    publishedDate: string
-    currentArticle: ArticleType
-    isLoading: boolean
-    isCurrentArticle: boolean
-    isError: boolean
-    onFavorite: (slug: string) => void
-}
+const Article = () => {
 
-const Article = (props: Props) => {
-    const {
-        currentArticle,
-        isLoading, publishedDate,
-        isCurrentArticle, isError, onFavorite
-    } = props
+    const {isError, isNoData, currentArticle} = useAppSelector(s => s.articles)
+    const isAuth = useAppSelector(s => s.auth.isAuth)
+    const isLoading = useAppSelector(s => s.app.isLoading)
+    const username = useAppSelector(s => s.auth.user?.user?.username)
+
+    const dispatch = useAppDispatch()
 
     const {
         title, body, favoritesCount,
@@ -28,7 +25,50 @@ const Article = (props: Props) => {
         favorited, slug
     } = currentArticle
 
+    const [isLiked, setIsLiked] = useState(favorited)
+    const [likeCount, setLikeCount] = useState(favoritesCount)
+    const [isRedirect, setIsRedirect] = useState(false)
+
+    useEffect(() => {
+        setLikeCount(favoritesCount)
+        setIsLiked(favorited)
+    }, [favoritesCount, favorited])
+
+    if (isRedirect) {
+        return <Redirect to="/articles/page/1"/>
+    }
+
+    const clickLike = (slug: string) => {
+        if (isLiked) {
+            setIsLiked(false)
+            dispatch(removeFavorite(slug))
+            setLikeCount(likeCount - 1)
+        } else {
+            setIsLiked(true)
+            dispatch(setFavorite(slug))
+            setLikeCount(likeCount + 1)
+        }
+    }
+
+    const clickDeleteArticle = (slug: string) => {
+        dispatch(deleteArticle(slug))
+        setIsRedirect(true)
+    }
+
     const avatarSrc = currentArticle?.author?.image || defaultAvatar
+    const isVisibleActions = isAuth && author?.username === username
+    const publishedDate = formatDate(currentArticle?.createdAt)
+    const isCurrentArticle = !!Object.keys(currentArticle).length
+
+    const tagsRender = () => {
+        return tagList?.map(tag =>
+            <div
+                key={tag}
+                className="header-article__tag-item">
+                {tag}
+            </div>
+        )
+    }
 
     return (
         <div className='container'>
@@ -36,6 +76,11 @@ const Article = (props: Props) => {
             {isLoading && <Loading/>}
 
             {isError && <Error/>}
+
+            {isNoData &&
+            !isCurrentArticle &&
+            !isLoading &&
+            <div>Article not found</div>}
 
             {isCurrentArticle && <article className='article-page'>
                 <header className="article-page__header header-article">
@@ -45,24 +90,17 @@ const Article = (props: Props) => {
                                 {title}
                             </h3>
                             <div className="header-article__like-block">
-                                <button
-                                    type="button"
-                                    className={classNames({
-                                        like: true,
-                                        active: favorited
-                                    })}
-                                    onClick={() => onFavorite(slug)}
-                                >
-                                    {favoritesCount || 0}
-                                </button>
+                                <Like
+                                    clickLike={clickLike}
+                                    isLiked={isLiked}
+                                    slug={slug}
+                                    likeCount={likeCount}
+                                    disabled={!isAuth}
+                                />
                             </div>
                         </div>
                         <div className="header-article__tag-list">
-                            {tagList?.map((tag, index) =>
-                                <div key={index} className="header-article__tag-item">
-                                    {tag}
-                                </div>
-                            )}
+                            {tagsRender()}
                         </div>
                         <div className="header-article__description">
                             {description}
@@ -70,12 +108,27 @@ const Article = (props: Props) => {
                     </div>
                     <div className="header-article__right-header">
                         <div className="header-article__info">
-                            <h5 className='header-article__name'>{author.username}</h5>
-                            <span className='header-article__date'>{publishedDate}</span>
+                            <div>
+                                <h5 className='header-article__name'>{author.username}</h5>
+                                <span className='header-article__date'>{publishedDate}</span>
+                            </div>
+                            <div>
+                                <img className='header-article__avatar' src={avatarSrc} alt=""/>
+                            </div>
                         </div>
+                        {isVisibleActions &&
                         <div>
-                            <img className='header-article__avatar' src={avatarSrc} alt=""/>
+                            <ConfirmDelete
+                                slug={slug}
+                                clickDeleteArticle={clickDeleteArticle}
+                            />
+                            <Link
+                                className='btn btn__success btn__medium'
+                                to={`/article/${slug}/edit-article`}>
+                                Edit
+                            </Link>
                         </div>
+                        }
                     </div>
                 </header>
                 <div className="article-page__text">

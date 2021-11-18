@@ -2,15 +2,16 @@ import axios from "axios";
 import { LS } from "../loacalStorage/localStorage";
 
 const instance = axios.create({
-    withCredentials: true,
-    baseURL: 'https://conduit-api-realworld.herokuapp.com/api/',
+    baseURL: 'https://conduit.productionready.io/api/',
     headers: {
         'Content-Type': 'application/json'
-    },
+    }
 });
 
 instance.interceptors.request.use((config) => {
-    config.headers.Authorization = `Token ${LS.getToken()}`
+    const token = LS.getToken()
+    if (token)
+    config.headers.Authorization = `Token ${token}`
     return config
 })
 

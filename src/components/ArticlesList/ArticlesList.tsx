@@ -1,48 +1,54 @@
 import React from "react";
 import './ArticlesList.scss'
-import {ArticleType} from "../../types/types";
-import Article from "./ArticleItem";
+import ArticleItem from "./ArticleItem";
 import Loading from "../Loading/Loading";
 import AppPagination from "../Pagination/Pagination";
 import Error from "../Error/Error";
+import {useAppSelector} from "../../hooks/reduxHook";
 
 type Props = {
     page: number
-    articles: Array<ArticleType>
-    isLoading: boolean
-    setCurrentPage: (number: number) => void
-    totalArticles: number
-    onLoading: () => void
-    isError: boolean
 }
 
-const ArticlesList = ({
-                      articles,
-                      isLoading, setCurrentPage,
-                      page , totalArticles,
-                      onLoading, isError
-                  }: Props) => {
+const ArticlesList = ({page}: Props) => {
+
+    const articles = useAppSelector(s => s.app.articles)
+    const totalArticles = useAppSelector(s => s.app.totalArticles)
+    const isLoading = useAppSelector(s => s.app.isLoading)
+    const isError = useAppSelector(s => s.app.isError)
+
+    const noData = () => {
+        if (articles.length) {
+            return false
+        }
+        return true
+    }
+
     return (
         <div className="container">
-            {isLoading && <Loading/>}
 
             {isError && <Error/>}
 
-            {articles?.length ?
-                <>
-                    {articles.map((article, i) =>
-                        <Article key={i} article={article}/>
-                    )}
-                    <AppPagination
-                        totalArticles={totalArticles}
-                        currentPage={page}
-                        setCurrentPage={setCurrentPage}
-                        onLoading={onLoading}/>
-                </>
-                : null
-            }
+            {isLoading && <Loading/>}
+
+            {noData() &&
+            !isLoading &&
+            <div>No articles found</div>}
+
+            {articles.map((article, i) =>
+                <ArticleItem
+                    key={i}
+                    article={article}
+                />
+            )}
+
+            {!noData() && <AppPagination
+                totalArticles={totalArticles}
+                currentPage={page}
+            />}
         </div>
     );
 }
 
-export default ArticlesList
+
+export default ArticlesList;

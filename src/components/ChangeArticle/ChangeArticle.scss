@@ -64,11 +64,37 @@
   }
 
   &__btn-add {
-    margin: 0 0 8px;
     width: 150px;
   }
 }
 
 .tag {
   margin: 0 20px 8px 0;
+
+  &__wrap {
+    display: flex;
+  }
+
+  &__item {
+    margin: 0 3px 0 0;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    padding: 3px 6px;
+    border-radius: 2px;
+  }
+
+  &__added-tag {
+    display: flex;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  &__delete {
+    border-radius: 2px;
+    padding: 3px 6px;
+    font-size: 12px;
+    background: rgba(231, 0, 6, 0.4);
+  }
 }

@@ -155,39 +155,6 @@ body {
   }
 }
 
-input:focus {
-  border: 1px solid #1890FF
-}
-
-.like {
-  width: 20px;
-  padding: 0 20px;
-  background-color: transparent;
-  position: relative;
-
-  &:before {
-    content: "";
-    position: absolute;
-    left: 0px;
-    width: 16px;
-    height: 14px;
-    display: block;
-    background: url('/img/like.svg') no-repeat center center/cover;
-  }
-
-  &.active {
-    &:before {
-      background: url('/img/like-active.svg') no-repeat center center/cover;
-    }
-  }
-}
-
-.error-label {
-  font-size: 12px;
-  color: #f52019;
-  margin: 5px 0 10px 0;
-}
-
-input.input-error {
+textarea.input-error, input.input-error {
   border: 1px solid #f52019;
 }

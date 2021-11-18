@@ -2,25 +2,30 @@ import React, {useEffect, useState} from 'react';
 import './SignUp.scss';
 import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
+import {InputType} from "../../types/types";
+import Input from "../Input/Input";
+import {resetErrors, signUp} from "../../redux/Auth/authActions";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
-type Props = {
-    signUp: (username: string, email: string, password: string) => void
-    isFetching: boolean
-    resetErrors: () => void
-    invalidAuth: string
-}
-
-const SignUp = (props: Props) => {
-
-    const {signUp, isFetching, resetErrors, invalidAuth} = props
-
-    useEffect(() => {
-        resetErrors()
-    }, [])
+const SignUp = () => {
 
     const [confirmPassword, setConfirmPassword] = useState('')
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
+
+    const usernameError = useAppSelector(state => state.auth.errors.username[0])
+    const emailError = useAppSelector(state => state.auth.errors.email[0])
+    const passwordError = useAppSelector(state => state.auth.errors.password[0])
+    const isLoading = useAppSelector(state => state.app.isLoading)
+
+    const dispatch = useAppDispatch()
+
+    const signUpp = (username: string, email: string, password: string) =>
+        dispatch(signUp(username, email, password))
+
+    useEffect(() => {
+        dispatch(resetErrors())
+    }, [])
 
     const registerEmail = {
         ...register('email', {
@@ -54,12 +59,47 @@ const SignUp = (props: Props) => {
         }
         setConfirmPassword('')
         const {username, email, password} = data
-        signUp(username, email, password)
+        signUpp(username, email, password)
     }
 
-    const userErrors = errors.username
-    const passwordErrors = errors.password
-    const emailErrors = errors.email
+    const userErrors = usernameError || errors.username
+    const passwordErrors = passwordError || errors.password
+    const emailErrors = emailError || errors.email
+
+    const inputs: Array<InputType> = [
+        {
+            type: 'text',
+            placeholder: 'Username',
+            errorMessage: usernameError || 'Username must contain 3-20 characters',
+            errors: userErrors,
+            registerInput: registerUsername,
+            inputLabel: 'Username'
+        },
+        {
+            type: 'email',
+            placeholder: 'Email address',
+            errorMessage: emailError || 'Please, enter a valid email',
+            errors: emailErrors,
+            registerInput: registerEmail,
+            inputLabel: 'Email address'
+        },
+        {
+            type: 'password',
+            placeholder: 'Password',
+            errorMessage: 'Password must contain 6-40 characters',
+            errors: passwordErrors,
+            registerInput: registerPassword,
+            inputLabel: 'Password'
+        },
+        {
+            type: 'password',
+            placeholder: 'Repeat password',
+            errorMessage: ' Password do not match',
+            errors: confirmPassword,
+            registerInput: registerConfirmPassword,
+            inputLabel: 'Repeat password'
+        }
+    ]
 
     return (
         <form
@@ -69,54 +109,18 @@ const SignUp = (props: Props) => {
             <h3 className='create-acc__title'>
                 Create new account
             </h3>
-            <p className="create-acc__label">
-                Username
-            </p>
-            <input
-                placeholder='Username'
-                type="text"
-                className={`${userErrors ? 'input-error' : ''} create-acc__input`}
-                {...registerUsername}
-            />
-            {(userErrors) && <span className='error-label'>
-                Имя должно быть от 3 до 20 символов
-            </span>}
-
-            <p className="create-acc__label">
-                Email address
-            </p>
-            <input
-                placeholder='Email address'
-                type="email"
-                className={`${emailErrors ? 'input-error' : ''} create-acc__input`}
-                {...registerEmail}/>
-            {emailErrors && <span className='error-label'>
-              Введите корректный email
-            </span>}
-
-            <p className="create-acc__label">
-                Password
-            </p>
-            <input
-                placeholder='Password'
-                type="password"
-                className={`${passwordErrors ? 'input-error' : ''} create-acc__input`}
-                {...registerPassword}/>
-            {passwordErrors && <span className='error-label'>
-             Пароль должен быть от 6 до 40 символов
-            </span>}
-
-            <p className="create-acc__label">
-                Repeat Password
-            </p>
-            <input
-                placeholder='Password'
-                type="password" className="create-acc__input"
-                {...registerConfirmPassword}/>
-            {confirmPassword && <span className='error-label'>
-              Пароли не совпадают
-            </span>}
-
+            {inputs.map(i =>
+                <Input
+                    key={i.inputLabel}
+                    registerInput={i.registerInput}
+                    errors={i.errors}
+                    type={i.type}
+                    errorMessage={i.errorMessage}
+                    inputLabel={i.inputLabel}
+                    placeholder={i.placeholder}
+                    className={i.className}
+                />
+            )}
             <div className='create-acc__line'/>
             <div className="create-acc__agree">
                 <label>
@@ -124,16 +128,10 @@ const SignUp = (props: Props) => {
                     I agree to the processing of my personal information
                 </label>
             </div>
-
-            {
-                invalidAuth &&
-                <div className='error-label'>
-                    {invalidAuth}
-                </div>
-            }
-
-            <button className="create-acc__btn btn btn__for-modal btn__primary-bg"
-                    disabled={isFetching}
+            <button
+                className="create-acc__btn btn btn__for-modal btn__primary-bg"
+                type='submit'
+                disabled={isLoading}
             >
                 Create
             </button>

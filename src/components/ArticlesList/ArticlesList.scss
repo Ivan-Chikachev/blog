@@ -41,6 +41,7 @@
   }
 
   &__avatar{
+    object-fit: cover;
     width: 46px;
     height: 46px;
     border-radius: 50%;

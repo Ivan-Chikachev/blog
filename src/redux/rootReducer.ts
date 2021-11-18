@@ -1,15 +1,20 @@
-import {combineReducers} from 'redux';
+import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {appReducer} from "./App/appReducer";
-import {articlesPageReducer} from "./Article/articleReducer";
+import {articlesReducer} from "./Article/articleReducer";
 import {authReducer} from "./Auth/authReducer";
 
-
-export const rootReducer = combineReducers({
-    articles: appReducer,
-    articlePage: articlesPageReducer,
+const rootReducer = combineReducers({
+    app: appReducer,
+    articles: articlesReducer,
     auth: authReducer
 });
 
-type RootReducerType = typeof rootReducer
+export const store = () => {
+    return configureStore({
+        reducer: rootReducer
+    });
+}
 
-export type AppStateType = ReturnType<RootReducerType>
+export type AppStateType = ReturnType<typeof rootReducer>
+export type AppStore = ReturnType<typeof store>
+export type AppDispatch = AppStore['dispatch']

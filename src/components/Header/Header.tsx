@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './Header.scss';
 import {Link} from "react-router-dom";
 import Account from "./Account";
@@ -6,14 +6,13 @@ import Auth from "./Auth";
 
 type Props = {
     isAuth: boolean
-    logout: () => void
     avatarSrc: string | null
     username: string
 }
 
 const Header = (props: Props) => {
 
-    const {isAuth, logout, avatarSrc, username} = props
+    const {isAuth, avatarSrc, username} = props
 
     return (
         <header className='header'>
@@ -28,7 +27,6 @@ const Header = (props: Props) => {
                         <Account
                             avatarSrc={avatarSrc}
                             username={username}
-                            logout={logout}
                         />
                         :
                         <Auth/>
