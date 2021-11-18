@@ -1,7 +1,7 @@
 import React, {useEffect} from "react";
-import {useDispatch} from "react-redux";
 import Article from "../components/ArticlePage/Article";
 import {getCurrentArticle} from "../redux/Article/articleActions";
+import {useAppDispatch} from "../hooks/reduxHook";
 
 type Props = {
     slug: string
@@ -9,7 +9,7 @@ type Props = {
 
 const ArticlePage = ({slug}: Props) => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     useEffect(() => {
         dispatch(getCurrentArticle(slug))

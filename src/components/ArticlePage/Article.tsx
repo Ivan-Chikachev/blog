@@ -12,8 +12,9 @@ import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
 const Article = () => {
 
-    const {isError, isNoData, currentArticle, isLoading} = useAppSelector(s => s.articles)
+    const {isError, isNoData, currentArticle} = useAppSelector(s => s.articles)
     const isAuth = useAppSelector(s => s.auth.isAuth)
+    const isLoading = useAppSelector(s => s.app.isLoading)
     const username = useAppSelector(s => s.auth.user?.user?.username)
 
     const dispatch = useAppDispatch()

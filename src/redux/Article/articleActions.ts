@@ -7,7 +7,7 @@ import {appActions} from "../App/appReducer";
 export const getCurrentArticle = (slug: string) => {
     return async (dispatch: AppDispatch) => {
 
-        dispatch(articlesActions.FETCHING_ON())
+        dispatch(appActions.FETCHING_ON())
         try {
             const res = await blogAPI.getArticle(slug);
             const data = res.data
@@ -24,7 +24,7 @@ export const getCurrentArticle = (slug: string) => {
             dispatch(articlesActions.ON_ERROR())
         }
         finally {
-            dispatch(articlesActions.FETCHING_OFF())
+            dispatch(appActions.FETCHING_OFF())
         }
     }
 }
@@ -51,7 +51,7 @@ export const removeFavorite = (slug: string) => {
 
 export const createArticle = (article: createArticleType) => {
     return async (dispatch: AppDispatch) => {
-        dispatch(articlesActions.FETCHING_ON())
+        dispatch(appActions.FETCHING_ON())
 
         try {
             const res = await blogAPI.createArticle(article)
@@ -64,8 +64,9 @@ export const createArticle = (article: createArticleType) => {
             dispatch(appActions.SHOW_ALERT({
                 msg: 'Such an article already exists', type: "error"
             }))
+        } finally {
+            dispatch(appActions.FETCHING_OFF())
         }
-        dispatch(articlesActions.FETCHING_OFF())
 
         setTimeout(() => {
             dispatch(appActions.CLOSE_ALERT())
@@ -75,7 +76,7 @@ export const createArticle = (article: createArticleType) => {
 
 export const updateArticle = (slug: string, article: updateArticleType) => {
     return async (dispatch: AppDispatch) => {
-        dispatch(articlesActions.FETCHING_ON())
+        dispatch(appActions.FETCHING_ON())
 
         try {
             const res = await blogAPI.updateArticle(slug, article)
@@ -89,7 +90,9 @@ export const updateArticle = (slug: string, article: updateArticleType) => {
                 msg: 'Error', type: "error"
             }))
         }
-        dispatch(articlesActions.FETCHING_OFF())
+        finally {
+            dispatch(appActions.FETCHING_OFF())
+        }
 
         setTimeout(() => {
             dispatch(appActions.CLOSE_ALERT())

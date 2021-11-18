@@ -20,7 +20,9 @@ export const getArticles = (offset: number) => {
         } catch (e) {
             dispatch(appActions.ON_ERROR())
         }
-        dispatch(appActions.FETCHING_OFF())
+         finally {
+            dispatch(appActions.FETCHING_OFF())
+        }
 
         setTimeout(() => {
             dispatch(appActions.CLOSE_ALERT())

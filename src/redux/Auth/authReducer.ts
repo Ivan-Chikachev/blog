@@ -3,7 +3,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
     user: {} as AuthUserType,
-    isFetching: false,
     isAuth: false,
     invalidError: '',
     errors: {
@@ -13,18 +12,10 @@ const initialState = {
     },
 };
 
-type InitialStateType = typeof initialState
-
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        FETCHING_OFF(state) {
-            state.isFetching = false
-        },
-        FETCHING_ON(state) {
-            state.isFetching = true
-        },
         LOGIN(state, action: PayloadAction<{ data: AuthUserType }>) {
             state.user = action.payload.data
             state.isAuth = action.payload.data.errors === undefined

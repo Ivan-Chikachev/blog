@@ -3,7 +3,6 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 const initialState = {
     currentArticle: {} as ArticleType,
-    isLoading: false,
     isError: false,
     isNoData: false,
 };
@@ -21,13 +20,7 @@ const articlesSlice = createSlice({
         },
         SET_NO_DATA(state) {
             state.isNoData = true
-        },
-        FETCHING_ON(state) {
-            state.isLoading = true
-        },
-        FETCHING_OFF(state) {
-            state.isLoading = false
-        },
+        }
     }
 })
 

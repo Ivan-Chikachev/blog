@@ -5,9 +5,8 @@ import {Link, RouteComponentProps, withRouter} from "react-router-dom";
 import {formatDate} from "../../helper/publishedDate";
 import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
-import {useDispatch, useSelector} from "react-redux";
-import { removeFavorite, setFavorite } from "../../redux/Article/articleActions";
-import {AppStateType} from "../../redux/rootReducer";
+import {removeFavorite, setFavorite} from "../../redux/Article/articleActions";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
 type Props = {
     article: ArticleType
@@ -15,9 +14,9 @@ type Props = {
 
 const ArticleItem = ({article}: Props) => {
 
-    const isAuth = useSelector<AppStateType, boolean>(s=> s.auth.isAuth)
+    const isAuth = useAppSelector(s => s.auth.isAuth)
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const {
         slug, title, favoritesCount,
@@ -27,7 +26,7 @@ const ArticleItem = ({article}: Props) => {
     const [isLiked, setIsLiked] = useState(favorited)
     const [likeCount, setLikeCount] = useState(favoritesCount)
 
-    useEffect(()=> {
+    useEffect(() => {
         setLikeCount(favoritesCount)
         setIsLiked(favorited)
     }, [favoritesCount, favorited])

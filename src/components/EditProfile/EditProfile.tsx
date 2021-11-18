@@ -4,16 +4,15 @@ import {useForm} from "react-hook-form";
 import classNames from "classnames";
 import {UpdateUserType} from "../../types/types";
 import {Redirect} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "../../redux/rootReducer";
-import { updateUser } from '../../redux/User/userActions';
+import {updateUser} from '../../redux/User/userActions';
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
 const EditProfile = () => {
 
-    const isLoading = useSelector<AppStateType, boolean>(s=> s.user.isFetching)
-    const username = useSelector<AppStateType, string>(s=> s.auth.user?.user?.username)
+    const isLoading = useAppSelector(s=> s.app.isLoading)
+    const username = useAppSelector(s=> s.auth.user?.user?.username)
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState

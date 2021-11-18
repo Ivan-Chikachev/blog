@@ -1,14 +1,10 @@
 import React, {useEffect} from "react";
-import {AppStateType} from "../redux/rootReducer";
 import {connect} from "react-redux";
 import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
 import {updateArticle} from "../redux/Article/articleActions";
 import {updateArticleType} from "../types/types";
 import {RouteComponentProps, withRouter} from "react-router-dom";
-
-type StateTypes = {
-    isLoading: boolean
-}
+import {useAppSelector} from "../hooks/reduxHook";
 
 type DispatchTypes = {
     updateArticle: (slug: string, article: updateArticleType) => void
@@ -21,10 +17,13 @@ type Props = {
     }
 }
 
-type PropsType = StateTypes & DispatchTypes & Props
+type PropsType = DispatchTypes & Props
 
 const EditArticlePage = (props: PropsType) => {
-    const {isLoading, updateArticle, slug, history} = props
+    const {updateArticle, slug, history} = props
+
+    const isLoading = useAppSelector(s => s.app.isLoading)
+    const article = useAppSelector(s => s.articles.currentArticle)
 
     useEffect(()=> {
         history.push(`/article/${slug}/edit-article`)
@@ -32,6 +31,7 @@ const EditArticlePage = (props: PropsType) => {
 
     return (
         <ChangeArticle
+            article={article}
             slug={slug}
             updateSubmit={updateArticle}
             isLoading={isLoading}
@@ -39,14 +39,10 @@ const EditArticlePage = (props: PropsType) => {
     )
 }
 
-const mapStateToProps = (state: AppStateType): StateTypes => ({
-    isLoading: state.articles.isLoading,
-})
-
 const mapDispatchToProps = {
     updateArticle
 }
 
 
 export default connect(
-    mapStateToProps, mapDispatchToProps)(withRouter<Props & RouteComponentProps<{}>, any>(EditArticlePage))
+    ()=>({}), mapDispatchToProps)(withRouter<Props & RouteComponentProps<{}>, any>(EditArticlePage))

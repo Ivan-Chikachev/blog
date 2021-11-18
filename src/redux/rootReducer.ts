@@ -2,13 +2,11 @@ import {combineReducers, configureStore} from '@reduxjs/toolkit';
 import {appReducer} from "./App/appReducer";
 import {articlesReducer} from "./Article/articleReducer";
 import {authReducer} from "./Auth/authReducer";
-import {userReducer} from "./User/userReducer";
 
 const rootReducer = combineReducers({
     app: appReducer,
     articles: articlesReducer,
-    auth: authReducer,
-    user: userReducer
+    auth: authReducer
 });
 
 export const store = () => {

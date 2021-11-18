@@ -1,8 +1,8 @@
 import React from "react";
 import {Pagination} from "antd";
 import {RouteComponentProps, withRouter} from "react-router-dom";
-import {useDispatch} from "react-redux";
 import {setCurrentPage} from "../../redux/App/appActions";
+import {useAppDispatch} from "../../hooks/reduxHook";
 
 type Props = {
     currentPage: number
@@ -18,7 +18,7 @@ const AppPagination = (props: Props) => {
         history, totalArticles,
     } = props
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
     return (
         <Pagination current={currentPage}

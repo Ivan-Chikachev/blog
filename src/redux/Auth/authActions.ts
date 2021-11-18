@@ -8,7 +8,7 @@ import {appActions} from "../App/appReducer";
 export const signUp = (username: string, email: string, password: string) => {
     return async (dispatch: AppDispatch) => {
 
-        dispatch(authActions.FETCHING_ON())
+        dispatch(appActions.FETCHING_ON())
         try {
             const response = await blogAPI.register(username, email, password)
             const data = response.data
@@ -24,14 +24,14 @@ export const signUp = (username: string, email: string, password: string) => {
                 dispatch(authActions.SET_ERRORS(errors))
             }
         }
-        dispatch(authActions.FETCHING_OFF())
+        dispatch(appActions.FETCHING_OFF())
     }
 }
 
 export const signIn = (email: string, password: string) => {
     return async (dispatch: AppDispatch) => {
 
-        dispatch(authActions.FETCHING_ON())
+        dispatch(appActions.FETCHING_ON())
         try {
             const response = await blogAPI.auth(email, password)
             const data = response.data
@@ -50,7 +50,7 @@ export const signIn = (email: string, password: string) => {
                 dispatch(authActions.SET_INVALID_ERRORS(errors['email or password']))
             }
         } finally {
-            dispatch(authActions.FETCHING_OFF())
+            dispatch(appActions.FETCHING_OFF())
         }
     }
 }
@@ -69,7 +69,7 @@ export const logout = () => (dispatch: AppDispatch) => {
 export const loginToken = () => {
     return async (dispatch: AppDispatch) => {
 
-        dispatch(authActions.FETCHING_ON())
+        dispatch(appActions.FETCHING_ON())
         try {
             const response = await blogAPI.getUser()
             const data = response.data
@@ -81,7 +81,7 @@ export const loginToken = () => {
         } catch (e) {
             console.log(e)
         } finally {
-            dispatch(authActions.FETCHING_OFF())
+            dispatch(appActions.FETCHING_OFF())
         }
     }
 }

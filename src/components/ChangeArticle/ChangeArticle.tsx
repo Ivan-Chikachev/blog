@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import Tag from "./Tag";
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
-import {createArticleType, InputType, updateArticleType} from "../../types/types";
+import {ArticleType, createArticleType, InputType, updateArticleType} from "../../types/types";
 import {Redirect} from "react-router";
 import Input from "../Input/Input";
 
@@ -13,11 +13,12 @@ type Props = {
     updateSubmit?: (slug: string, article: updateArticleType) => void
     isLoading: boolean,
     slug?: string,
+    article?: ArticleType
 }
 
 const ChangeArticle = (props: Props) => {
 
-    const {title, createSubmit, updateSubmit, isLoading, slug} = props
+    const {title, createSubmit, updateSubmit, isLoading, slug, article} = props
 
     const [tags, setTags] = useState<Array<string>>([])
     const [isRedirect, setIsRedirect] = useState(false)
@@ -47,16 +48,19 @@ const ChangeArticle = (props: Props) => {
     const registerTitle = {
         ...register('title', {
             required: true,
+            value: article?.title || ''
         })
     }
     const registerDescription = {
         ...register('description', {
             required: true,
+            value: article?.description || ''
         })
     }
     const registerText = {
         ...register('text', {
             required: true,
+            value: article?.body || ''
         })
     }
     const isError = Boolean(Object.keys(errors).length)
@@ -88,6 +92,7 @@ const ChangeArticle = (props: Props) => {
                 </h3>
                 {inputs.map(i =>
                     <Input
+                        key={i.inputLabel}
                         registerInput={i.registerInput}
                         errors={i.errors}
                         type={i.type}

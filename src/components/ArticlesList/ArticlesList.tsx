@@ -1,12 +1,10 @@
 import React from "react";
 import './ArticlesList.scss'
-import {ArticleType} from "../../types/types";
 import ArticleItem from "./ArticleItem";
 import Loading from "../Loading/Loading";
 import AppPagination from "../Pagination/Pagination";
 import Error from "../Error/Error";
-import {useSelector} from "react-redux";
-import {AppStateType} from "../../redux/rootReducer";
+import {useAppSelector} from "../../hooks/reduxHook";
 
 type Props = {
     page: number
@@ -14,10 +12,10 @@ type Props = {
 
 const ArticlesList = ({page}: Props) => {
 
-    const articles = useSelector<AppStateType, Array<ArticleType>>(s => s.app.articles)
-    const totalArticles = useSelector<AppStateType, number>(s => s.app.totalArticles)
-    const isLoading = useSelector<AppStateType, boolean>(s => s.app.isLoading)
-    const isError = useSelector<AppStateType, boolean>(s => s.app.isError)
+    const articles = useAppSelector(s => s.app.articles)
+    const totalArticles = useAppSelector(s => s.app.totalArticles)
+    const isLoading = useAppSelector(s => s.app.isLoading)
+    const isError = useAppSelector(s => s.app.isError)
 
     const noData = () => {
         if (articles.length) {

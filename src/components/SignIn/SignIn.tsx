@@ -5,15 +5,14 @@ import {useForm} from 'react-hook-form';
 import Input from '../Input/Input';
 import {InputType} from "../../types/types";
 import {resetErrors, signIn} from "../../redux/Auth/authActions";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "../../redux/rootReducer";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
 const SignIn = () => {
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
 
-    const isFetching = useSelector<AppStateType, boolean>(state => state.auth.isFetching)
-    const invalidAuth = useSelector<AppStateType, string>(state => state.auth.invalidError)
+    const isFetching = useAppSelector(state => state.app.isLoading)
+    const invalidAuth = useAppSelector(state => state.auth.invalidError)
 
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState

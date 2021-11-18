@@ -1,9 +1,9 @@
 import React from "react";
 import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
-import {AppStateType} from "../redux/rootReducer";
-import {connect, useSelector} from "react-redux";
+import {connect} from "react-redux";
 import {createArticleType} from "../types/types";
 import {createArticle} from "../redux/Article/articleActions";
+import {useAppSelector} from "../hooks/reduxHook";
 
 type DispatchTypes = {
     createArticle: (article: createArticleType) => void
@@ -13,7 +13,7 @@ type PropsType = DispatchTypes
 
 const CreateArticlePage = ({createArticle}: PropsType) => {
 
-    const isLoading = useSelector<AppStateType, boolean>(s => s.articles.isLoading)
+    const isLoading = useAppSelector(s => s.app.isLoading)
 
     return (
         <ChangeArticle
@@ -23,13 +23,8 @@ const CreateArticlePage = ({createArticle}: PropsType) => {
     )
 }
 
-const mapStateToProps = (state: AppStateType) => ({
-    isLoading: state.articles.isLoading
-})
-
 const mapDispatchToProps = {
     createArticle
 }
 
-export default connect<any, DispatchTypes, {}, AppStateType>(
-    mapStateToProps, mapDispatchToProps)(CreateArticlePage)
+export default connect(()=> ({}), mapDispatchToProps)(CreateArticlePage)

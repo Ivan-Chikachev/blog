@@ -4,9 +4,8 @@ import {Link} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {InputType} from "../../types/types";
 import Input from "../Input/Input";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStateType} from "../../redux/rootReducer";
 import {resetErrors, signUp} from "../../redux/Auth/authActions";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
 const SignUp = () => {
 
@@ -14,12 +13,13 @@ const SignUp = () => {
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
 
-    const usernameError = useSelector<AppStateType, string>(state => state.auth.errors.username[0])
-    const emailError = useSelector<AppStateType, string>(state => state.auth.errors.email[0])
-    const passwordError = useSelector<AppStateType, string>(state => state.auth.errors.password[0])
-    const isFetching = useSelector<AppStateType, boolean>(state => state.auth.isFetching)
+    const usernameError = useAppSelector(state => state.auth.errors.username[0])
+    const emailError = useAppSelector(state => state.auth.errors.email[0])
+    const passwordError = useAppSelector(state => state.auth.errors.password[0])
+    const isLoading = useAppSelector(state => state.app.isLoading)
 
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
+
     const signUpp = (username: string, email: string, password: string) =>
         dispatch(signUp(username, email, password))
 
@@ -131,7 +131,7 @@ const SignUp = () => {
             <button
                 className="create-acc__btn btn btn__for-modal btn__primary-bg"
                 type='submit'
-                disabled={isFetching}
+                disabled={isLoading}
             >
                 Create
             </button>
