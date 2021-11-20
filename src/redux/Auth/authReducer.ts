@@ -27,10 +27,10 @@ const authSlice = createSlice({
         SET_INVALID_ERRORS(state, action: PayloadAction<string[]>) {
             state.invalidError = action.payload[0]
         },
-        SET_ERRORS(state, action: PayloadAction<{ errors: { username: string, email: string, password: string } }>) {
-            state.errors.email = [action.payload.errors.email] || ['']
-            state.errors.username = [action.payload.errors.username] || ['']
-            state.errors.password = [action.payload.errors.password] || ['']
+        SET_ERRORS(state, action: PayloadAction<{username: string, email: string, password: string }>) {
+            state.errors.email = [action.payload.email] || ['']
+            state.errors.username = [action.payload.username] || ['']
+            state.errors.password = [action.payload.password] || ['']
         },
         RESET_ERRORS(state) {
             state.errors.email = ['']

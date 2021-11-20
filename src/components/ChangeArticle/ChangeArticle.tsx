@@ -23,6 +23,7 @@ const ChangeArticle = (props: Props) => {
     const [tags, setTags] = useState<Array<string>>([])
     const [isRedirect, setIsRedirect] = useState(false)
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
+
     const {errors} = formState
 
     if (isRedirect) {
@@ -48,19 +49,19 @@ const ChangeArticle = (props: Props) => {
     const registerTitle = {
         ...register('title', {
             required: true,
-            value: article?.title || ''
+            value: article?.title
         })
     }
     const registerDescription = {
         ...register('description', {
             required: true,
-            value: article?.description || ''
+            value: article?.description
         })
     }
     const registerText = {
         ...register('text', {
             required: true,
-            value: article?.body || ''
+            value: article?.body
         })
     }
     const isError = Boolean(Object.keys(errors).length)
