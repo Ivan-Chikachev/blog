@@ -2,6 +2,7 @@ import React from "react";
 import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
 import {createArticle} from "../redux/Article/articleActions";
 import {useAppDispatch, useAppSelector} from "../hooks/reduxHook";
+import {createArticleType} from "../types/types";
 
 const CreateArticlePage = () => {
 
@@ -9,7 +10,7 @@ const CreateArticlePage = () => {
 
     const dispatch = useAppDispatch()
 
-    const submit = dispatch(() => createArticle)
+    const submit = (article: createArticleType) => dispatch(createArticle(article))
 
     return (
         <ChangeArticle

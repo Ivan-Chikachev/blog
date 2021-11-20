@@ -3,6 +3,7 @@ import ChangeArticle from "../components/ChangeArticle/ChangeArticle";
 import {updateArticle} from "../redux/Article/articleActions";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../hooks/reduxHook";
+import {updateArticleType} from "../types/types";
 
 type Props = {
     slug: string,
@@ -23,14 +24,16 @@ const EditArticlePage = (props: Props) => {
         history.push(`/article/${slug}/edit-article`)
     }, [])
 
-    const submit = dispatch(() => updateArticle)
+    const submit = (slug: string, article: updateArticleType) => {
+        return dispatch(updateArticle(slug, article))
+    }
 
     return (
         <ChangeArticle
             slug={slug}
             updateSubmit={submit}
             isLoading={isLoading}
-            currentArticle={currentArticle}
+            article={currentArticle}
             title={'Edit article'}/>
     )
 }
