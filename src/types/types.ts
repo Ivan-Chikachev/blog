@@ -32,10 +32,15 @@ export type updateArticleType = {
 
 export type AlertType = {
     msg: string
-    type: typesOfAlert
+    type: enumAlertType
 }
 
-export type typesOfAlert = 'success' | 'error' | 'warning' | 'info'
+export enum enumAlertType {
+    success = 'success',
+    error = 'error',
+    warning = 'warning',
+    info = 'info',
+}
 
 export type AuthUserType = {
     user: {

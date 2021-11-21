@@ -46,24 +46,21 @@ const ChangeArticle = (props: Props) => {
         setIsRedirect(true)
     }
 
-    const registerTitle = {
-        ...register('title', {
-            required: true,
-            value: article?.title
-        })
-    }
-    const registerDescription = {
-        ...register('description', {
-            required: true,
-            value: article?.description
-        })
-    }
-    const registerText = {
-        ...register('text', {
-            required: true,
-            value: article?.body
-        })
-    }
+    const registerTitle = register('title', {
+        required: true,
+        value: article?.title
+    })
+
+    const registerDescription = register('description', {
+        required: true,
+        value: article?.description
+    })
+
+    const registerText = register('text', {
+        required: true,
+        value: article?.body
+    })
+
     const isError = Boolean(Object.keys(errors).length)
 
     const inputs: Array<InputType> = [

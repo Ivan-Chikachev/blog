@@ -3,6 +3,7 @@ import {LS} from "../../loacalStorage/localStorage";
 import {AppDispatch} from "../rootReducer";
 import {authActions} from "./authReducer";
 import {appActions} from "../App/appReducer";
+import {enumAlertType} from "../../types/types";
 
 
 export const signUp = (username: string, email: string, password: string) => {
@@ -59,7 +60,7 @@ export const logout = () => (dispatch: AppDispatch) => {
     dispatch(authActions.LOGOUT())
     LS.removeToken()
     dispatch(appActions.SHOW_ALERT({
-        msg: 'You are logged out', type: 'info'
+        msg: 'You are logged out', type: enumAlertType.info
     }))
     setTimeout(() => {
         dispatch(appActions.CLOSE_ALERT())

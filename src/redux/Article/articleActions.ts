@@ -1,4 +1,4 @@
-import {createArticleType, updateArticleType} from "../../types/types";
+import {createArticleType, enumAlertType, updateArticleType} from "../../types/types";
 import blogAPI from "../../services/api";
 import {articlesActions} from "./articleReducer";
 import {AppDispatch} from "../rootReducer";
@@ -57,12 +57,12 @@ export const createArticle = (article: createArticleType) => {
             const res = await blogAPI.createArticle(article)
             if (res.status === 200) {
                 dispatch(appActions.SHOW_ALERT({
-                    msg: 'Article created successfully', type: 'success'
+                    msg: 'Article created successfully', type: enumAlertType.success
                 }))
             }
         } catch (e) {
             dispatch(appActions.SHOW_ALERT({
-                msg: 'Such an article already exists', type: "error"
+                msg: 'Such an article already exists', type: enumAlertType.error
             }))
         } finally {
             dispatch(appActions.FETCHING_OFF())
@@ -82,12 +82,12 @@ export const updateArticle = (slug: string, article: updateArticleType) => {
             const res = await blogAPI.updateArticle(slug, article)
             if (res.status === 200) {
                 dispatch(appActions.SHOW_ALERT({
-                    msg: 'Article updated successfully', type: 'success'
+                    msg: 'Article updated successfully', type: enumAlertType.success
                 }))
             }
         } catch (e) {
             dispatch(appActions.SHOW_ALERT({
-                msg: 'Error', type: "error"
+                msg: 'Error', type: enumAlertType.error
             }))
         }
         finally {
@@ -106,12 +106,12 @@ export const deleteArticle = (slug: string) => {
             const res = await blogAPI.deleteArticle(slug)
             if (res.status === 204) {
                 dispatch(appActions.SHOW_ALERT({
-                    msg: 'Article deleted', type: 'success'
+                    msg: 'Article deleted', type: enumAlertType.success
                 }))
             }
         } catch (e) {
             dispatch(appActions.SHOW_ALERT({
-                msg: 'Error', type: "error"
+                msg: 'Error', type: enumAlertType.error
             }))
         }
 

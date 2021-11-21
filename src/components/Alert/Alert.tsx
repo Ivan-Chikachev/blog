@@ -1,11 +1,11 @@
 import {Alert as AntAlert} from "antd";
 import React from "react";
-import {typesOfAlert} from "../../types/types";
+import {enumAlertType} from "../../types/types";
 import './Alert.scss'
 
 type props = {
     message: string
-    type: typesOfAlert
+    type: enumAlertType
 }
 
 const Alert = ({message, type}: props) => {
