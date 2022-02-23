@@ -5,10 +5,11 @@ import {useForm} from 'react-hook-form';
 import Input from '../Input/Input';
 import {InputType} from "../../types/types";
 import {resetErrors, signIn} from "../../redux/Auth/authActions";
+import { useTranslation } from 'react-i18next';
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
 const SignIn = () => {
-
+    const { t } = useTranslation();
     const dispatch = useAppDispatch()
 
     const isFetching = useAppSelector(state => state.app.isLoading)
@@ -43,19 +44,19 @@ const SignIn = () => {
     const inputs: Array<InputType> = [
         {
             type: 'email',
-            placeholder: 'Email address',
+            placeholder: t('emailAddress'),
             errorMessage: 'Please, enter a valid email',
             errors: errors.email,
             registerInput: registerEmail,
-            inputLabel: 'Email address'
+            inputLabel: t('emailAddress')
         },
         {
             type: 'password',
-            placeholder: 'Password',
+            placeholder: t('password'),
             errorMessage: 'Password must contain 6-40 characters',
             errors: errors.password,
             registerInput: registerPassword,
-            inputLabel: 'Password'
+            inputLabel: t('password')
         }
     ]
 
@@ -64,7 +65,7 @@ const SignIn = () => {
             className='sign-in'
             onSubmit={handleSubmit(onSubmit)}>
             <h3 className='sign-in__title'>
-                Sign In
+                {t('signIn')}
             </h3>
             {inputs.map(i =>
                 <Input
@@ -88,12 +89,12 @@ const SignIn = () => {
                 type={'submit'}
                 disabled={isFetching}
             >
-                Login
+                {t('login')}
             </button>
             <p className='sign-in__text'>
-                Don’t have an account?
+                {t('notAccount')}
                 <Link to={'/sign-up'} className='link'>
-                    Sign Up.
+                    {t('signUp')}.
                 </Link>
             </p>
         </form>

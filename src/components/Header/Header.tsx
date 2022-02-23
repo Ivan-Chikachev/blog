@@ -3,6 +3,7 @@ import './Header.scss';
 import {Link} from "react-router-dom";
 import Account from "./Account";
 import Auth from "./Auth";
+import {Internationalization} from "../Internationalization/Internationalization";
 
 type Props = {
     isAuth: boolean
@@ -21,6 +22,8 @@ const Header = (props: Props) => {
                     Blog
                 </span>
             </Link>
+            <div className='header__spacer'/>
+            <Internationalization />
             <div className='header__auth-block auth'>
                 {
                     isAuth ?
