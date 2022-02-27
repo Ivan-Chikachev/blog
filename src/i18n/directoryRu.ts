@@ -13,7 +13,6 @@ export const RuDirectory = {
     light: 'Светлая',
     dark: 'Темная',
     blog: 'Блог',
-    boards: 'Доска',
     logout: 'Выйти',
     createArticle: 'Создать пост',
 

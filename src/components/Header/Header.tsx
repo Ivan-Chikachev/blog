@@ -32,13 +32,6 @@ const Header = (props: Props) => {
                     {t('blog')}
                 </span>
             </Link>
-            <Link to='/dd'>
-                <span
-                    data-theme={theme}
-                    className='header__title'>
-                    {t('boards')}
-                </span>
-            </Link>
             <div className='header__spacer'/>
             <Theme />
             <Internationalization />

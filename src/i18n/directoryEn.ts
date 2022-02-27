@@ -13,7 +13,6 @@ export const EnDirectory = {
     light: 'Light',
     dark: 'Dark',
     blog: 'Blog',
-    boards: 'Boards',
     logout: 'Log out',
     createArticle: 'Create article',
 }

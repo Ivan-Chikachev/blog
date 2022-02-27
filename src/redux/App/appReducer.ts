@@ -10,7 +10,6 @@ const initialState = {
     alert: {} as AlertType,
     isShowAlert: false
 };
-type InitialStateType = typeof initialState
 
 const appSlice = createSlice({
     name: 'app',
