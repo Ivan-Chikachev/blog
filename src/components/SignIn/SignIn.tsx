@@ -7,6 +7,7 @@ import {InputType} from "../../types/types";
 import {resetErrors, signIn} from "../../redux/Auth/authActions";
 import { useTranslation } from 'react-i18next';
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
+import {useTheme} from "../../theme/useTheme";
 
 const SignIn = () => {
     const { t } = useTranslation();
@@ -14,6 +15,8 @@ const SignIn = () => {
 
     const isFetching = useAppSelector(state => state.app.isLoading)
     const invalidAuth = useAppSelector(state => state.auth.invalidError)
+
+    const {theme} = useTheme()
 
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
@@ -27,19 +30,15 @@ const SignIn = () => {
         dispatch(signIn(email, password))
     }
 
-    const registerEmail = {
-        ...register('email', {
+    const registerEmail = register('email', {
             required: true,
             pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
         })
-    }
-    const registerPassword = {
-        ...register('password', {
+    const registerPassword = register('password', {
             required: true,
             minLength: 5,
             maxLength: 40
         })
-    }
 
     const inputs: Array<InputType> = [
         {
@@ -62,9 +61,11 @@ const SignIn = () => {
 
     return (
         <form
+            data-theme={theme}
             className='sign-in'
             onSubmit={handleSubmit(onSubmit)}>
-            <h3 className='sign-in__title'>
+            <h3
+                className='sign-in__title'>
                 {t('signIn')}
             </h3>
             {inputs.map(i =>

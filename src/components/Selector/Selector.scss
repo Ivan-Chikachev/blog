@@ -1,12 +1,13 @@
-.language {
+.selector {
   position: relative;
 
   &__value {
     cursor: pointer;
   }
 
-  &__selector {
-    padding: 5px 10px;
+  &__pop-up {
+    z-index: 10;
+    padding: 7px 10px;
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -21,9 +22,29 @@
     0px 0.608796px 2.93329px rgba(0, 0, 0, 0.0196802);
   }
 
+  &__pop-up[data-theme='dark'] {
+    background: #3f3f3f;
+  }
+
   &__btn {
     cursor: pointer;
     background: #FFFFFF;
-    padding: 5px 2px;
+    padding: 5px 7px;
+    border-radius: 5px;
+  }
+
+  &__btn[data-theme='dark'] {
+    cursor: pointer;
+    background: inherit;
+    padding: 5px 7px;
+  }
+
+  &__btn:hover {
+    background: #1890FF;
+    color: #FFFFFF;
+  }
+
+  &__btn[data-theme='dark']:hover {
+    background: #0e172a;
   }
 }

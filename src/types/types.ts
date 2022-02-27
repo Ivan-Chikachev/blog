@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react"
+
 export type InputType = {
     placeholder: string
     type: string
@@ -104,4 +106,16 @@ export type CommentType = {
         "body": string,
         "author": _ProfileType
     }
+}
+
+export type ThemeType = 'light' | 'dark'
+
+export interface IThemeContextProps {
+    theme: ThemeType
+    setTheme: (theme: ThemeType) => void
+}
+
+export type SelectorsType = {
+    onClickHandler: () => void
+    value: string
 }

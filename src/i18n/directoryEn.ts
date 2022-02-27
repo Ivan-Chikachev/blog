@@ -10,4 +10,10 @@ export const EnDirectory = {
     notAccount: 'Don’t have an account?',
     emailAddress: 'Email address',
     password: 'Password',
+    light: 'Light',
+    dark: 'Dark',
+    blog: 'Blog',
+    boards: 'Boards',
+    logout: 'Log out',
+    createArticle: 'Create article',
 }

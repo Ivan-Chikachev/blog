@@ -14,6 +14,7 @@ import {loginToken} from './redux/Auth/authActions';
 import {LS} from './loacalStorage/localStorage';
 import Alert from "./components/Alert/Alert";
 import {useAppSelector} from "./hooks/reduxHook";
+import {useTheme} from "./theme/useTheme";
 
 const App = () => {
 
@@ -21,6 +22,8 @@ const App = () => {
     const username = useAppSelector(s => s.auth.user.user?.username)
     const avatarSrc = useAppSelector(s => s.auth.user.user?.image)
     const {isShowAlert, alert} = useAppSelector(s => s.app)
+
+    const {theme} = useTheme()
 
     const dispatch = useDispatch()
 
@@ -33,7 +36,9 @@ const App = () => {
 
     return (
         <BrowserRouter>
-            <div className='wrapper'>
+            <div
+                data-theme={theme}
+                className='wrapper'>
                 {isShowAlert &&
                     <Alert
                         type={alert.type}
