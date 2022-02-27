@@ -6,12 +6,15 @@ import {InputType} from "../../types/types";
 import Input from "../Input/Input";
 import {resetErrors, signUp} from "../../redux/Auth/authActions";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
+import {useTheme} from "../../theme/useTheme";
 
 const SignUp = () => {
 
     const [confirmPassword, setConfirmPassword] = useState('')
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
     const {errors} = formState
+
+    const {theme} = useTheme()
 
     const usernameError = useAppSelector(state => state.auth.errors.username[0])
     const emailError = useAppSelector(state => state.auth.errors.email[0])
@@ -27,31 +30,23 @@ const SignUp = () => {
         dispatch(resetErrors())
     }, [])
 
-    const registerEmail = {
-        ...register('email', {
+    const registerEmail = register('email', {
             required: true,
             pattern: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
         })
-    }
-    const registerPassword = {
-        ...register('password', {
+    const registerPassword = register('password', {
             required: true,
             minLength: 5,
             maxLength: 40
         })
-    }
-    const registerConfirmPassword = {
-        ...register('confirmPassword', {
+    const registerConfirmPassword = register('confirmPassword', {
             required: true,
         })
-    }
-    const registerUsername = {
-        ...register('username', {
+    const registerUsername = register('username', {
             required: true,
             minLength: 3,
             maxLength: 20
         })
-    }
     const onSubmit = (data: any) => {
         if (data.password !== data.confirmPassword) {
             setConfirmPassword('Password must match')
@@ -103,6 +98,7 @@ const SignUp = () => {
 
     return (
         <form
+            data-theme={theme}
             className='create-acc'
             onSubmit={handleSubmit(onSubmit)}
         >

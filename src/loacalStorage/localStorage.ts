@@ -1,3 +1,5 @@
+import {ThemeType} from "../types/types";
+
 export const LS = {
     setToken: (token: string) => {
         localStorage.setItem('token', token)
@@ -7,5 +9,11 @@ export const LS = {
     },
     removeToken: () => {
         localStorage.removeItem('token')
+    },
+    getTheme: () => {
+        return localStorage.getItem('theme')
+    },
+    setTheme: (theme: ThemeType) => {
+        localStorage.setItem('theme', theme)
     }
 }

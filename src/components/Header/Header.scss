@@ -1,3 +1,7 @@
+.header[data-theme="dark"] {
+  background: #262626;
+}
+
 .header {
   height: 80px;
   background: #fff;
@@ -10,6 +14,11 @@
   &__title {
     font-size: 18px;
     color: #262626;
+    margin: 0 10px 0 0;
+  }
+
+  &__title[data-theme='dark'] {
+    color: #e5e5e5;
   }
 
   &__btn-block {

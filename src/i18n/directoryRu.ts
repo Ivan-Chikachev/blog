@@ -10,4 +10,10 @@ export const RuDirectory = {
     notAccount: 'Нет учетной записи?',
     emailAddress: 'Электронная почта',
     password: 'Пароль',
+    light: 'Светлая',
+    dark: 'Темная',
+    blog: 'Блог',
+    logout: 'Выйти',
+    createArticle: 'Создать пост',
+
 }
