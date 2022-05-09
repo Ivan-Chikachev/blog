@@ -15,6 +15,10 @@ const articlesSlice = createSlice({
             state.currentArticle = action.payload
             state.isError = false
         },
+        CLEAN_CURRENT_ARTICLE(state) {
+            state.currentArticle = {} as ArticleType
+            state.isError = false
+        },
         ON_ERROR(state) {
             state.isError = true
         },

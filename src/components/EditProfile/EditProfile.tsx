@@ -3,7 +3,7 @@ import './EditProfile.scss';
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
 import {UpdateUserType} from "../../types/types";
-import {Redirect} from "react-router-dom";
+import {Navigate} from "react-router-dom";
 import {updateUser} from '../../redux/User/userActions';
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
@@ -20,7 +20,7 @@ const EditProfile = () => {
     const [isRedirect, setIsRedirect] = useState(false)
 
     if (isRedirect) {
-        return <Redirect to="/articles/page/1"/>
+        return <Navigate to="/articles/page/1"/>
     }
 
     const onSubmit = (data: any) => {

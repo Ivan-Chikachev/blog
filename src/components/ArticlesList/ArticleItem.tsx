@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import './ArticlesList.scss'
 import {ArticleType} from "../../types/types";
-import {Link, RouteComponentProps, withRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {formatDate} from "../../helper/publishedDate";
 import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
@@ -95,4 +95,4 @@ const ArticleItem = ({article}: Props) => {
     );
 }
 
-export default withRouter<Props & RouteComponentProps<{}>, any>(ArticleItem)
+export default ArticleItem

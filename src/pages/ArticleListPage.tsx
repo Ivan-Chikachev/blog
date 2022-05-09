@@ -1,16 +1,15 @@
 import React, {useEffect} from "react";
 import ArticlesList from "../components/ArticlesList/ArticlesList";
 import {getArticles} from "../redux/App/appActions";
-import {useDispatch} from "react-redux";
+import {useAppDispatch} from "../hooks/reduxHook";
+import {useParams} from "react-router-dom";
 
-type Props = {
-    page: number
-}
+const ArticlesListPage = () => {
 
+    const dispatch = useAppDispatch()
 
-const ArticlesListPage = ({page}: Props) => {
-
-    const dispatch = useDispatch()
+    const params = useParams()
+    const page = Number(params.page) || 1
 
     useEffect(() => {
         dispatch(getArticles(page))

@@ -1,9 +1,9 @@
 import {Link} from "react-router-dom";
 import React from "react";
 import defaultAvatar from '../../img/default-ava.png'
-import {useDispatch} from "react-redux";
 import {logout} from "../../redux/Auth/authActions";
 import {useTranslation} from "react-i18next";
+import {useAppDispatch} from "../../hooks/reduxHook";
 
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 const Account = (props: Props) => {
 
     const {avatarSrc, username} = props
-    const dispatch = useDispatch()
+    const dispatch = useAppDispatch()
     const { t } = useTranslation();
 
     const avatar = avatarSrc || defaultAvatar

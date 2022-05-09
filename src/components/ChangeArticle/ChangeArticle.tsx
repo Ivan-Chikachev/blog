@@ -4,7 +4,7 @@ import Tag from "./Tag";
 import {useForm} from "react-hook-form";
 import classNames from "classnames";
 import {ArticleType, createArticleType, InputType, updateArticleType} from "../../types/types";
-import {Redirect} from "react-router";
+import {Navigate} from "react-router";
 import Input from "../Input/Input";
 
 type Props = {
@@ -27,7 +27,7 @@ const ChangeArticle = (props: Props) => {
     const {errors} = formState
 
     if (isRedirect) {
-        return <Redirect to="/articles/page/1"/>
+        return <Navigate to="/articles/page/1"/>
     }
 
     const onSubmit = (data: any) => {

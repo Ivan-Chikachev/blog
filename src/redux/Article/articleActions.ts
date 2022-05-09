@@ -29,6 +29,10 @@ export const getCurrentArticle = (slug: string) => {
     }
 }
 
+export const cleanCurrentArticle = () => (dispatch: AppDispatch) => {
+    dispatch(articlesActions.CLEAN_CURRENT_ARTICLE())
+}
+
 export const setFavorite = (slug: string) => {
     return async () => {
         try {

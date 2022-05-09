@@ -1,12 +1,17 @@
 import React, {createContext, useContext, useState} from 'react';
-import { LS } from '../loacalStorage/localStorage';
+import {LS} from '../loacalStorage/localStorage';
 import {IThemeContextProps, ThemeType} from "../types/types";
 
 const ThemeContext = createContext<IThemeContextProps>({
     theme: 'light'
 } as IThemeContextProps);
 
-export const UseTheme: React.FC = ({ children }) => {
+
+interface ChildrenI {
+    children?: React.ReactNode;
+}
+
+export const UseTheme: React.FC<ChildrenI> = ({ children }) => {
 
     const defaultTheme = LS.getTheme() === 'dark' ?  'dark' : 'light'
 

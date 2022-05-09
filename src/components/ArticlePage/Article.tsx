@@ -4,10 +4,10 @@ import Loading from "../Loading/Loading";
 import Error from "../Error/Error";
 import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
-import {Link, Redirect} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
 import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
 import {formatDate} from "../../helper/publishedDate";
-import {deleteArticle, removeFavorite, setFavorite} from "../../redux/Article/articleActions";
+import {deleteArticle, removeFavorite, setFavorite, cleanCurrentArticle} from "../../redux/Article/articleActions";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 
 const Article = () => {
@@ -34,8 +34,14 @@ const Article = () => {
         setIsLiked(favorited)
     }, [favoritesCount, favorited])
 
+    useEffect(() => {
+        return () => {
+            dispatch(cleanCurrentArticle())
+        }
+    }, [])
+
     if (isRedirect) {
-        return <Redirect to="/articles/page/1"/>
+        return <Navigate to="/articles/page/1"/>
     }
 
     const clickLike = (slug: string) => {
