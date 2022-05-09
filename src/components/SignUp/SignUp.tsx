@@ -7,6 +7,7 @@ import Input from "../Input/Input";
 import {resetErrors, signUp} from "../../redux/Auth/authActions";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
 import {useTheme} from "../../theme/useTheme";
+import {useTranslation} from "react-i18next";
 
 const SignUp = () => {
 
@@ -15,13 +16,13 @@ const SignUp = () => {
     const {errors} = formState
 
     const {theme} = useTheme()
+    const { t } = useTranslation();
+    const dispatch = useAppDispatch()
 
     const usernameError = useAppSelector(state => state.auth.errors.username[0])
     const emailError = useAppSelector(state => state.auth.errors.email[0])
     const passwordError = useAppSelector(state => state.auth.errors.password[0])
     const isLoading = useAppSelector(state => state.app.isLoading)
-
-    const dispatch = useAppDispatch()
 
     const signUpp = (username: string, email: string, password: string) =>
         dispatch(signUp(username, email, password))
@@ -64,35 +65,35 @@ const SignUp = () => {
     const inputs: Array<InputType> = [
         {
             type: 'text',
-            placeholder: 'Username',
+            placeholder: t('username'),
             errorMessage: usernameError || 'Username must contain 3-20 characters',
             errors: userErrors,
             registerInput: registerUsername,
-            inputLabel: 'Username'
+            inputLabel: t('username')
         },
         {
             type: 'email',
-            placeholder: 'Email address',
+            placeholder: t('emailAddress'),
             errorMessage: emailError || 'Please, enter a valid email',
             errors: emailErrors,
             registerInput: registerEmail,
-            inputLabel: 'Email address'
+            inputLabel: t('emailAddress')
         },
         {
             type: 'password',
-            placeholder: 'Password',
+            placeholder: t('password'),
             errorMessage: 'Password must contain 6-40 characters',
             errors: passwordErrors,
             registerInput: registerPassword,
-            inputLabel: 'Password'
+            inputLabel: t('password')
         },
         {
             type: 'password',
-            placeholder: 'Repeat password',
+            placeholder: t('repeatPassword'),
             errorMessage: ' Password do not match',
             errors: confirmPassword,
             registerInput: registerConfirmPassword,
-            inputLabel: 'Repeat password'
+            inputLabel: t('repeatPassword')
         }
     ]
 
@@ -103,7 +104,7 @@ const SignUp = () => {
             onSubmit={handleSubmit(onSubmit)}
         >
             <h3 className='create-acc__title'>
-                Create new account
+                {t('createAccount')}
             </h3>
             {inputs.map(i =>
                 <Input
@@ -121,7 +122,7 @@ const SignUp = () => {
             <div className="create-acc__agree">
                 <label>
                     <input type="checkbox" className='create-acc__checkbox'/>
-                    I agree to the processing of my personal information
+                    {t('agreeToTheProcessing')}
                 </label>
             </div>
             <button
@@ -129,12 +130,12 @@ const SignUp = () => {
                 type='submit'
                 disabled={isLoading}
             >
-                Create
+                {t('create')}
             </button>
             <p className='create-acc__text'>
-                Already have an account?
+                {t('haveAccount')}
                 <Link to={'/sign-in'} className='link'>
-                    Sign In.
+                    {t('signIn')}
                 </Link>
             </p>
         </form>

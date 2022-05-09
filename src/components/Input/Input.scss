@@ -10,6 +10,16 @@
   margin: 0 0 12px;
 }
 
+.input[data-theme="dark"] {
+  background: #8f8f8f;
+  border: 1px solid #343434;
+  color: #e5e5e5;
+
+  &::placeholder {
+    color: #9f9f9f;
+  }
+}
+
 .input {
   width: 100%;
   border: 1px solid #D9D9D9;
@@ -18,7 +28,7 @@
   padding: 12px 8px;
 
   &::placeholder {
-    color: #BFBFBF;
+    color: #a2a2a2;
   }
 }
 

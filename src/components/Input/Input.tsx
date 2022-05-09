@@ -1,6 +1,7 @@
 import React from "react";
 import './Input.scss'
 import classNames from "classnames";
+import {useTheme} from "../../theme/useTheme";
 
 type PropType = {
     placeholder: string
@@ -21,6 +22,8 @@ const Input = (props: PropType) => {
         inputLabel, className, value
     } = props
 
+    const {theme} = useTheme()
+
     return (
         <div className={classNames({
             "input-wrap": true,
@@ -38,6 +41,7 @@ const Input = (props: PropType) => {
                     "input": true,
                     'input-error': errors
                 })}
+                data-theme={theme}
                 {...registerInput}
             />
             {errors && <span className='error-label'>

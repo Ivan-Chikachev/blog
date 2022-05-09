@@ -1,6 +1,7 @@
 import classNames from "classnames";
 import React, {useEffect} from "react"
 import './Like.scss'
+import {useTheme} from "../../theme/useTheme";
 
 type Props = {
     slug: string
@@ -12,6 +13,9 @@ type Props = {
 
 const Like = (props: Props) => {
     const {isLiked, clickLike, likeCount, slug, disabled} = props
+
+    const {theme} = useTheme()
+
     return (
         <button
             type="button"
@@ -20,6 +24,7 @@ const Like = (props: Props) => {
                 "like": true,
                 "active": isLiked
             })}
+            data-theme={theme}
             onClick={() => clickLike(slug)}
         >
             {likeCount || 0}

@@ -9,6 +9,8 @@ import ConfirmDelete from "../ConfirmDelete/ConfirmDelete";
 import {formatDate} from "../../helper/publishedDate";
 import {deleteArticle, removeFavorite, setFavorite, cleanCurrentArticle} from "../../redux/Article/articleActions";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
+import {useTheme} from "../../theme/useTheme";
+import {useTranslation} from "react-i18next";
 
 const Article = () => {
 
@@ -18,6 +20,8 @@ const Article = () => {
     const username = useAppSelector(s => s.auth.user?.user?.username)
 
     const dispatch = useAppDispatch()
+    const { t } = useTranslation();
+    const {theme} = useTheme()
 
     const {
         title, body, favoritesCount,
@@ -66,15 +70,13 @@ const Article = () => {
     const publishedDate = formatDate(currentArticle?.createdAt)
     const isCurrentArticle = !!Object.keys(currentArticle).length
 
-    const tagsRender = () => {
-        return tagList?.map(tag =>
+    const tagsRender = tagList?.map(tag =>
             <div
                 key={tag}
                 className="header-article__tag-item">
                 {tag}
             </div>
-        )
-    }
+    )
 
     return (
         <div className='container'>
@@ -88,7 +90,7 @@ const Article = () => {
             !isLoading &&
             <div>Article not found</div>}
 
-            {isCurrentArticle && <article className='article-page'>
+            {isCurrentArticle && <article className='article-page' data-theme={theme}>
                 <header className="article-page__header header-article">
                     <div className="header-article__left-header">
                         <div className="header-article__title-block">
@@ -106,17 +108,21 @@ const Article = () => {
                             </div>
                         </div>
                         <div className="header-article__tag-list">
-                            {tagsRender()}
+                            {tagsRender}
                         </div>
-                        <div className="header-article__description">
+                        <div className="header-article__description" data-theme={theme}>
                             {description}
                         </div>
                     </div>
                     <div className="header-article__right-header">
                         <div className="header-article__info">
                             <div>
-                                <h5 className='header-article__name'>{author.username}</h5>
-                                <span className='header-article__date'>{publishedDate}</span>
+                                <h5 className='header-article__name' data-theme={theme}>
+                                    {author.username}
+                                </h5>
+                                <span className='header-article__date' data-theme={theme}>
+                                    {publishedDate}
+                                </span>
                             </div>
                             <div>
                                 <img className='header-article__avatar' src={avatarSrc} alt=""/>
@@ -131,13 +137,13 @@ const Article = () => {
                             <Link
                                 className='btn btn__success btn__medium'
                                 to={`/article/${slug}/edit-article`}>
-                                Edit
+                                {t('edit')}
                             </Link>
                         </div>
                         }
                     </div>
                 </header>
-                <div className="article-page__text">
+                <div className="article-page__text" data-theme={theme}>
                     {body}
                 </div>
             </article>}

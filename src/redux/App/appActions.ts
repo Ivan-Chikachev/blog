@@ -29,3 +29,7 @@ export const getArticles = (offset: number) => {
         }, 3000)
     }
 }
+
+export const cleanArticleList = () => (dispatch: AppDispatch) => {
+    dispatch(appActions.CLEAN_ARTICLE_LIST())
+}

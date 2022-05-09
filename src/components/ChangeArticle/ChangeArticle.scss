@@ -1,5 +1,10 @@
 @import "src/variable";
 
+.create-article[data-theme="dark"] {
+  background: #565656;
+  border: 1px solid #343434;
+}
+
 .create-article {
   padding: 48px 32px;
   width: 938px;
@@ -34,6 +39,16 @@
     }
   }
 
+  &__input[data-theme="dark"] {
+    background: #8f8f8f;
+    border: 1px solid #343434;
+    color: #e5e5e5;
+
+    &::placeholder {
+      color: #9f9f9f;
+    }
+  }
+
   &__textarea {
     border-radius: 4px;
     height: 168px;
@@ -49,6 +64,16 @@
     }
   }
 
+  &__textarea[data-theme="dark"] {
+    background: #8f8f8f;
+    border: 1px solid #343434;
+    color: #e5e5e5;
+
+    &::placeholder {
+      color: #9f9f9f;
+    }
+  }
+
   &__input-tag {
     width: 300px;
     margin: 0 20px 0 0;
@@ -61,10 +86,6 @@
 
   &__btn {
     width: 320px;
-  }
-
-  &__btn-add {
-    width: 150px;
   }
 }
 

@@ -7,6 +7,7 @@ import defaultAvatar from "../../img/default-ava.png";
 import Like from "../Like/Like";
 import {removeFavorite, setFavorite} from "../../redux/Article/articleActions";
 import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
+import {useTheme} from "../../theme/useTheme";
 
 type Props = {
     article: ArticleType
@@ -17,6 +18,7 @@ const ArticleItem = ({article}: Props) => {
     const isAuth = useAppSelector(s => s.auth.isAuth)
 
     const dispatch = useAppDispatch()
+    const {theme} = useTheme()
 
     const {
         slug, title, favoritesCount,
@@ -43,19 +45,17 @@ const ArticleItem = ({article}: Props) => {
         }
     }
 
-    const tagsRender = () => {
-        return tagList?.map((tag, index) =>
-            <div key={index} className="article__tag-item">
+    const tagsRender = tagList?.map((tag, index) =>
+            <div key={index} className="article__tag-item" data-theme={theme}>
                 {tag}
             </div>
         )
-    }
 
     const publishedDate = formatDate(article.createdAt)
     const avatarSrc = author?.image || defaultAvatar
 
     return (
-        <article className='article'>
+        <article className='article' data-theme={theme}>
             <header className="article__header">
                 <div className="article__header-left">
                     <Link to={`/article/${slug}`}>
@@ -76,8 +76,12 @@ const ArticleItem = ({article}: Props) => {
                 </div>
                 <div className="article__header-right">
                     <div className="article__info">
-                        <h5 className='article__name'>{author.username}</h5>
-                        <span className='article__date'>{publishedDate}</span>
+                        <h5 className='article__name' data-theme={theme}>
+                            {author.username}
+                        </h5>
+                        <span className='article__date' data-theme={theme}>
+                            {publishedDate}
+                        </span>
                     </div>
                     <div>
                         <img className='article__avatar' src={avatarSrc} alt=""/>
@@ -85,9 +89,9 @@ const ArticleItem = ({article}: Props) => {
                 </div>
             </header>
             <div className="article__tag-list">
-                {tagsRender()}
+                {tagsRender}
             </div>
-            <div className="article__text">
+            <div className="article__text" data-theme={theme}>
                 {description}
             </div>
         </article>

@@ -1,10 +1,11 @@
-import React from "react";
+import React, {useEffect} from "react";
 import './ArticlesList.scss'
 import ArticleItem from "./ArticleItem";
 import Loading from "../Loading/Loading";
 import AppPagination from "../Pagination/Pagination";
 import Error from "../Error/Error";
-import {useAppSelector} from "../../hooks/reduxHook";
+import {useAppDispatch, useAppSelector} from "../../hooks/reduxHook";
+import {cleanArticleList} from "../../redux/App/appActions";
 
 type Props = {
     page: number
@@ -17,12 +18,21 @@ const ArticlesList = ({page}: Props) => {
     const isLoading = useAppSelector(s => s.app.isLoading)
     const isError = useAppSelector(s => s.app.isError)
 
+    const dispatch = useAppDispatch()
+
     const noData = () => {
         if (articles.length) {
             return false
         }
         return true
     }
+
+    useEffect(() => {
+        return () => {
+            dispatch(cleanArticleList())
+        }
+    }, [])
+
 
     return (
         <div className="container">

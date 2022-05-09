@@ -49,6 +49,10 @@
     margin: 0 13px 0 0;
   }
 
+  &__name[data-theme="dark"] {
+    color: #e5e5e5;
+  }
+
   &__avatar {
     display: flex;
     align-items: center;

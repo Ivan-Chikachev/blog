@@ -21,6 +21,10 @@ const appSlice = createSlice({
             state.isError = false
             state.totalArticles = action.payload.articlesCount
         },
+        CLEAN_ARTICLE_LIST(state) {
+            state.articles = []
+            state.isError = false
+        },
         SET_CURRENT_PAGE(state, action: PayloadAction<number>) {
             state.articles = []
             state.currentPage = action.payload

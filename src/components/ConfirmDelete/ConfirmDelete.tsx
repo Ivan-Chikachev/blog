@@ -1,6 +1,7 @@
 import React from "react";
 import './ConfirmDelete.scss'
 import {Popconfirm} from 'antd';
+import {useTranslation} from "react-i18next";
 
 type Props = {
     slug: string
@@ -9,18 +10,20 @@ type Props = {
 
 const ConfirmDelete = ({clickDeleteArticle, slug}: Props) => {
 
+    const { t } = useTranslation();
+
     return (
         <Popconfirm
-            title={'Are you sure to delete this article?'}
+            title={t('deleteThisArticle')}
             onConfirm={() => clickDeleteArticle(slug)}
-            okText="Yes"
-            cancelText="No"
+            okText={t('yes')}
+            cancelText={t('no')}
             className='confirm'
         >
             <a
                 className='btn btn__danger btn__medium'
                 href="#">
-                Delete
+                {t('delete')}
             </a>
         </Popconfirm>
     )

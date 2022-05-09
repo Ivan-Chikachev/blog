@@ -1,3 +1,7 @@
+.article[data-theme="dark"] {
+  background: #2c2c2c;
+}
+
 .article {
   padding: 15px 14px 24px 19px;
   background: #FFFFFF;
@@ -34,10 +38,18 @@
     color: rgba(0, 0, 0, 0.85);
   }
 
+  &__name[data-theme="dark"] {
+    color: #E5E5E5;
+  }
+
   &__date{
     font-size: 12px;
     line-height: 22px;
     color: rgba(0, 0, 0, 0.5);
+  }
+
+  &__date[data-theme="dark"] {
+    color: #E5E5E5;
   }
 
   &__avatar{
@@ -72,11 +84,21 @@
     border-radius: 2px;
   }
 
+  &__tag-item[data-theme="dark"] {
+    font-size: 12px;
+    color: #E5E5E5;
+    border: 1px solid rgb(124, 124, 124);
+  }
+
   &__text {
     font-size: 15px;
     line-height: 22px;
     word-wrap: break-spaces;
     overflow-wrap: break-word;
+  }
+
+  &__text[data-theme="dark"] {
+    color: #E5E5E5;
   }
 }
 

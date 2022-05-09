@@ -18,7 +18,6 @@ const Header = (props: Props) => {
 
     const {isAuth, avatarSrc, username} = props
     const { t } = useTranslation();
-
     const {theme} = useTheme()
 
     return (

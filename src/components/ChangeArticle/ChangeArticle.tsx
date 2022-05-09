@@ -6,6 +6,8 @@ import classNames from "classnames";
 import {ArticleType, createArticleType, InputType, updateArticleType} from "../../types/types";
 import {Navigate} from "react-router";
 import Input from "../Input/Input";
+import {useTheme} from "../../theme/useTheme";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     title: string
@@ -25,6 +27,9 @@ const ChangeArticle = (props: Props) => {
     const {register, handleSubmit, formState} = useForm({mode: 'onBlur'})
 
     const {errors} = formState
+
+    const {theme} = useTheme()
+    const { t } = useTranslation();
 
     if (isRedirect) {
         return <Navigate to="/articles/page/1"/>
@@ -66,23 +71,24 @@ const ChangeArticle = (props: Props) => {
     const inputs: Array<InputType> = [
         {
             type: 'text',
-            placeholder: 'Title',
+            placeholder: t('title'),
             errors: errors.title,
             registerInput: registerTitle,
-            inputLabel: 'Title'
+            inputLabel: t('title')
         },
         {
             type: 'text',
-            placeholder: 'Short description',
+            placeholder: t('shortDescr'),
             errors: errors.description,
             registerInput: registerDescription,
-            inputLabel: 'Short description'
+            inputLabel: t('shortDescr')
         }
     ]
 
     return (
         <div>
             <form className='create-article'
+                  data-theme={theme}
                   onSubmit={handleSubmit(onSubmit)}
                   action="">
                 <h3 className='create-article__title'>
@@ -101,14 +107,16 @@ const ChangeArticle = (props: Props) => {
                     />
                 )}
                 <p className="create-article__label">
-                    Text
+                    {t('text')}
                 </p>
                 <textarea
                     placeholder='Text'
                     className={classNames({
+                        "textarea": true,
                         "create-article__textarea": true,
                         'input-error': errors.text
                     })}
+                    data-theme={theme}
                     {...registerText}/>
                 {createSubmit &&
                 <>
@@ -132,7 +140,7 @@ const ChangeArticle = (props: Props) => {
                     disabled={isLoading}
                     type='submit'
                     className="create-article__btn btn btn__for-modal btn__primary-bg">
-                    Send
+                    {t('send')}
                 </button>
             </form>
         </div>

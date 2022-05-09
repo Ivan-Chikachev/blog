@@ -1,5 +1,7 @@
 import './ChangeArticle.scss'
 import React, {useState} from "react";
+import {useTheme} from "../../theme/useTheme";
+import {useTranslation} from "react-i18next";
 
 type Props = {
     tags: Array<string>
@@ -9,8 +11,10 @@ type Props = {
 const Tag = ({tags, setTags}: Props) => {
 
     const [value, setValue] = useState('')
+    const {theme} = useTheme()
+    const { t } = useTranslation();
 
-    const addClick = (e: any) => {
+  const addClick = (e: any) => {
         e.preventDefault()
         if (value.trim()) {
             setTags([...tags, value.trim()])
@@ -38,7 +42,7 @@ const Tag = ({tags, setTags}: Props) => {
                         e.preventDefault()
                         deleteClick(item)
                     }}>
-                    delete
+                  {t('delete')}
                 </button>
             </div>
 
@@ -53,13 +57,14 @@ const Tag = ({tags, setTags}: Props) => {
             <input
                 value={value}
                 onChange={(e: any) => setValue(e.target.value)}
-                placeholder='Tag'
+                placeholder={t('tag')}
                 type="text"
-                className="create-article__input create-article__input-tag"/>
+                data-theme={theme}
+                className="input create-article__input create-article__input-tag"/>
             <button
                 onClick={addClick}
                 className="create-article__btn create-article__btn-add btn btn__primary btn__for-modal">
-                Add tag
+                {t('addTag')}
             </button>
         </div>
     )
