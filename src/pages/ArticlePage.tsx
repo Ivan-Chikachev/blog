@@ -1,8 +1,10 @@
 import React, {useEffect} from "react";
-import Article from "../components/ArticlePage/Article";
 import {getCurrentArticle} from "../redux/Article/articleActions";
 import {useAppDispatch} from "../hooks/reduxHook";
 import {useParams} from "react-router-dom";
+import Loading from "../components/Loading/Loading";
+
+const Article= React.lazy(() => import('../components/ArticlePage/Article'));
 
 const ArticlePage = () => {
 
@@ -16,7 +18,9 @@ const ArticlePage = () => {
     }, [])
 
     return (
-        <Article/>
+      <React.Suspense fallback={<Loading />}>
+        <Article />
+      </React.Suspense>
     )
 }
 
