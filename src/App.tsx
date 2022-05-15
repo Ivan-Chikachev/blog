@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.scss';
 import Header from "./components/Header/Header";
-import {Route, Routes} from "react-router-dom";
+import {Navigate, Route, Routes} from "react-router-dom";
 import ArticlePage from "./pages/ArticlePage";
 import ArticlesListPage from "./pages/ArticleListPage";
 import SignInPage from "./pages/SignInPage";
@@ -15,6 +15,7 @@ import Alert from "./components/Alert/Alert";
 import {useAppDispatch, useAppSelector} from "./hooks/reduxHook";
 import {useTheme} from "./theme/useTheme";
 import NotFoundPage from "./pages/NotFoundPage";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 const App = () => {
   const isAuth = useAppSelector(s => s.auth.isAuth)
@@ -49,10 +50,9 @@ const App = () => {
         avatarSrc={avatarSrc}/>
       <Routes>
         <Route path='/'>
+          <Route index element={<Navigate to="articles/page/1" />}/>
           <Route path='sign-in' element={<SignInPage />}/>
           <Route path='sign-up' element={<SignUpPage />}/>
-          <Route path='profile' element={<EditProfilePage />}/>
-          <Route path='create-article' element={<CreateArticlePage />}/>
           <Route path='article/:slug/edit-article'
                  element={<EditArticlePage />}
           />
@@ -62,6 +62,20 @@ const App = () => {
           <Route
             path='article/:slug'
             element={<ArticlePage />}
+          />
+          <Route path='create-article'
+                 element={
+                   <PrivateRoute>
+                     <CreateArticlePage />
+                   </PrivateRoute>
+                 }
+          />
+          <Route path='profile'
+                 element={
+                   <PrivateRoute>
+                     <EditProfilePage />
+                   </PrivateRoute>
+                 }
           />
           <Route path='*' element={<NotFoundPage />}/>
         </Route>
