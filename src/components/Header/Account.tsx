@@ -5,7 +5,7 @@ import {logout} from "../../redux/Auth/authActions";
 import {useTranslation} from "react-i18next";
 import {useAppDispatch} from "../../hooks/reduxHook";
 import {useTheme} from "../../theme/useTheme";
-
+import {Popconfirm} from 'antd';
 
 type Props = {
     avatarSrc: string | null
@@ -38,11 +38,17 @@ const Account = (props: Props) => {
                     src={avatar}
                     alt=""/>
             </Link>
-            <button
-                onClick={() => dispatch(logout())}
+            <Popconfirm
+              title={t('confirmLogout')}
+              onConfirm={() => dispatch(logout())}
+              okText={t('yes')}
+              cancelText={t('no')}
+            >
+              <a
                 className='btn btn__large btn__light-br auth__item'>
                 {t('logout')}
-            </button>
+              </a>
+            </Popconfirm>
         </>
     )
 }

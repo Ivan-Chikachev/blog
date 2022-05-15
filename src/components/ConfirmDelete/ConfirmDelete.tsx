@@ -14,7 +14,7 @@ const ConfirmDelete = ({clickDeleteArticle, slug}: Props) => {
 
     return (
         <Popconfirm
-            title={t('deleteThisArticle')}
+            title={t('confirmDelete')}
             onConfirm={() => clickDeleteArticle(slug)}
             okText={t('yes')}
             cancelText={t('no')}
