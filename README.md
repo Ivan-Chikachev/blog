@@ -1,5 +1,5 @@
 # Блог платформа
-## Доступно по ссылке: https://blog-rust-pi.vercel.app/
+### Доступно по ссылке: https://blog-ivanchikachev.vercel.app
 
 > Технологии
 - React
